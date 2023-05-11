@@ -1,0 +1,53 @@
+.home{
+    background-image: url('../../assets/bakeground/playNow.png');
+    background-size: 100% 100%;
+    height: 100vh;
+    position: relative; 
+    .header{
+        top: 16px;
+        left: 18px;
+        position: absolute;
+        height: 46px;
+        width: 90%;
+        display: flex;
+        justify-content: space-between;
+        .avatar{
+            height: 46px;
+            width: 145px;
+            background-image: url('../../assets/icon/avatar.png');
+            background-size: 100% 100%;
+            box-sizing: border-box;
+            p{
+                box-sizing: border-box;
+                padding-left: 60px;
+                text-align: left;
+                font-family: 'DaysOne';
+            }
+        }
+       
+  
+    }
+    .cat{
+        position: absolute;
+        left: 61px;
+        top: 391px;
+        filter: drop-shadow(0px 2.8px 8.4px rgba(106, 59, 16, 0.25));
+    }
+    .menu{
+        position:absolute;
+        width: 52px;
+        height: 200px;
+        border: 2px solid slateblue;
+        right: 20px;
+        top: 49%;
+    }
+}
+
+.text-after{
+    font-style:normal;
+    position: absolute;
+    font-family: 'DaysOne';
+    top: 42px; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+}

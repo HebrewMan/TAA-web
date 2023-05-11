@@ -1,0 +1,17 @@
+.attibute{
+    display: flex;
+    align-items: center;
+}
+
+.attibute-status{
+    background: #FFEFD7;
+    /* 边 */
+    border: 2px solid #402209;
+    border-radius: 0px 20px 20px 0px;
+    overflow: hidden;
+    span{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
