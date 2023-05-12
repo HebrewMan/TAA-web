@@ -1,0 +1,71 @@
+.footer{
+    height: 90px;
+    background-image: url('../../assets/bakeground/footer.png');
+    background-size:cover;
+    position: absolute;
+    bottom: 0;
+    // top: 50px;
+    width: 100%;
+    box-sizing: border-box;
+    ul{
+        position: relative;
+        width: 100%;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        box-sizing: border-box;
+        bottom:3px;
+        li{
+            font-size: 12px;
+            font-family: 'butter sans';
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            img:first-child{
+               position: absolute;
+               top: 0px;
+               width: 45px;
+               z-index: 100;
+            }
+            .base-cur{
+                position: absolute;
+                display: none;
+            }
+            span{
+                margin-top: 40px;
+                z-index: 100;
+            }
+        }
+        li:first-child{
+            top: 10px;
+            transform: rotate(-6deg);
+        }
+        li:nth-child(2){
+            transform: rotate(-2deg);
+        }
+        li:nth-child(3){
+            transform: rotate(2deg);
+        }
+        li:last-child{
+            top: 10px;
+            transform: rotate(6deg);
+        }
+        .li-cur{
+            font-size: 16px;
+            img:first-child{
+                top: -15px;
+                width: 70px;
+             }
+            .base-cur{
+                top: 10px;
+                display: block;
+            }
+            span{
+                margin-top: 48px;
+            }
+        }
+    }
+}

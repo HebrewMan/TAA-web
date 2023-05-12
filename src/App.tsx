@@ -1,7 +1,12 @@
 import Routers from './router';
+
+import Footer from './components/footer';
 function App() {
   return (
-    <Routers/>
+    <>
+      <Routers/>
+      <Footer/>
+    </>
   )
 }
 

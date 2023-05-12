@@ -1,6 +1,8 @@
 import React, { ReactElement, useState, useEffect, useContext } from 'react';
 import "./index.scss";
-import Attibute  from "../../components/attribute"
+import Attibute  from "../../components/attribute";
+import AttibuteDetails  from "./attributeDetails";
+
 // import '../../assets/cat/cat1.png'
 const PlayNow = () => {
 
@@ -25,10 +27,15 @@ const PlayNow = () => {
                
                         <span className='set relative'>
                             <img src="../../src/assets/icon/set.png" width={45} alt="" />
-                            <i className='text-after text-10px font-shadow-black'>Set</i>
+                            <i className='text-after text-10px font-shadow-black top-42px'>Set</i>
                         </span>
                 
                     </div>
+                    
+                    <AttibuteDetails/>
+
+
+
                     <div className="life-attribute">
 
                         {attibute_list.map(item=><Attibute top={item.top} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.top}/>)}
@@ -38,9 +45,26 @@ const PlayNow = () => {
                         <img src={catUrl} alt="" width={184}/>
                     </div>
                     <div className="menu">
-                            
+                        <div className='menu-item relative'>
+                            <img src="../../src/assets/icon/knapsack.png" width={52} alt="" />
+                            <i className='text-after text-12px font-shadow-black top-50px'>Knapsack</i>
+                        </div>
+                        <div className='menu-item relative mt-8px'>
+                            <img src="../../src/assets/icon/friends.png" width={52} alt="" />
+                            <i className='text-after text-12px font-shadow-black top-50px'>Friends</i>
+                        </div>
+                        <div className='menu-item relative mt-8px'>
+                            <img src="../../src/assets/icon/tasks.png" width={52} alt="" />
+                            <i className='text-after text-12px font-shadow-black top-50px'>tasks</i>
+                        </div>
+                        <div className='menu-item relative mt-8px'>
+                            <img src="../../src/assets/icon/malls.png" width={52} alt="" />
+                            <i className='text-after text-12px font-shadow-black top-50px'>malls</i>
+                        </div>
                     </div>
                 </div>
+        
+
 
         </React.Fragment>
     )

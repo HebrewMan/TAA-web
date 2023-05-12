@@ -1,5 +1,5 @@
 import React, {useState,  } from 'react';
-import "./attribute.scss"
+import "./style/attribute.scss"
 // import '../../assets/cat/cat1.png'
 const Attibute = (props:any) => {
 
