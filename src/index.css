@@ -115,4 +115,5 @@ p,ul,li{
   height: 100%;
   z-index: 500;
   background-color: rgba(0, 0, 0, 0.4);
+  display: none;
 }

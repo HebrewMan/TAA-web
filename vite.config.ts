@@ -1,11 +1,23 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import UnoCSS from 'unocss/vite'
-import path  from "path";
+import {resolve}  from "path";
+
+import pxtovw from 'postcss-px-to-viewport'
+const loder_pxtovw = pxtovw({
+//这里是设计稿宽度 自己修改
+  viewportWidth: 375,
+  viewportUnit: 'vw'
+})
 export default defineConfig({
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "@": resolve(__dirname, "./src"),
+    }
+  },
+  css: {
+    postcss: {
+      plugins: [loder_pxtovw]
     }
   },
    plugins: [
@@ -18,8 +30,14 @@ export default defineConfig({
   ],
  
   server: {
-    //使用IP能访问
-      host: '0.0.0.0'
-  }  
+    proxy: {
+        '/api': {
+            target: 'https://baidu.com',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api/, '')
+        }
+    },
+    host: '0.0.0.0'
+},
 
 })

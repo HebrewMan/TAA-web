@@ -1,13 +1,18 @@
-import React, { ReactElement, useState, useEffect, useContext } from 'react';
+import React, { useState, } from 'react';
 import "./index.scss";
 import Attibute  from "../../components/attribute";
 import AttibuteDetails  from "./attributeDetails";
+import { Popup,PopupPosition } from 'react-vant';
 
 // import '../../assets/cat/cat1.png'
 const PlayNow = () => {
 
 
     const [catUrl, setCatUrl] = useState('../../src/assets/cat/cat1.png'); 
+
+    const [state, setState] = useState<PopupPosition>('')
+
+    const onClose = () => setState('')
 
     const attibute_list = [
         {top:90,typeImg:'../../src/assets/icon/stamina-r.png',gradientBk:'linear-gradient(180deg, #FF8D8D 0%, #C93413 117.9%)',value:100},
@@ -25,14 +30,15 @@ const PlayNow = () => {
                             <p className='text-#402209 text-8px'>1234****2314</p>
                         </div>
                
-                        <span className='set relative'>
+                        <span className='set relative'  onClick={()=>setState('top')}>
                             <img src="../../src/assets/icon/set.png" width={45} alt="" />
                             <i className='text-after text-10px font-shadow-black top-42px'>Set</i>
                         </span>
                 
                     </div>
-                    
-                    <AttibuteDetails/>
+                    <Popup  visible={state === 'top'}   position='top' onClose={onClose}>
+                        <AttibuteDetails/>
+                    </Popup>
 
 
 

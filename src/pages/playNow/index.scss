@@ -45,10 +45,13 @@
 .attibute-details-box{
     width: 328px;
     height: 456px;
-    background-color:slateblue;
-    z-index: 800;
-    position: fixed;
-    top: 228px;
-    left: 50%; 
-    transform: translate(-50%, -50%); 
+    background: rgb(151, 205, 90);
+    border: 1px solid slateblue;
+    // z-index: 800;
+    margin: 0 auto;
+    // position: fixed;
+    // top: 228px;
+    // left: 50%; 
+    // transform: translate(-50%, -50%); 
+    // display: none;
 }
