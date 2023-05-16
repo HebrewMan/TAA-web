@@ -43,15 +43,47 @@
 }
 
 .attibute-details-box{
-    width: 328px;
-    height: 456px;
-    background: rgb(151, 205, 90);
-    border: 1px solid slateblue;
-    // z-index: 800;
-    margin: 0 auto;
-    // position: fixed;
-    // top: 228px;
-    // left: 50%; 
-    // transform: translate(-50%, -50%); 
-    // display: none;
+    height: 100%;
+    .main{
+        background-image: url('../../assets/bakeground/attribute_box_bk.png');
+        background-size: 100% 100%;
+        width: 325px;
+        height: 84%;
+        margin: 0 auto;
+        position: relative;
+        .title{
+            font-family: 'Days One';
+            position: absolute;
+            top: 20%;
+            font-size: 16px;
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+        }
+    }
+    .attibutes{
+        width: 317px;
+        height: 14%;
+        background: #FFE0B1;
+        margin: 0 auto;
+        // border-radius: 9px;
+        margin-top: 3%;
+        // padding: 4px;
+      position: relative;
+    }
+
+    .attibutes::after{
+        content: '';
+
+        left: 0;
+        bottom: -6px;
+        position: absolute;
+        width: 199px;
+        height: 14.18px;
+        left: 82px;
+        top: 397.82px;
+        background: blue;
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    
 }

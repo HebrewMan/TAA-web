@@ -107,7 +107,7 @@ p,ul,li{
 }
 
 /* 遮罩层 */
-.overlay {
+/* .overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -116,4 +116,4 @@ p,ul,li{
   z-index: 500;
   background-color: rgba(0, 0, 0, 0.4);
   display: none;
-}
+} */

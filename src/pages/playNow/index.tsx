@@ -25,21 +25,20 @@ const PlayNow = () => {
         <React.Fragment>
             <div className="home">
                     <div className="header">
-                        <div className="avatar pt-8px">
+                        <div className="avatar pt-8px" >
                             <p className='font-shadow-black text-12px'>NAME</p>
                             <p className='text-#402209 text-8px'>1234****2314</p>
                         </div>
                
-                        <span className='set relative'  onClick={()=>setState('top')}>
+                        <span className='set relative'  >
                             <img src="../../src/assets/icon/set.png" width={45} alt="" />
                             <i className='text-after text-10px font-shadow-black top-42px'>Set</i>
                         </span>
                 
                     </div>
-                    <Popup  visible={state === 'top'}   position='top' onClose={onClose}>
+                    <Popup  visible={state === 'top'} style={{background:'none', height: '82%' }}  position='top' onClose={onClose}>
                         <AttibuteDetails/>
                     </Popup>
-
 
 
                     <div className="life-attribute">
@@ -47,7 +46,7 @@ const PlayNow = () => {
                         {attibute_list.map(item=><Attibute top={item.top} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.top}/>)}
                         
                     </div>
-                    <div className="cat">
+                    <div className="cat" onClick={()=>setState('top')}>
                         <img src={catUrl} alt="" width={184}/>
                     </div>
                     <div className="menu">
