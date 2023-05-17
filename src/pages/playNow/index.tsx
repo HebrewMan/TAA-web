@@ -1,8 +1,14 @@
 import React, { useState, } from 'react';
 import "./index.scss";
-import Attibute  from "../../components/attribute";
-import AttibuteDetails  from "./attributeDetails";
+import Attibute from "@/components/attribute";
+
+import AttibuteDetailsPopup  from "./attributeDetailsPopup";
 import { Popup,PopupPosition } from 'react-vant';
+
+import staminaSvg from '@/assets/icon/staminaLogo.svg';
+import charismaSvg from '@/assets/icon/charismaLogo.svg';
+import cleanSvg from '@/assets/icon/cleanLogo.svg';
+import iqSvg from '@/assets/icon/iqLogo.svg';
 
 // import '../../assets/cat/cat1.png'
 const PlayNow = () => {
@@ -15,10 +21,10 @@ const PlayNow = () => {
     const onClose = () => setState('')
 
     const attibute_list = [
-        {top:90,typeImg:'../../src/assets/icon/stamina-r.png',gradientBk:'linear-gradient(180deg, #FF8D8D 0%, #C93413 117.9%)',value:100},
-        {top:130,typeImg:'../../src/assets/icon/charisma-r.png',gradientBk:'linear-gradient(180deg, #DB8EFF 0%, #6C1794 118.75%)',value:80},
-        {top:170,typeImg:'../../src/assets/icon/clean-r.png',gradientBk:'linear-gradient(180deg, #98CEFF 0%, #0A569D 118.75%)',value:50},
-        {top:210,typeImg:'../../src/assets/icon/iq-r.png',gradientBk:'linear-gradient(180deg, #C9F7C2 0%, #3B8734 130%)',value:40},
+        {typeImg:staminaSvg,gradientBk:'linear-gradient(180deg, #FF8D8D 0%, #C93413 117.9%)',value:100},
+        {typeImg:charismaSvg,gradientBk:'linear-gradient(180deg, #DB8EFF 0%, #6C1794 118.75%)',value:80},
+        {typeImg:cleanSvg,gradientBk:'linear-gradient(180deg, #98CEFF 0%, #0A569D 118.75%)',value:50},
+        {typeImg:iqSvg,gradientBk:'linear-gradient(180deg, #C9F7C2 0%, #3B8734 130%)',value:40},
     ]
 
     return (
@@ -36,14 +42,15 @@ const PlayNow = () => {
                         </span>
                 
                     </div>
+                    
                     <Popup  visible={state === 'top'} style={{background:'none', height: '82%' }}  position='top' onClose={onClose}>
-                        <AttibuteDetails/>
+                        <AttibuteDetailsPopup/>
                     </Popup>
 
 
                     <div className="life-attribute">
 
-                        {attibute_list.map(item=><Attibute top={item.top} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.top}/>)}
+                        {attibute_list.map(item=><Attibute height={25} logoWidth={34} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.typeImg}/>)}
                         
                     </div>
                     <div className="cat" onClick={()=>setState('top')}>

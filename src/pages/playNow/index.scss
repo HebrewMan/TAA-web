@@ -1,10 +1,10 @@
 .home{
-    background-image: url('../../assets/bakeground/playNow.png');
+    background-image: url('@/assets/bakeground/playNow.png');
     background-size: 100% 100%;
     height: 100vh;
     position: relative; 
     .header{
-        top: 16px;
+        top: 1.5%;
         left: 18px;
         position: absolute;
         height: 46px;
@@ -15,7 +15,7 @@
         .avatar{
             height: 46px;
             width: 145px;
-            background-image: url('../../assets/icon/avatar.png');
+            background-image: url('@/assets/icon/avatar.png');
             background-size: 100% 100%;
             box-sizing: border-box;
             p{
@@ -24,6 +24,12 @@
                 text-align: left;
             }
         }
+    }
+    .life-attribute{
+        width: 100%;
+        height: 22%;
+        position: absolute;
+        top: 9%;
     }
     .cat{
         position: absolute;
@@ -45,12 +51,13 @@
 .attibute-details-box{
     height: 100%;
     .main{
-        background-image: url('../../assets/bakeground/attribute_box_bk.png');
+        background-image: url('@/assets/bakeground/attribute_box_bk.png');
         background-size: 100% 100%;
-        width: 325px;
+        width: 333px;
         height: 84%;
         margin: 0 auto;
         position: relative;
+        
         .title{
             font-family: 'Days One';
             position: absolute;
@@ -59,31 +66,61 @@
             left: 50%; 
             transform: translate(-50%, -50%); 
         }
+        .cat{
+            width: 74%;
+            position: absolute;
+            top: 51%;
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+        }
+        .name{
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 85%;
+            left: 41%; 
+            transform: translate(-50%, -50%); 
+            font-family: 'Days One';
+            font-size: 28px;
+        }
+    
     }
     .attibutes{
-        width: 317px;
-        height: 14%;
-        background: #FFE0B1;
+        width: 325px;
+        height: 13%;
         margin: 0 auto;
-        // border-radius: 9px;
         margin-top: 3%;
-        // padding: 4px;
-      position: relative;
+        border-radius: 9px;
+        box-sizing: border-box;
+        border: 4px solid #402209;
+        margin-right: 22px;
+        .btn{
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            border-radius: 9px;
+        }
     }
-
-    .attibutes::after{
-        content: '';
-
-        left: 0;
-        bottom: -6px;
-        position: absolute;
-        width: 199px;
-        height: 14.18px;
-        left: 82px;
-        top: 397.82px;
-        background: blue;
-        background: rgba(0, 0, 0, 0.8);
+   
+    .btn{
+        height: 94%;
+        width: 100%;
+        background-color: #FFE0B1;
+        box-shadow: 0px 5px 0px 0px #E2AA73;
     }
-
     
+}
+
+
+.attibute_list{
+    position: absolute;
+    top: 94%;
+    width: 293px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    left: 51%; 
+    transform: translate(-50%, -50%); 
 }

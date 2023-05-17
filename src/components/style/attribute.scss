@@ -2,13 +2,24 @@
     display: flex;
     align-items: center;
 }
-
+.small{
+  
+    height: 40px;
+    justify-content: center;
+    place-items: center;
+ 
+   img{
+    position: absolute;
+    left: 5px;
+   }
+}
 .attibute-status{
-    background: #FFEFD7;
+    background: #FFE0B1;
     /* 边 */
     border: 2px solid #402209;
     border-radius: 0px 20px 20px 0px;
     overflow: hidden;
+    height: 100%;
     span{
         display: flex;
         justify-content: center;
