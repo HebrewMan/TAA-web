@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import "./index.scss"
+import "../index.scss"
 import staminaSvg from '@/assets/icon/staminaLogo.svg';
 import charismaSvg from '@/assets/icon/charismaLogo.svg';
 import cleanSvg from '@/assets/icon/cleanLogo.svg';
@@ -20,21 +20,19 @@ const AttibuteDetails = (props:any) => {
 
     return (
         <React.Fragment>
-            <div className='attibute-details-box'>
+            <div className='attibute-details-popup'>
                 <div className='main'>
                     <div className="title font-shadow-black">Cat Detail</div>
                     <img className='cat' src="../../src/assets/cat/cat1.png" alt="" />
                     <p className='name'>Caunienaien  <img src={penSvg} alt="" width={22}  className='ml-8px'/></p>
                     <div className='attibute_list'>
-                        {attibute_list.map(item=><AttibuteSmall  logoWidth={23} height={15} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.typeImg}/>)}
+                        {attibute_list.map(item=><AttibuteSmall  logoWidth={27} height={20} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.typeImg}/>)}
                     </div>                        
-                  
                 </div>
                 <div className="attibutes">
-                    <div className="btn">
+                    <div className="btn" style={{boxShadow: '0px 5px 0px 0px #E2AA73'}}>
                         {attibute_list.map(item => <img src={item.typeImg} width={48} alt="" key={item.typeImg} />) }
                     </div>
-                   
                 </div>
             </div>
         </React.Fragment>

@@ -2,11 +2,10 @@
     height: 90px;
     background-image: url('../../assets/bakeground/footer.png');
     background-size:cover;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     // top: 50px;
     width: 100%;
-    box-sizing: border-box;
     ul{
         position: relative;
         width: 100%;
