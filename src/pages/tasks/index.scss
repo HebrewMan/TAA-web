@@ -1,0 +1,84 @@
+.tasks{
+   
+    background-color: #DDB58A;
+    height: 100vh;
+    box-sizing: border-box;
+    padding-top: 24px;
+    .back{
+        text-align: left;
+        margin-left: 24px;
+    }
+    .main{
+        background-image: url('@/assets/bakeground/tasks_bk.png');
+        background-size: 100% 100%;
+        min-height: 688px;
+        width: 327px;
+        margin: 0 auto;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .item{   
+            box-sizing: border-box;
+            padding: 16px;
+            width: 295px;
+            min-height: 96px;
+            background: #FFD28E;
+            border: 2.5px solid #402209;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .top{
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                font-family: 'Days One';
+                font-style: normal;
+                .task-title{
+                    font-weight: 400;
+                    font-size: 16px;
+                    text-align: left;
+                    display: flex;
+                    align-items: center;
+                    padding-top:3px;
+                    box-sizing: border-box;
+                }
+                .description{
+                    margin-top: 5px;
+                    text-align: left;
+                    color: #BB7A3A;
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 12px;
+                }
+            }
+            .btn{
+                margin-top: 16px;
+                width: 263px;
+                height: 40px;
+                background:#93A90F;
+                border: 3px solid #402209;
+                text-align: center;
+                line-height: 32px;
+                box-sizing: border-box;
+                border-radius: 8px;
+                .text{
+                    background: #BAD60F;
+                    height: 28px;
+                    opacity: 0.8;
+                    border-radius: 8px;
+                    text-shadow: -1px 1px 0 #000, 1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000;
+                    // -webkit-text-stroke:3px #402209;
+                    color: #ffffff;
+                    font-size: 18px;
+                }
+            }
+           
+        }
+    }
+   
+}

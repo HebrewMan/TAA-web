@@ -11,7 +11,7 @@ const UserInfoPopup = (props:any)=>{
         <React.Fragment>
             <div className='user-info-popup'>
                 <span className='font-shadow-black'>Title</span>
-                <img className='close' src={closeSvg} width={46} alt="" onClick={props.userInfoPopupHandle}/>
+                <img className='close' src={closeSvg} width={46} alt="" onClick={props.onClose}/>
                 <div className="user-info">
                     <div className="shadow-cur" style={{boxShadow: '0px 6px 0px 0px #E2AA73'}}>
                         <img className="avater" src={avaterSvg} width={40} alt="" />

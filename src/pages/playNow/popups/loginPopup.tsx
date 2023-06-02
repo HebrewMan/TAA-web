@@ -79,7 +79,7 @@ const LoginPopup = (props:any)=>{
         <React.Fragment>
             <div className='login-popup' style={{top:window.innerHeight<700 ? '-10%':'0'}}>
                 <span className='title font-shadow-black'>Log in</span>
-                <img className='close' src={closeSvg} width={46} alt="" onClick={props.loginPopupHandle}/>
+                <img className='close' src={closeSvg} width={46} alt="" onClick={props.onClose}/>
 
                 {(type == 'Email' || type ==  'Wallet') && 
                     (<div className="tab">

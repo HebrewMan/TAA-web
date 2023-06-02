@@ -20,7 +20,7 @@ const AttibuteDetails = (props:any) => {
 
     return (
         <React.Fragment>
-            <div className='attibute-details-popup'>
+            <div className='attibute-details-popup' onClick={props.onClose}>
                 <div className='main'>
                     <div className="title font-shadow-black">Cat Detail</div>
                     <img className='cat' src="../../src/assets/cat/cat1.png" alt="" />

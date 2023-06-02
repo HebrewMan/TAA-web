@@ -17,7 +17,7 @@ const SharePopup = (props:any)=>{
         <React.Fragment>
             <div className='share-popup'>
                 <BtnWithShadow item={btns[0]}/>
-                <img className='close' src={closeSvg} width={46} alt="" onClick={props.sharePopupHandle}/>
+                <img className='close' src={closeSvg} width={46} alt="" onClick={props.onClose}/>
 
                 <div className="share-btns">
                     { btns.map(item=> item.logo && <BtnWithShadow key={item.text} item={item}/>)}

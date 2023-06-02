@@ -36,7 +36,7 @@ const StatusPopup = (props:any)=>{
         <React.Fragment>
             <div className='login-popup' style={{top:window.innerHeight<700 ? '-10%':'0'}}>
                 <span className='title font-shadow-black'>{props.title}</span>
-                <img className='close' src={closeSvg} width={46} alt="" onClick={props.loginPopupHandle}/>
+                <img className='close' src={closeSvg} width={46} alt="" onClick={props.onClose}/>
                 {loginMain} 
                 <div className='btn'>
                     <div className="text font-shadow-block" onClick={props.login}>{props.text == 'Loading'?'. . .':'OK'}</div>

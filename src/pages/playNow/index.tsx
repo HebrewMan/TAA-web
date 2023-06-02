@@ -23,6 +23,7 @@ import setSvg from '@/assets/icon/set.svg';
 // import '../../assets/cat/cat1.png'
 const PlayNow = () => {
 
+    const menu = ['knapsack','friends','tasks','malls'];
 
     const [catUrl, setCatUrl] = useState('../../src/assets/cat/cat1.png'); 
 
@@ -32,13 +33,13 @@ const PlayNow = () => {
     const [sharePopupState, setSharePopupState] = useState<boolean>(false)
     const [setPopupState, setSetPopupState] = useState<boolean>(true)
 
-
-    const setPopupHandle = ()=>setSetPopupState(false);
-    const loginPopupHandle = ()=>setLoginPopupState(false);
-    const onClose = () => setAttibutesPopupState(false);
-
-    const userInfoPopupHandle = ()=>setUserInfoPopupState(false);
-    const sharePopupHandle = ()=>setSharePopupState(false);
+    const onClose = () => {
+        setLoginPopupState(false);
+        setAttibutesPopupState(false);
+        setSetPopupState(false);
+        setUserInfoPopupState(false);
+        setSharePopupState(false);
+    }
 
 
     const attibute_list = [
@@ -47,6 +48,7 @@ const PlayNow = () => {
         {typeImg:cleanSvg,gradientBk:'linear-gradient(180deg, #98CEFF 0%, #0A569D 118.75%)',value:50},
         {typeImg:iqSvg,gradientBk:'linear-gradient(180deg, #C9F7C2 0%, #3B8734 130%)',value:40},
     ]
+
 
     return (
         <React.Fragment>
@@ -66,56 +68,45 @@ const PlayNow = () => {
                             <img src={setSvg} width={45} alt="" />
                             <i className='text-after text-10px font-shadow-black top-42px'>Set</i>
                         </span>
-                
                     </div>
                     
 
                     <Popup visible={setPopupState} style={{background:'none', height: '100%' }}  position='top' >
-                        <SetPopup setPopupHandle={setPopupHandle}/>
+                        <SetPopup onClose={onClose}/>
                     </Popup>
 
                     <Popup visible={loginPopupState} style={{background:'none', height: '100%' }}  position='top' >
-                        <LoginPopup loginPopupHandle={loginPopupHandle}/>
+                        <LoginPopup onClose={onClose}/>
                     </Popup>
                     
                     <Popup visible={attibutesPopupState} style={{background:'none', height: '82%' }}  position='top' onClose={onClose}>
-                        <AttibuteDetailsPopup/>
+                        <AttibuteDetailsPopup onClose={onClose}/>
                     </Popup>
 
                     <Popup visible={sharePopupState} style={{background:'none',height:'100%'}}  >
-                        <SharePopup sharePopupHandle={sharePopupHandle}/>
+                        <SharePopup onClose={onClose}/>
                     </Popup>
 
                     <Popup visible={userInfoPopupState} style={{background:'none', height: '77%'}}  position='top'>
-                        <UserInfoPopup userInfoPopupHandle={userInfoPopupHandle}/>
+                        <UserInfoPopup onClose={onClose}/>
                     </Popup>
 
 
                     <div className="life-attribute">
-
-                        {attibute_list.map(item=><Attibute height={25} logoWidth={34} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.typeImg}/>)}
-                        
+                        {attibute_list.map(item=>
+                            <Attibute height={25} logoWidth={34} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.typeImg}/>
+                        )}
                     </div>
                     <div className="cat" onClick={()=>setAttibutesPopupState(true)}>
                         <img src={catUrl} alt="" width={184}/>
                     </div>
                     <div className="menu">
-                        <div className='menu-item relative'>
-                            <img src="../../src/assets/icon/knapsack.png" width={52} alt="" />
-                            <i className='text-after text-12px font-shadow-black top-50px'>Knapsack</i>
-                        </div>
-                        <div className='menu-item relative mt-8px'>
-                            <img src="../../src/assets/icon/friends.png" width={52} alt="" />
-                            <i className='text-after text-12px font-shadow-black top-50px'>Friends</i>
-                        </div>
-                        <div className='menu-item relative mt-8px'>
-                            <img src="../../src/assets/icon/tasks.png" width={52} alt="" />
-                            <i className='text-after text-12px font-shadow-black top-50px'>tasks</i>
-                        </div>
-                        <div className='menu-item relative mt-8px'>
-                            <img src="../../src/assets/icon/malls.png" width={52} alt="" />
-                            <i className='text-after text-12px font-shadow-black top-50px'>malls</i>
-                        </div>
+                        { menu.map(item=> 
+                            <div className={`menu-item relative ${item!='knapsack'&& 'mt-8px'}` } key={item}>
+                                <img src={`../../src/assets/icon/${item}.png`} width={52} alt="" />
+                                <i className='text-after text-12px font-shadow-black top-50px'>{item}</i>
+                            </div>
+                        )}
                     </div>
                 </div>
         
