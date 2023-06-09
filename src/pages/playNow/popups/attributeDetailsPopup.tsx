@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import "../index.scss"
 import staminaSvg from '@/assets/icon/staminaLogo.svg';
 import charismaSvg from '@/assets/icon/charismaLogo.svg';

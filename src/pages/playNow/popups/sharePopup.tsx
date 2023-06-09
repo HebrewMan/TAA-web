@@ -1,4 +1,4 @@
-import React, { useState, } from 'react';
+import React from 'react';
 import closeSvg from '@/assets/icon/close.svg'
 
 import twitterSvg from '@/assets/icon/twitter.svg';

@@ -1,0 +1,91 @@
+.my-nft{
+    height: 100vh;
+    background-image: url('@/assets/bakeground/my_nft_bk.png');
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    padding-top: 35%;
+    // padding-bottom:5%;
+    .main{
+        // min-height: 70%;
+        overflow-y: scroll;
+        width: 90%;
+        margin: 0 auto;
+        .item{
+            width: 159px;
+            height: 161px;
+            background: linear-gradient(0deg, rgba(164, 69, 19, 0.6), rgba(164, 69, 19, 0.6)), #FFD28E;
+            border: 3px solid #402209;
+            border-radius: 17px;
+            display: flex;
+            // justify-content: center;
+            align-items: center; /* 垂直居中 */
+            flex-direction: column;
+            margin-bottom: 10px;
+            padding-top: 7px;
+            box-sizing: border-box;
+            .top{
+                width: 135px;
+                // margin-top: 8px;
+                font-family: 'Days One';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                color: #402209;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                span:nth-child(2){
+                    opacity: 0.6;
+                }
+            }
+            .bottom{
+                width: 135px;
+                height: 117px;
+                background: #FFEFD7;
+                border: 2.5px solid #402209;
+                border-radius: 9px;
+                box-sizing: border-box;
+                padding-top: 5px;
+                span{
+                    background: #FFD28E;
+                    margin: 8px;
+                    padding: 3px;
+                    text-align: left;
+                    font-family: 'Days One';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 10px;
+                    text-transform: uppercase;
+                    border-radius: 4px;
+                    flex-direction: row;
+                    margin-right: 60px;
+                }
+            }
+            
+        }
+    }
+    .switch{
+        position: relative;
+        .music-logo{
+            position: absolute;
+            transition: transform 0.3s ease;
+            right: 18px;
+            top: -0.5px;
+        }
+        .switch-btn{
+            width: 27px;
+            height: 10px;
+            border: 3px solid #402209;
+            border-radius: 14px;
+            .shadow{
+                height: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 14px;
+                font-size: 16px;
+            }
+        }
+    }
+}
+

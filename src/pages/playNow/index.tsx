@@ -1,4 +1,5 @@
 import React, { useState, } from 'react';
+import {  useNavigate, } from 'react-router-dom';
 import "./index.scss";
 import Attibute from "@/components/attribute";
 
@@ -8,7 +9,8 @@ import SharePopup  from "./popups/sharePopup";
 import LoginPopup  from "./popups/loginPopup";
 import SetPopup from './popups/setPopup';
 
-import { Popup } from 'react-vant';
+
+import { Popup ,Toast } from 'react-vant';
 
 import staminaSvg from '@/assets/icon/staminaLogo.svg';
 import charismaSvg from '@/assets/icon/charismaLogo.svg';
@@ -25,22 +27,11 @@ const PlayNow = () => {
 
     const menu = ['knapsack','friends','tasks','malls'];
 
-    const [catUrl, setCatUrl] = useState('../../src/assets/cat/cat1.png'); 
+    const [catUrl, ] = useState('../../src/assets/cat/cat1.png'); 
 
-    const [loginPopupState, setLoginPopupState] = useState<boolean>(false)
-    const [attibutesPopupState, setAttibutesPopupState] = useState<boolean>(false)
-    const [userInfoPopupState, setUserInfoPopupState] = useState<boolean>(false)
-    const [sharePopupState, setSharePopupState] = useState<boolean>(false)
-    const [setPopupState, setSetPopupState] = useState<boolean>(true)
+    const [popup,setPopup] = useState('');
 
-    const onClose = () => {
-        setLoginPopupState(false);
-        setAttibutesPopupState(false);
-        setSetPopupState(false);
-        setUserInfoPopupState(false);
-        setSharePopupState(false);
-    }
-
+    const onClose = ()=> setPopup('');
 
     const attibute_list = [
         {typeImg:staminaSvg,gradientBk:'linear-gradient(180deg, #FF8D8D 0%, #C93413 117.9%)',value:100},
@@ -49,45 +40,57 @@ const PlayNow = () => {
         {typeImg:iqSvg,gradientBk:'linear-gradient(180deg, #C9F7C2 0%, #3B8734 130%)',value:40},
     ]
 
+    const nav = useNavigate();
+
+    const routerHandle = (path:string)=>{
+        
+        if(path!='tasks'&&path!='knapsack'){
+            Toast({message: 'Coming Soon',});
+            return
+        }
+        nav(`/${path}`);
+    }
+
+
 
     return (
         <React.Fragment>
             <div className="home">
                     <div className="header">
-                        <div className="avatar pt-8px" onClick={()=>setUserInfoPopupState(true)}>
+                        <div className="avatar pt-8px" onClick={()=>setPopup('cat')}>
                             <p className='font-shadow-black text-12px'>NAME</p>
                             <p className='text-#402209 text-8px'>1234****2314</p>
                         </div>
 
-                        <span className='set relative ml-90px' onClick={()=>setSharePopupState(true)}>
+                        <span className='set relative ml-90px' onClick={()=>setPopup('share')}>
                             <img src={shareSvg} width={45} alt="" />
                             <i className='text-after text-10px font-shadow-black top-42px'>Share</i>
                         </span>
                
-                        <span className='set relative bottom-1px'  onClick={()=>setSetPopupState(true)}>
+                        <span className='set relative bottom-1px'  onClick={()=>setPopup('set')}>
                             <img src={setSvg} width={45} alt="" />
                             <i className='text-after text-10px font-shadow-black top-42px'>Set</i>
                         </span>
                     </div>
                     
 
-                    <Popup visible={setPopupState} style={{background:'none', height: '100%' }}  position='top' >
+                    <Popup visible={popup == 'set'} style={{background:'none', height: '100%' }}  position='top' >
                         <SetPopup onClose={onClose}/>
                     </Popup>
 
-                    <Popup visible={loginPopupState} style={{background:'none', height: '100%' }}  position='top' >
+                    <Popup visible={popup == 'login'} style={{background:'none', height: '100%' }}  position='top' >
                         <LoginPopup onClose={onClose}/>
                     </Popup>
                     
-                    <Popup visible={attibutesPopupState} style={{background:'none', height: '82%' }}  position='top' onClose={onClose}>
+                    <Popup visible={popup == 'attibute'} style={{background:'none', height: '82%' }}  position='top' onClose={onClose}>
                         <AttibuteDetailsPopup onClose={onClose}/>
                     </Popup>
 
-                    <Popup visible={sharePopupState} style={{background:'none',height:'100%'}}  >
+                    <Popup visible={popup == 'share'} style={{background:'none',height:'100%'}}  >
                         <SharePopup onClose={onClose}/>
                     </Popup>
 
-                    <Popup visible={userInfoPopupState} style={{background:'none', height: '77%'}}  position='top'>
+                    <Popup visible={popup == 'cat'} style={{background:'none', height: '77%'}}  position='top'>
                         <UserInfoPopup onClose={onClose}/>
                     </Popup>
 
@@ -97,12 +100,12 @@ const PlayNow = () => {
                             <Attibute height={25} logoWidth={34} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.typeImg}/>
                         )}
                     </div>
-                    <div className="cat" onClick={()=>setAttibutesPopupState(true)}>
+                    <div className="cat" onClick={()=>setPopup('attibute')}>
                         <img src={catUrl} alt="" width={184}/>
                     </div>
                     <div className="menu">
                         { menu.map(item=> 
-                            <div className={`menu-item relative ${item!='knapsack'&& 'mt-8px'}` } key={item}>
+                            <div onClick={()=>routerHandle(item)} className={`menu-item relative ${item!='knapsack'&& 'mt-8px'}` } key={item} >
                                 <img src={`../../src/assets/icon/${item}.png`} width={52} alt="" />
                                 <i className='text-after text-12px font-shadow-black top-50px'>{item}</i>
                             </div>
@@ -110,7 +113,6 @@ const PlayNow = () => {
                     </div>
                 </div>
         
-
         </React.Fragment>
     )
 }

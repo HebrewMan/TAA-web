@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./index.scss";
 import backLogo from '@/assets/icon/back.svg';
@@ -8,7 +8,7 @@ import claimedLogo from '@/assets/icon/claimed.svg';
 
 const Tasks = ()=>{
 
-    const [taskList,setTaskList] = useState([false,false,false]);
+    const [taskList,setTaskList] = useState(['Task1','Task2','Task3']);
 
     const [currentIndex,setCurrentIndex] = useState<null|number>(null);
     const navigate = useNavigate();
@@ -22,6 +22,7 @@ const Tasks = ()=>{
     const claimHandle = (num:number)=>(event:any)=>{
         event.stopPropagation();
         console.log(num)
+        console.log(setTaskList)
     }
 
     return (
@@ -41,7 +42,7 @@ const Tasks = ()=>{
                                 <div className="right h-64px">
                                     <p className='task-title'>
                                        {currentIndex==index && <img src={claimedLogo} width={20} height={20} alt="" className=" mr-5px"/>} 
-                                        NameAB
+                                        {item}
                                     </p>
                                     <p className='description'>Short description Short description</p>
                                 </div>

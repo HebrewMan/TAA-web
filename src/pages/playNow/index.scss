@@ -477,6 +477,7 @@
             border: 3px solid #402209;
             border-radius: 14px;
             background: #D38F5B;
+          
             .lang-shadow{
                 background: #FFD28E;
                 width: 100%;
@@ -490,4 +491,37 @@
         }
     }
    
+}
+
+.introduce-popup{
+    width: 295px;
+    height: 88%;
+    background-image: url('@/assets/bakeground/introduce_bk.png');
+    background-size: 100% 100%;
+    margin: 0 auto;
+    position: relative;
+    .close{
+        position: absolute;
+        right: -10px;
+        top: 14%;
+    }
+    span{
+        font-family: 'Days One';
+        font-size: 16px;
+        position: absolute;
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        top: 17%;
+    }
+    .main{
+        width: 250px;
+        height: 70%;
+        overflow-y: scroll;
+        position: absolute;
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        top: 60%;
+        font-family: 'Days One';
+        font-size: 14px;
+    }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 
 import closeSvg from '@/assets/icon/close.svg';
 import musicSvg from '@/assets/icon/music.svg';
@@ -55,7 +55,6 @@ const SetPopup = (props:any)=>{
                         </div>
                     </div>
 
-                 
                 </div>
 
                  <div className='btn'>

@@ -1,4 +1,4 @@
-import React, { useState, } from 'react';
+import React from 'react';
 import closeSvg from '@/assets/icon/close.svg'
 import avaterSvg from '@/assets/icon/avater.svg'
 import penSvg from '@/assets/icon/pen.svg';

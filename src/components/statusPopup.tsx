@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React from 'react';
 import  {Loading as LoadingVant}  from 'react-vant';
 
 import closeSvg from '@/assets/icon/close.svg'

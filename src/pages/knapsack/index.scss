@@ -1,0 +1,69 @@
+.knapsack{
+    background-color: #DDB58A;
+    height: 100vh;
+    background-image: url('@/assets/bakeground/playNow.png');
+    background-size: 100% 100%;
+    // opacity: 0.4;
+    .back{
+        position: fixed;
+        left: 10%;
+        top: 6%;
+        transform: translate(-50%,-50%);
+    }
+    .main{
+        background-image: url('@/assets/bakeground/knapsack_bk.png');
+        background-size: 100% 100%;
+        min-height: 85%;
+        width: 327px;
+        margin: 0 auto;
+
+        .items{
+            box-sizing: border-box;
+            padding-top: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 85%;
+            margin: 0 auto;
+            margin-right: 15px;
+            // margin-top: 50px;
+            .item{
+                width: 110px;
+                height: 110px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #FFECB7;
+                /* 边 */
+    
+                border: 2.5px solid #402209;
+                border-radius: 9px;
+                margin-bottom: 30px;
+            }
+        }
+       span{
+            width: 28px;
+            height: 28px;
+            position: absolute;
+            right: 12%;
+            top: -5%;
+            background: #BAD60F;
+            /* 边 */
+            border: 3px solid #402209;
+            border-radius: 16px;
+            font-size: 18px;
+
+       }
+      
+    }
+
+    .pages{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .left{
+            transform: rotate(180deg);
+        }
+    }
+   
+}

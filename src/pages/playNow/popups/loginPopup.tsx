@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 import  {Loading as LoadingVant}  from 'react-vant';
 
 import closeSvg from '@/assets/icon/close.svg'
@@ -14,9 +14,7 @@ const LoginPopup = (props:any)=>{
     const [type,setType] = useState('Email');
 
     const [loginText,setLoginText] = useState('Log in');
-    const [codeText,setCodeText] = useState('Send');
-
-    const typeHandle = (t:string)=>setType(t);
+    const [codeText,] = useState('Send');
 
     const Email = ()=>
     <div>
@@ -83,10 +81,10 @@ const LoginPopup = (props:any)=>{
 
                 {(type == 'Email' || type ==  'Wallet') && 
                     (<div className="tab">
-                        <div className={`${type == 'Email'&&'outer-ring'} type`} onClick={()=>typeHandle('Email')}>
+                        <div className={`${type == 'Email'&&'outer-ring'} type`} onClick={()=>setType('Email')}>
                             <div className="text " >Email</div>
                         </div>
-                        <div className={`${type == 'Wallet'&&'outer-ring'} type`} onClick={()=>typeHandle('Wallet')}>
+                        <div className={`${type == 'Wallet'&&'outer-ring'} type`} onClick={()=>setType('Wallet')}>
                             <div className="text">Wallet</div>
                         </div>
                     </div>)

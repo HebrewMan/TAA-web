@@ -1,10 +1,10 @@
-import React, {useState,  } from 'react';
+import React from 'react';
 import "./style/attribute.scss"
 // import '../../assets/cat/cat1.png'
 const Attibute = (props:any) => {
 
 
-    const [fkBkUrl, setFkBkUrl] = useState('../../src/assets/icon/fkbk.png'); 
+    // const [fkBkUrl, setFkBkUrl] = useState('../../src/assets/icon/fkbk.png'); 
 
     return (
         <React.Fragment>

@@ -1,0 +1,10 @@
+<svg width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="16.1699" cy="15.7812" r="10.4688" fill="#F16D6D" stroke="#402209"/>
+<circle cx="14.1074" cy="15.7812" r="10.4688" fill="#FFACAC" stroke="#402209"/>
+<circle cx="13.7637" cy="15.7812" r="7.71875" fill="#F16D6D" stroke="#402209"/>
+<path d="M16.5254 18.0102C16.5254 19.5439 15.2623 19.8615 13.7042 19.8615C12.1462 19.8615 10.8831 19.5439 10.8831 18.0102C10.8831 16.4764 12.1462 14.9246 13.7042 14.9246C15.2623 14.9246 16.5254 16.4764 16.5254 18.0102Z" fill="#FFACAC" stroke="#402209" stroke-width="0.75"/>
+<ellipse cx="15.6438" cy="12.9853" rx="1.23424" ry="1.58688" fill="#FFACAC" stroke="#402209" stroke-width="0.75"/>
+<ellipse cx="12.1174" cy="12.9853" rx="1.23424" ry="1.58688" fill="#FFACAC" stroke="#402209" stroke-width="0.75"/>
+<ellipse cx="9.34309" cy="15.6301" rx="1.12781" ry="1.28892" transform="rotate(-22.6908 9.34309 15.6301)" fill="#FFACAC" stroke="#402209" stroke-width="0.75"/>
+<ellipse cx="1.12781" cy="1.28892" rx="1.12781" ry="1.28892" transform="matrix(-0.9226 -0.385758 -0.385758 0.9226 19.3465 14.876)" fill="#FFACAC" stroke="#402209" stroke-width="0.75"/>
+</svg>
