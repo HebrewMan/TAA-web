@@ -12,6 +12,7 @@ import token1Img from '@/assets/icon/token1.svg';
 import downSvg from '@/assets/icon/down.svg';
 
 const MyNFT = ()=>{
+    const isAndroid = /android/i.test(navigator.userAgent);
     const [type,setType] = useState('Market');
 
     // const [taskList,setTaskList] = useState(['Task1','Task2','Task3']);
@@ -64,7 +65,8 @@ const MyNFT = ()=>{
                                     <div className='item' onClick={()=>Toast('Hello')}>
                                        
                                         <div className='bottom'>
-                                            <img src={item} width={80} alt="" />
+                                            {/* <img src={item} width={80} alt="" /> */}
+                                            {isAndroid? <img src={item} alt="" /> : <object type="image/svg+xml" data={item}></object>}
                                         </div>
                                         <div className="top">
                                                 <span>Name</span>
