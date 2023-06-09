@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "./index.scss";
-import { Flex ,Switch } from 'react-vant'
+import { Flex , } from 'react-vant'
 import catPng from '@/assets/cat/cat1.png';
 
 import musicSvg from '@/assets/icon/music.svg';
@@ -10,7 +10,7 @@ const MyNFT = ()=>{
     const [catUrl, ] = useState(catPng); 
     const height = window.innerHeight - 180;
 
-    const [myNFTs,setMyNFTs] = useState([1,2,3,4,5,6,7,8,9,0]);
+    const [myNFTs,] = useState([1,2,3,4,5,6,7,8,9,0]);
 
 
 

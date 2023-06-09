@@ -14,9 +14,9 @@ import downSvg from '@/assets/icon/down.svg';
 const MyNFT = ()=>{
     const [type,setType] = useState('Market');
 
-    const [taskList,setTaskList] = useState(['Task1','Task2','Task3']);
+    // const [taskList,setTaskList] = useState(['Task1','Task2','Task3']);
 
-    const [marketDatas,setMarketDatas] = useState([mallImg1,mallImg2,mallImg3,mallImg4,mallImg5,mallImg6]);
+    const [marketDatas,] = useState([mallImg1,mallImg2,mallImg3,mallImg4,mallImg5,mallImg6]);
   
 
     return (

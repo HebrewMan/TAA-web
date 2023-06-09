@@ -22,7 +22,7 @@ const Knapsack = ()=>{
     const handleGoBack = ()=>navigate(-1)
 
 
-    const [myMall,setMyMall] = useState([mallImg1,mallImg2,mallImg3,mallImg4,mallImg5,mallImg6]);
+    const [myMall,] = useState([mallImg1,mallImg2,mallImg3,mallImg4,mallImg5,mallImg6]);
 
     const mallHandle = ()=> Toast('Hello')
 
