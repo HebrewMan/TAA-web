@@ -1,2 +1,3 @@
 # TAA-web
-A game of cat .
+
+A game about cat .
