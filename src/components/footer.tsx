@@ -24,7 +24,6 @@ const Footer = () => {
     return (
         <React.Fragment>
             <div className='footer '>
-                <span className='fake-box'></span>
                 <span className='welcome'>
                     WELCOME!
                 </span>

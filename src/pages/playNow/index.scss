@@ -532,8 +532,8 @@
     }
     .set{
         position: fixed;
-        bottom: 42px;
-        left: 26%;
+        bottom: 46px;
+        left: 350px;
         z-index: 999;
         cursor: pointer;
         animation: tada 1s;
@@ -544,20 +544,20 @@
             display: none;
         }
         img{
-            width: 80px;
+            width: 60px;
         }
     }
 
     .ml-90px{
-        margin-left: 8%;
+        margin-left: 90px;
     }
     .avatar{
         position: fixed;
         bottom: 40px;
-        left: 2%;
+        left: 30px;
         z-index: 999;
-        width: 300px !important;
-        height: 100px !important;
+        width: 284px !important;
+        height: 94px !important;
         padding: 14px 0 0 0;
         p{
             font-size: 26px;
