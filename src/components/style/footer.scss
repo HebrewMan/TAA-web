@@ -68,3 +68,93 @@
         }
     }
 }
+
+.welcome, .fake-box{
+    display: none;
+}
+
+@media all and (min-width: 1000px) {
+    .footer{
+        width: calc( 100% - 34px );
+        height: auto;
+        padding: 6px 12px;
+        background-image: none;
+        background-color: #966E46;
+        border: 5px solid #402209;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        .welcome{
+            display: block;
+            font-family: 'butter sans';
+            font-weight: 600;
+            font-size: 34px;
+            color: #402209;
+            -webkit-text-stroke: 2px #FFFFFF; /* 使用-webkit-text-stroke属性添加描边效果，可以调整描边的宽度和颜色 */
+            z-index: 1; /* 确保文字位于边框之上 */
+
+        }
+        ul{
+            width: auto;
+            bottom: 0;
+            justify-content: flex-end;
+            li{
+                margin-left: 14%;
+                cursor: pointer;
+                animation: tada 1s;
+                &:active{
+                    animation: none;
+                }
+            }
+            .li-cur{
+                img:first-child{
+                    top: 0;
+                    width: 70px;
+                 }
+                span{
+                    margin-top: 46px!important;
+                }
+            }
+        }
+    }
+    .footer ul li:first-child,.footer ul li:nth-child(2),.footer ul li:nth-child(3),.footer ul li:last-child,.footer ul .li-cur img:first-child{
+        top: 0;
+        transform: rotate(0);
+        img{
+            width: 46px!important;
+        }
+    }
+    .footer ul .li-cur .base-cur{
+        display: none!important;
+    }
+    .footer ul .li-cur span,.footer ul li{
+        margin-top: 0;
+        font-size: 12px!important;
+        span{
+            margin-top: 46px;
+        }
+    }
+    .fake-box{
+        display: block;
+        width: 33%;
+    }
+}
+
+@keyframes tada {
+    from {
+        transform: scale3d(1, 1, 1)
+    }
+    10%, 20% {
+        transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg)
+    }
+    30%, 50%, 70%, 90% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg)
+    }
+    40%, 60%, 80% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg)
+    }
+    to {
+        transform: scale3d(1, 1, 1)
+    }
+}

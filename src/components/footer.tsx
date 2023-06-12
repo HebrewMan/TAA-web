@@ -24,6 +24,10 @@ const Footer = () => {
     return (
         <React.Fragment>
             <div className='footer '>
+                <span className='fake-box'></span>
+                <span className='welcome'>
+                    WELCOME!
+                </span>
                 <ul>
                     {navBar.map(item=>
                         <li className={item.path == nav? 'li-cur':''} onClick={()=>routerHandle(item.path)} key={item.path}>

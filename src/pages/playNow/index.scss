@@ -525,3 +525,84 @@
         font-size: 14px;
     }
 }
+
+@media all and (min-width: 1000px) {
+    .home{
+        background-image: url('@/assets/bakeground/play_now_large.png');
+    }
+    .set{
+        position: fixed;
+        bottom: 42px;
+        left: 26%;
+        z-index: 999;
+        cursor: pointer;
+        animation: tada 1s;
+        &:active{
+            animation: none;
+        }
+        .text-10px{
+            display: none;
+        }
+        img{
+            width: 80px;
+        }
+    }
+
+    .ml-90px{
+        margin-left: 8%;
+    }
+    .avatar{
+        position: fixed;
+        bottom: 40px;
+        left: 2%;
+        z-index: 999;
+        width: 300px !important;
+        height: 100px !important;
+        padding: 14px 0 0 0;
+        p{
+            font-size: 26px;
+            padding-left: 116px!important;
+        }
+        .text-8px{
+            font-size: 14px;
+        }
+    }
+    .cat{
+        top: 54%!important;
+        left: 30%!important;
+    }
+    .home .menu{
+        top: auto;
+        bottom: 16%;
+        right: 4%;
+        cursor: pointer;
+        .text-12px{
+            font-size: 12px;
+        }
+        .top-50px{
+            top: auto;
+            bottom: -12px;
+        }
+        img{
+            width: 46px;
+        }
+    }
+}
+
+@keyframes tada {
+    from {
+        transform: scale3d(1, 1, 1)
+    }
+    10%, 20% {
+        transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg)
+    }
+    30%, 50%, 70%, 90% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg)
+    }
+    40%, 60%, 80% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg)
+    }
+    to {
+        transform: scale3d(1, 1, 1)
+    }
+}
