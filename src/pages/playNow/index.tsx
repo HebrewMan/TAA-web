@@ -20,6 +20,8 @@ import iqSvg from '@/assets/icon/iqLogo.svg';
 import shareSvg from '@/assets/icon/share.svg';
 import setSvg from '@/assets/icon/set.svg';
 
+import groupSvg from '@/assets/icon/group.svg'
+
 
 
 // import '../../assets/cat/cat1.png'
@@ -96,6 +98,8 @@ const PlayNow = () => {
 
 
                     <div className="life-attribute">
+                        <img src={groupSvg} alt="" className='group-left'/>
+                        <img src={groupSvg} alt="" className='group-right'/>
                         {attibute_list.map(item=>
                             <Attibute height={25} logoWidth={34} typeImg={item.typeImg} gradientBk={item.gradientBk} value={item.value} key={item.typeImg}/>
                         )}

@@ -110,3 +110,10 @@ p,ul,li{
 .rv-popup{
   overflow-y: initial;
 }
+
+
+@media all and (min-width: 1000px) {
+  #root{
+    max-width: 2000px;
+  }
+}

@@ -200,6 +200,10 @@
         }
     }
 }
+
+.rv-popup--center{
+    width: 100%;
+}
 .share-popup{
 
     width: 295px;
@@ -526,6 +530,10 @@
     }
 }
 
+.group-left,.group-right{
+    display: none;
+}
+
 @media all and (min-width: 1000px) {
     .home{
         background-image: url('@/assets/bakeground/play_now_large.png');
@@ -574,7 +582,7 @@
     .home .menu{
         top: auto;
         bottom: 16%;
-        right: 4%;
+        right: 2%;
         cursor: pointer;
         .text-12px{
             font-size: 12px;
@@ -586,6 +594,54 @@
         img{
             width: 46px;
         }
+    }
+    .life-attribute{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 240px !important;
+        height: 80px !important;
+        background-color: #E2AA73;
+        border: 5px solid #402209;
+        border-radius: 20px;
+        padding: 12px;
+        left: 30px;
+        top: 50px!important;
+        .mb-8px{
+            margin-bottom: 0;
+        }
+        .ml-19px{
+            margin-left: 40px;
+            left: 0;
+        }
+        .ml-20px{
+            width: 27px;
+            margin-left: 24px;
+        }
+        .h-28px{
+            height: 18px;
+        }
+        .attibute-status{
+            width: 60px!important;
+            height: 18px!important;
+            background: #FFEFD7;
+            border: 2px solid #402209;
+            border-radius: 0px 20px 20px 0px;
+            span{
+                line-height: 18px!important;
+                font-size: 12px;
+            }
+        }
+    }
+    .group-left,.group-right{
+        display: block;
+        position: absolute;
+        top: -60px;
+    }
+    .group-left{
+        left: 6px;
+    }
+    .group-right{
+        right: 6px;
     }
 }
 

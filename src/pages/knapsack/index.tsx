@@ -49,7 +49,7 @@ const Knapsack = ()=>{
                         </Flex>
                     </div>
 
-                    <div className="pages" style={{marginTop:window.innerHeight<700 ? '15px':'70px'}}>
+                    <div className="pages" style={{marginTop:window.innerHeight<700 ? '15px':'90px'}}>
                         <img src={paginationImg} className='left mr-19px' alt="" />
                             1/5
                         <img src={paginationImg} className='right ml-19px' alt="" />
