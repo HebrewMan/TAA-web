@@ -103,6 +103,7 @@
             bottom: 0;
             justify-content: flex-end;
             li{
+                z-index: 999;
                 margin-left: 14%;
                 cursor: pointer;
                 animation: tada 1s;

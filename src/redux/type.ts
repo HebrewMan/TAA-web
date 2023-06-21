@@ -1,0 +1,1 @@
+export const SET_POPUS_STATUS = 'SET_POPUS_STATUS';

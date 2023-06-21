@@ -45,7 +45,6 @@ const PlayNow = () => {
     const nav = useNavigate();
 
     const routerHandle = (path:string)=>{
-        
         if(path!='tasks'&&path!='knapsack'){
             Toast({message: 'Coming Soon',});
             return
@@ -108,7 +107,7 @@ const PlayNow = () => {
                         <img src={catUrl} alt="" width={184}/>
                     </div>
                     <div className="menu">
-                        { menu.map(item=> 
+                        { menu.map(item=>
                             <div onClick={()=>routerHandle(item)} className={`menu-item relative ${item!='knapsack'&& 'mt-8px'}` } key={item} >
                                 <img src={`../../src/assets/icon/${item}.png`} width={52} alt="" />
                                 <i className='text-after text-12px font-shadow-black top-50px'>{item}</i>

@@ -544,10 +544,10 @@
         left: 350px;
         z-index: 999;
         cursor: pointer;
-        animation: tada 1s;
-        &:active{
-            animation: none;
-        }
+        // animation: tada 1s;
+        // &:active{
+        //     animation: none;
+        // }
         .text-10px{
             display: none;
         }
@@ -560,6 +560,7 @@
         margin-left: 90px;
     }
     .avatar{
+        cursor: pointer;
         position: fixed;
         bottom: 40px;
         left: 30px;
@@ -642,6 +643,24 @@
     }
     .group-right{
         right: 6px;
+    }
+    .menu-item{
+        margin-top: 20px;
+    }
+    .attibute-details-popup .attibutes{
+        width: 330px;
+        left: 50%;
+    }
+    .attibute-details-popup .main .cat{
+        left: 50%!important;
+        animation: tada 0s;
+    }
+    .cat{
+        cursor: pointer;
+        animation: tada 1s;
+        &:active{
+            animation: none;
+        }
     }
 }
 
