@@ -57,7 +57,7 @@
             width: 50%;
             color: #FFD28E;
             font-family: 'Days One';
-            
+            cursor: pointer;
         }
         .outer-ring{
             background:#ECAD66;
@@ -65,6 +65,7 @@
             text-align: center;
             height: 100%;
             line-height: 37px;
+            cursor: pointer;
             .text{
                 background: #FFD28E;
                 height: 32px;
@@ -136,7 +137,7 @@
         left: 27px;
         width: 54px;
         height: 16px;
-
+        text-align: center;
         background: rgba(236, 167, 86, 0.6);
         border-radius: 9px;
         font-family: 'Days One';
@@ -149,4 +150,11 @@
 
    
    
+}
+
+@media all and (min-width: 1000px) {
+    .market{
+        height: auto;
+        border-radius: 4px;
+    }
 }

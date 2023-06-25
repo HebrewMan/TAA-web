@@ -1,5 +1,9 @@
-import React, { useState, } from 'react';
+import React, { useState, useEffect } from 'react';
 import {  useNavigate, } from 'react-router-dom';
+
+import { useSelector, useDispatch } from 'react-redux'
+import { setPopusStatus } from "@/redux/action"
+
 import "./index.scss";
 import Attibute from "@/components/attribute";
 
@@ -8,6 +12,8 @@ import UserInfoPopup  from "./popups/userInfoPopup";
 import SharePopup  from "./popups/sharePopup";
 import LoginPopup  from "./popups/loginPopup";
 import SetPopup from './popups/setPopup';
+import SpecialPopup from './popups/specialPopup';
+import Introduce from "@/pages/introduce"
 
 
 import { Popup ,Toast } from 'react-vant';
@@ -26,14 +32,25 @@ import groupSvg from '@/assets/icon/group.svg'
 
 // import '../../assets/cat/cat1.png'
 const PlayNow = () => {
-
+    const { status } = useSelector( (state:any) => state.popupsStatus )
+    
     const menu = ['knapsack','friends','tasks','malls'];
 
     const [catUrl, ] = useState('../../src/assets/cat/cat1.png'); 
 
     const [popup,setPopup] = useState('');
 
-    const onClose = ()=> setPopup('');
+    const dispatch = useDispatch();
+    const onClose = ()=>{
+        dispatch(setPopusStatus(""))
+        setPopup('');
+    }
+
+    //渲染pc版弹窗
+    useEffect(()=>{
+        setPopup(status)
+    },[status])
+
 
     const attibute_list = [
         {typeImg:staminaSvg,gradientBk:'linear-gradient(180deg, #FF8D8D 0%, #C93413 117.9%)',value:100},
@@ -45,14 +62,19 @@ const PlayNow = () => {
     const nav = useNavigate();
 
     const routerHandle = (path:string)=>{
-        if(path!='tasks'&&path!='knapsack'){
-            Toast({message: 'Coming Soon',});
+        if(window.screen.availWidth <= 1000){
+            if(path!='tasks'&&path!='knapsack'){
+                Toast({message: 'Coming Soon',});
+                return
+            }
+            nav(`/${path}`);
             return
         }
-        nav(`/${path}`);
+        dispatch(setPopusStatus(path))
     }
 
-
+    let isIntroduce;
+    if(status === 'Introduce') isIntroduce = <Introduce/>
 
     return (
         <React.Fragment>
@@ -62,7 +84,6 @@ const PlayNow = () => {
                             <p className='font-shadow-black text-12px'>NAME</p>
                             <p className='text-#402209 text-8px'>1234****2314</p>
                         </div>
-
                         <span className='set relative ml-90px' onClick={()=>setPopup('share')}>
                             <img src={shareSvg} width={45} alt="" />
                             <i className='text-after text-10px font-shadow-black top-42px'>Share</i>
@@ -95,7 +116,12 @@ const PlayNow = () => {
                         <UserInfoPopup onClose={onClose}/>
                     </Popup>
 
+                    <Popup visible={ popup == 'Market' || popup == 'MyNFT' || popup == 'knapsack' || popup == 'tasks' } style={{background:'none', height: '100%'}}  position='top'>
+                        <SpecialPopup popupStatus = {status} onClose={onClose}/>
+                    </Popup>
 
+                    {/* <Popup visible={ popup == 'Introduce'} style={{background:'none', height: '100%'}}  position='top'> */}
+                    { isIntroduce }
                     <div className="life-attribute">
                         <img src={groupSvg} alt="" className='group-left'/>
                         <img src={groupSvg} alt="" className='group-right'/>

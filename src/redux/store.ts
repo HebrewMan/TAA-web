@@ -1,14 +1,18 @@
-//applyMiddleware：使redux兼容异步的中间件  combineReducers：使redux兼容多个状态存储
-
-
-import { legacy_createStore as createStore, applyMiddleware, combineReducers } from "redux";
-import thunk from "redux-thunk";
-
+import { legacy_createStore as createStore, combineReducers } from 'redux'
 import { popupsStatus } from "./reducer";
 
-//使用redux开发者工具
-import { composeWithDevTools } from 'redux-devtools-extension'
-
-const allR = combineReducers({popupsStatus})
-
-export default createStore(allR,composeWithDevTools(applyMiddleware(thunk)))
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+const reducer = combineReducers({
+    popupsStatus
+})
+const persistConfig = {
+  key: 'TAA',
+  storage,
+  blacklist: ['popupsStatus'],
+  // whitelist: ['walletReducer'],
+}
+const persistedReducer = persistReducer(persistConfig, reducer)
+const store = createStore(persistedReducer)
+const persistor = persistStore(store)
+export { store, persistor }

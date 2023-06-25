@@ -1,22 +1,21 @@
 import React, {useState} from 'react';
 import {  useNavigate, } from 'react-router-dom';
 
-import { setPopusStatus } from "@/redux/action"
-import store from '@/redux/store.js'
+import { useDispatch } from 'react-redux'
+
+import { setPopusStatus } from '@/redux/action'
 
 import "./style/footer.scss"
-// import '../../assets/cat/cat1.png'
 const Footer = () => {
-
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const routerHandle = (path:string)=>{
         if(window.screen.availWidth <= 1000){
             setNav(path);navigate(`/${path.toLowerCase()}`)
             return
         }
-        store.dispatch(setPopusStatus("22"))
-        console.log(store.getState().popupsStatus)
+        dispatch(setPopusStatus(path))
     };
 
     const baseUri = '../../src/assets/icon';
@@ -30,7 +29,6 @@ const Footer = () => {
         {baseImage:`${baseUri}/introduce.png`,baseCurImage:`${baseUri}/base-cur.png`,path:'Introduce',},
     ]
 
-
     return (
         <React.Fragment>
             <div className='footer '>
@@ -38,7 +36,6 @@ const Footer = () => {
                     WELCOME!
                 </span>
                 <ul>
-                    { store.getState().popupsStatus }
                     {navBar.map(item=>
                         <li className={item.path == nav ? 'li-cur':''} onClick={()=>routerHandle(item.path)} key={item.path}>
                             <img src={item.baseImage} alt=""/>
@@ -53,4 +50,4 @@ const Footer = () => {
     )
 }
 
-export default Footer;
+export default Footer

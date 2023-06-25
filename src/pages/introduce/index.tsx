@@ -4,15 +4,24 @@ import { useNavigate } from 'react-router-dom';
 
 import { Popup } from 'react-vant';
 
+import { setPopusStatus } from '@/redux/action'
+import { useDispatch } from 'react-redux';
+
 
 const Introduce = ()=>{
 
     const [popup,setPopup] = useState(true);
     const nav = useNavigate();
 
+    const dispatch = useDispatch()
+
     const popupHandle = ()=>{
-        setPopup(false);
-        setTimeout(()=>nav(-1),500)
+        if(window.screen.availWidth <= 1000){
+            setPopup(false);
+            setTimeout(()=>nav(-1),500)
+            return
+        }
+        dispatch(setPopusStatus(""))
     }
 
     return(
@@ -21,7 +30,7 @@ const Introduce = ()=>{
 
                 <div className='introduce-popup' >
                     <span className='font-shadow-black'>Introduce</span>
-                    <img className='close' src={closeSvg} width={46} alt="" onClick={popupHandle}/>
+                    <img className='close' src={closeSvg} width={46} alt="" onClick={popupHandle} />
                     <div className="main">
                         Aliquam pulvinar vestibulum blandit. Donec sed nisl libero. 
                         Fusce dignissim luctus sem eu dapibus. 

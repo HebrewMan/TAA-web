@@ -81,3 +81,13 @@
     }
    
 }
+
+
+@media all and (min-width: 1000px) {
+    .back{
+        display: none;
+    }
+    .main{
+        margin-top: 0!important;
+    }
+}
