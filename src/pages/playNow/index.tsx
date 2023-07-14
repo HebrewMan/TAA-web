@@ -28,15 +28,28 @@ import setSvg from '@/assets/icon/set.svg';
 
 import groupSvg from '@/assets/icon/group.svg'
 
+import catImg from '@/assets/cat/cat1.png';
+
+
+
+import knapsackImg from '@/assets/icon/knapsack.png';
+import friendsImg from '@/assets/icon/friends.png';
+import tasksImg from '@/assets/icon/tasks.png';
+import mallsImg from '@/assets/icon/malls.png';
 
 
 // import '../../assets/cat/cat1.png'
 const PlayNow = () => {
     const { status } = useSelector( (state:any) => state.popupsStatus )
     
-    const menu = ['knapsack','friends','tasks','malls'];
+    const menu = [
+        {title:'knapsack',img:knapsackImg},
+        {title:'friends',img:friendsImg},
+        {title:'tasks',img:tasksImg},
+        {title:'malls',img:mallsImg},
+    ];
 
-    const [catUrl, ] = useState('../../src/assets/cat/cat1.png'); 
+    const [catUrl, ] = useState(catImg); 
 
     const [popup,setPopup] = useState('');
 
@@ -134,9 +147,9 @@ const PlayNow = () => {
                     </div>
                     <div className="menu">
                         { menu.map(item=>
-                            <div onClick={()=>routerHandle(item)} className={`menu-item relative ${item!='knapsack'&& 'mt-8px'}` } key={item} >
-                                <img src={`../../src/assets/icon/${item}.png`} width={52} alt="" />
-                                <i className='text-after text-12px font-shadow-black top-50px'>{item}</i>
+                            <div onClick={()=>routerHandle(item.title)} className={`menu-item relative ${item.title!='knapsack'&& 'mt-8px'}` } key={item.title} >
+                                <img src={item.img} width={52} alt="" />
+                                <i className='text-after text-12px font-shadow-black top-50px'>{item.title}</i>
                             </div>
                         )}
                     </div>

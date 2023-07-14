@@ -5,6 +5,13 @@ import { useDispatch } from 'react-redux'
 
 import { setPopusStatus } from '@/redux/action'
 
+import playnowImg from '@/assets/icon/playnow.png';
+import marketImg from '@/assets/icon/market.png';
+import mynftImg from '@/assets/icon/mynft.png';
+import introduceImg from '@/assets/icon/introduce.png';
+
+import baseCurImg from '@/assets/icon/base-cur.png';
+
 import "./style/footer.scss"
 const Footer = () => {
     const navigate = useNavigate();
@@ -18,15 +25,14 @@ const Footer = () => {
         dispatch(setPopusStatus(path))
     };
 
-    const baseUri = '../../src/assets/icon';
 
     const [nav, setNav] = useState('PlayNow'); 
 
     const navBar = [
-        {baseImage:`${baseUri}/playnow.png`,baseCurImage:`${baseUri}/base-cur.png`,path:'PlayNow',},
-        {baseImage:`${baseUri}/market.png`,baseCurImage:`${baseUri}/base-cur.png`,path:'Market',},
-        {baseImage:`${baseUri}/mynft.png`,baseCurImage:`${baseUri}/base-cur.png`,path:'MyNFT',},
-        {baseImage:`${baseUri}/introduce.png`,baseCurImage:`${baseUri}/base-cur.png`,path:'Introduce',},
+        {baseImage:playnowImg,baseCurImage:baseCurImg,path:'PlayNow',},
+        {baseImage:marketImg,baseCurImage:baseCurImg,path:'Market',},
+        {baseImage:mynftImg,baseCurImage:baseCurImg,path:'MyNFT',},
+        {baseImage:introduceImg,baseCurImage:baseCurImg,path:'Introduce',},
     ]
 
     return (
