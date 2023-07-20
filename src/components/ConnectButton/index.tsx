@@ -1,8 +1,23 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import "./index.scss";
+import { useBalance, useAccount, useContractRead } from "wagmi";
+import usdtabi from "@/abi/USDT.json";
 export default function index() {
+  // const { address, isConnecting, isDisconnected } = useAccount();
+  // const { data, isError, isLoading } = useBalance({
+  //   address: "0xbe66925FBA478e5AdEc50FDaED7a79E32F0B498a",
+  //   chainId: 280,
+  // });
+  // const { data, isError, isLoading } = useContractRead({
+  //   address: "0x2c0fa58088c917a345EE3d61093cC33e13741aa6",
+  //   abi: usdtabi.abi,
+  //   functionName: "balanceOf",
+  //   args: ["0xbe66925FBA478e5AdEc50FDaED7a79E32F0B498a"],
+  // });
+  // console.log(data);
+
   return (
-    <div className="fixed right-10px top-10px z-99">
+    <div className="">
       <ConnectButton.Custom>
         {({
           account,
@@ -40,7 +55,7 @@ export default function index() {
                       type="button"
                       className="custom-btn"
                     >
-                      Connect Wallet
+                      Login
                     </button>
                   );
                 }
@@ -58,42 +73,11 @@ export default function index() {
                 return (
                   <div style={{ display: "flex", gap: 12 }}>
                     <button
-                      onClick={openChainModal}
-                      style={{ display: "flex", alignItems: "center" }}
-                      className="custom-btn"
-                      type="button"
-                    >
-                      {chain.hasIcon && (
-                        <div
-                          style={{
-                            background: chain.iconBackground,
-                            width: 12,
-                            height: 12,
-                            borderRadius: 999,
-                            overflow: "hidden",
-                            marginRight: 4,
-                          }}
-                        >
-                          {chain.iconUrl && (
-                            <img
-                              alt={chain.name ?? "Chain icon"}
-                              src={chain.iconUrl}
-                              style={{ width: 12, height: 12 }}
-                            />
-                          )}
-                        </div>
-                      )}
-                      {chain.name}
-                    </button>
-                    <button
                       onClick={openAccountModal}
                       type="button"
-                      className="custom-btn"
+                      className="custom-btn text-12px important-px-8px"
                     >
                       {account.displayName}
-                      {account.displayBalance
-                        ? ` (${account.displayBalance})`
-                        : ""}
                     </button>
                   </div>
                 );
