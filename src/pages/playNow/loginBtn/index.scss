@@ -27,6 +27,9 @@
     border: 2px solid #402209;
     background-color: #ffefd7;
     border-radius: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .experience-box {
     width: 72px;
@@ -40,6 +43,28 @@
     .experience-line {
       height: 100%;
       background-color: #f5b300;
+    }
+  }
+}
+
+@media all and (min-width: 1000px) {
+  .experience {
+    bottom: -17px;
+    left: 60px;
+    .experience-text {
+      width: 32px;
+      height: 30px;
+      border-radius: 32px;
+    }
+    .experience-box {
+      width: 150px;
+      height: 12px;
+      border-radius: 10px;
+      margin-left: -8px;
+
+      .experience-line {
+        height: 100%;
+      }
     }
   }
 }

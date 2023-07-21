@@ -2,7 +2,7 @@ import Axios, { AxiosRequestConfig } from "axios";
 import { resData } from "./interface";
 
 // 统一配置
-const baseURL = "https://api.theanimalage.com/";
+const baseURL = "https://api.theanimalage.com/api";
 export const service = Axios.create({
   baseURL,
   responseType: "json",

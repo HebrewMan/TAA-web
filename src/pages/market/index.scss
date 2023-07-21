@@ -1,160 +1,164 @@
-.market{
-    background-color: #DDB58A;
-    height: 100vh;
-    background-image: url('@/assets/bakeground/market_bk.png');
-    background-size: 100% 100%;
-    box-sizing: border-box;
-    padding-top: 80px;
-    // opacity: 0.4;
-   
-    .main{
-        overflow-y: scroll;
-        width: 90%;
-        margin: 0 auto;
+.market {
+  background-color: #ddb58a;
+  height: 100vh;
+  background-image: url("@/assets/bakeground/market_bk.png");
+  background-size: 100% 100%;
+  box-sizing: border-box;
+  padding-top: 80px;
+  // opacity: 0.4;
 
-        .metu{
-            display: flex;
-            margin-top: 8px;
-            margin-bottom: 10px;
-            .lang-btn{
-                // box-sizing: border-box;
-                // padding: 0 2px;
-                margin-right: 8px;
-                width: 113px;
-                height: 34px;
-                border: 3px solid #402209;
-                border-radius: 9px;
-                background: #D38F5B;
-                .lang-shadow{
-                    background: #FFD28E;
-                    width: 100%;
-                    height: 30px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-around;
-                    border-radius: 9px;
-                    font-size: 14px;
-                }
-            }
-        }
-        // margin-top: 20px;\
-       
-      .nav{
-        width: 327px;
-        height: 37px;
-        position: absolute;
-        left: 50%; 
-        transform: translate(-50%, -50%); 
-        top: 50px;
-        background: #B87340;
-        box-shadow: inset -3px -3px 4px rgba(64, 34, 9, 0.25), inset 3px 3px 4px rgba(64, 34, 9, 0.25);
-        border-radius: 9px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .type{
-            text-align: center;
-            width: 50%;
-            color: #FFD28E;
-            font-family: 'Days One';
-            cursor: pointer;
-        }
-        .outer-ring{
-            background:#ECAD66;
-            border: 3px solid #402209;
-            text-align: center;
-            height: 100%;
-            line-height: 37px;
-            cursor: pointer;
-            .text{
-                background: #FFD28E;
-                height: 32px;
-                border-radius: 9px;
-                text-shadow: -1px 1px 0 #000, 1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000;
-                color: #ffffff;
-            }
-            
-        }
-      }
-      .items{
-        position: relative;   
-      }
-      
+  .main {
+    height: 100%;
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 
-      .item{
-        width: 159px;
-        height: 185px;
-        background: #FFD28E;
+    .metu-box {
+      height: 100%;
+      flex-direction: column;
+    }
+    .metu {
+      display: flex;
+      margin-top: 8px;
+      margin-bottom: 10px;
+      .lang-btn {
+        // box-sizing: border-box;
+        // padding: 0 2px;
+        margin-right: 8px;
+        width: 113px;
+        height: 34px;
         border: 3px solid #402209;
-        border-radius: 17px;
-        display: flex;
-        // justify-content: center;
-        align-items: center; /* 垂直居中 */
-        flex-direction: column;
-        margin-bottom: 10px;
-        padding-top: 7px;
-        box-sizing: border-box;
-        .top{
-            margin-top: 5px;
-            width: 135px;
-            // margin-top: 8px;
-            font-family: 'Days One';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            color: #402209;
-            text-align: left;
-            padding-left: 10px;
-            span:nth-child(2){
-                opacity: 0.6;
-                margin-left: 3px;
-            }
-        }
-        .bottom{
-            width: 135px;
-            height: 122px;
-            background: #FFEFD7;
-            border: 2.5px solid #402209;
-            border-radius: 9px;
-            box-sizing: border-box;
-            padding-top: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-           
-        }
-
-    }
-    .token-logo{
-        position: absolute;
-        bottom: 15px;
-        left: 10px;
-
-    }
-    .price{
-        position: absolute;
-        bottom: 21px;
-        left: 27px;
-        width: 54px;
-        height: 16px;
-        text-align: center;
-        background: rgba(236, 167, 86, 0.6);
         border-radius: 9px;
-        font-family: 'Days One';
-        color: #402209;
-        font-size: 13px;
-        line-height: 17px;
-        font-weight: 400;
+        background: #d38f5b;
+        .lang-shadow {
+          background: #ffd28e;
+          width: 100%;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          border-radius: 9px;
+          font-size: 14px;
+        }
+      }
     }
+    // margin-top: 20px;\
+
+    .nav {
+      width: 327px;
+      height: 37px;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      top: 50px;
+      background: #b87340;
+      box-shadow: inset -3px -3px 4px rgba(64, 34, 9, 0.25),
+        inset 3px 3px 4px rgba(64, 34, 9, 0.25);
+      border-radius: 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .type {
+        text-align: center;
+        width: 50%;
+        color: #ffd28e;
+        font-family: "Days One";
+        cursor: pointer;
+      }
+      .outer-ring {
+        background: #ecad66;
+        border: 3px solid #402209;
+        text-align: center;
+        height: 100%;
+        line-height: 37px;
+        cursor: pointer;
+        border-radius: 9px;
+        .text {
+          background: #ffd28e;
+          height: 32px;
+          border-radius: 9px;
+          text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000,
+            -1px -1px 0 #000;
+          color: #ffffff;
+        }
+      }
+    }
+    .items {
+      overflow-y: scroll;
+      flex: 1;
+      position: relative;
+      padding-bottom: 100px;
     }
 
-   
-   
+    .item {
+      width: 159px;
+      height: 185px;
+      background: #ffd28e;
+      border: 3px solid #402209;
+      border-radius: 17px;
+      display: flex;
+      // justify-content: center;
+      align-items: center; /* 垂直居中 */
+      flex-direction: column;
+      margin-bottom: 10px;
+      padding-top: 7px;
+      box-sizing: border-box;
+      .top {
+        margin-top: 5px;
+        width: 135px;
+        // margin-top: 8px;
+        font-family: "Days One";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        color: #402209;
+        text-align: left;
+        padding-left: 10px;
+        span:nth-child(2) {
+          opacity: 0.6;
+          margin-left: 3px;
+        }
+      }
+      .bottom {
+        width: 135px;
+        height: 122px;
+        background: #ffefd7;
+        border: 2.5px solid #402209;
+        border-radius: 9px;
+        box-sizing: border-box;
+        padding-top: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    .token-logo {
+      position: absolute;
+      bottom: 15px;
+      left: 10px;
+    }
+    .price {
+      position: absolute;
+      bottom: 21px;
+      left: 27px;
+      width: 54px;
+      height: 16px;
+      text-align: center;
+      background: rgba(236, 167, 86, 0.6);
+      border-radius: 9px;
+      font-family: "Days One";
+      color: #402209;
+      font-size: 13px;
+      line-height: 17px;
+      font-weight: 400;
+    }
+  }
 }
 
 @media all and (min-width: 1000px) {
-    .market{
-        height: auto;
-        border-radius: 4px;
-    }
+  .market {
+    height: auto;
+    border-radius: 4px;
+  }
 }

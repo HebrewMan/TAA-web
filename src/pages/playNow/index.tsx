@@ -10,6 +10,7 @@ import SharePopup from "./popups/sharePopup";
 import LoginPopup from "./popups/loginPopup";
 import SetPopup from "./popups/setPopup";
 import SpecialPopup from "./popups/specialPopup";
+import SalaryPopup from "./popups/salaryPopup";
 import Introduce from "@/pages/introduce";
 
 import { Popup, Toast } from "react-vant";
@@ -18,14 +19,10 @@ import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
-
 import shareSvg from "@/assets/icon/share.svg";
 import setSvg from "@/assets/icon/set.svg";
-
 import groupSvg from "@/assets/icon/group.svg";
-
 import catImg from "@/assets/cat/cat1.png";
-
 import knapsackImg from "@/assets/icon/knapsack.png";
 import friendsImg from "@/assets/icon/friends.png";
 import tasksImg from "@/assets/icon/tasks.png";
@@ -33,6 +30,7 @@ import mallsImg from "@/assets/icon/malls.png";
 import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import { selectAppSlice, setPopusStatus } from "@/store/slices/appSlice";
 import LoginBtn from "./loginBtn";
+import Notice from "./notice";
 
 // import '../../assets/cat/cat1.png'
 const PlayNow = () => {
@@ -48,6 +46,7 @@ const PlayNow = () => {
   const [catUrl] = useState(catImg);
 
   const [popup, setPopup] = useState("");
+  const [showNotice, setShowNotice] = useState(false);
 
   const dispatch = useRootDispatch();
   const onClose = () => {
@@ -86,6 +85,10 @@ const PlayNow = () => {
   const nav = useNavigate();
 
   const routerHandle = (path: string) => {
+    if (path == "salary") {
+      setPopup(path);
+      return;
+    }
     if (window.screen.availWidth <= 1000) {
       if (path != "tasks" && path != "knapsack") {
         Toast({ message: "Coming Soon" });
@@ -186,6 +189,14 @@ const PlayNow = () => {
           <SpecialPopup popupStatus={status} onClose={onClose} />
         </Popup>
 
+        <Popup
+          visible={popup == "salary"}
+          style={{ background: "none", height: "100%" }}
+          position="top"
+        >
+          <SalaryPopup onClose={onClose} />
+        </Popup>
+
         {/* <Popup visible={ popup == 'Introduce'} style={{background:'none', height: '100%'}}  position='top'> */}
         {isIntroduce}
         <div className="life-attribute">
@@ -205,6 +216,7 @@ const PlayNow = () => {
         <div className="cat" onClick={() => setPopup("attibute")}>
           <img src={catUrl} alt="" width={184} />
         </div>
+        <Notice visible={showNotice} onClose={setShowNotice}></Notice>
         <div className="menu">
           {menu.map((item) => (
             <div

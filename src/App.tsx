@@ -8,6 +8,7 @@ function App() {
   const location = useLocation();
   const isHomeOrTasks =
     location.pathname === "/knapsack" || location.pathname === "/tasks";
+
   return (
     <Web3Provider>
       <UseWeb3Provider>
