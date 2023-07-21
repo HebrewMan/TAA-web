@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import playnowImg from "@/assets/icon/playnow.png";
 import marketImg from "@/assets/icon/market.png";
@@ -12,6 +12,7 @@ import "./style/footer.scss";
 import { useRootDispatch } from "@/store/hooks";
 import { setPopusStatus } from "@/store/slices/appSlice";
 const Footer = () => {
+  let { pathname } = useLocation();
   const navigate = useNavigate();
   const dispatch = useRootDispatch();
 
@@ -24,7 +25,10 @@ const Footer = () => {
     dispatch(setPopusStatus(path));
   };
 
-  const [nav, setNav] = useState("PlayNow");
+  let path = pathname.replace("/", "");
+  path = path.slice(0, 1).toUpperCase() + path.slice(1).toLowerCase();
+
+  const [nav, setNav] = useState(path);
 
   const navBar = [
     { baseImage: playnowImg, baseCurImage: baseCurImg, path: "PlayNow" },
@@ -32,6 +36,8 @@ const Footer = () => {
     { baseImage: mynftImg, baseCurImage: baseCurImg, path: "MyNFT" },
     { baseImage: introduceImg, baseCurImage: baseCurImg, path: "Introduce" },
   ];
+
+  navBar.forEach;
 
   return (
     <React.Fragment>

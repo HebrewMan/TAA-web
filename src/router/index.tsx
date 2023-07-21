@@ -25,58 +25,62 @@
 
 // export default Routers;
 
- /**** TODO: Use Lazy() ****/
+/**** TODO: Use Lazy() ****/
 
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense } from "react";
+import KeepAlive from "react-activation";
 
-import { Navigate, useRoutes } from 'react-router-dom'
+import { Navigate, useRoutes } from "react-router-dom";
 
 const Router = () => {
-    const routers = useRoutes([
-        {
-            path: '/',
-            element: <Navigate to={`/PlayNow`}></Navigate>
-        },
-        {
-            path: '/PlayNow',
-            element: LazyLoad('playNow')
-        },
-        {
-            path: '/MyNft',
-            element: LazyLoad('myNft')
-        },
-        {
-            path: '/Tasks',
-            element: LazyLoad('tasks')
-        },
-        {
-            path: '/Introduce',
-            element: LazyLoad('introduce')
-        },
-        {
-            path: '/Knapsack',
-            element: LazyLoad('knapsack')
-        },
-        {
-            path: '/Market',
-            element: LazyLoad('market')
-        },
-        // {
-        //     path: '/Test',
-        //     element: LazyLoad('components/test')
-        // },
+  const routers = useRoutes([
+    {
+      path: "/",
+      element: <Navigate to={`/PlayNow`}></Navigate>,
+    },
+    {
+      path: "/PlayNow",
+      element: <KeepAlive cacheKey="playNow">{LazyLoad("playNow")}</KeepAlive>,
+    },
+    {
+      path: "/MyNft",
+      element: <KeepAlive cacheKey="myNft">{LazyLoad("myNft")}</KeepAlive>,
+    },
+    {
+      path: "/Tasks",
+      element: <KeepAlive cacheKey="tasks">{LazyLoad("tasks")}</KeepAlive>,
+    },
+    {
+      path: "/Introduce",
+      element: (
+        <KeepAlive cacheKey="introduce">{LazyLoad("introduce")}</KeepAlive>
+      ),
+    },
+    {
+      path: "/Knapsack",
+      element: (
+        <KeepAlive cacheKey="knapsack">{LazyLoad("knapsack")}</KeepAlive>
+      ),
+    },
+    {
+      path: "/Market",
+      element: <KeepAlive cacheKey="market">{LazyLoad("market")}</KeepAlive>,
+    },
+    // {
+    //     path: '/Test',
+    //     element: LazyLoad('components/test')
+    // },
+  ]);
+  return routers;
+};
 
-    ])
-    return routers
-}
+const LazyLoad = (path: string) => {
+  const Component = lazy(() => import(`@/pages/${path}/index.tsx`));
+  return (
+    <Suspense fallback={<>Loading......</>}>
+      <Component />
+    </Suspense>
+  );
+};
 
-const LazyLoad = ( path: string ) => {
-    const Component = lazy(() => import(`@/pages/${path}/index.tsx`))
-    return(
-        <Suspense fallback={<>Loading......</>}>
-            <Component />
-        </Suspense>
-    )
-}
-
-export default Router
+export default Router;

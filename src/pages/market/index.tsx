@@ -1,30 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { Flex, Toast } from "react-vant";
 import DropDown from "@/components/Dropdown";
-import mallImg1 from "@/assets/malls/1.svg";
-import mallImg2 from "@/assets/malls/2.svg";
-import mallImg3 from "@/assets/malls/3.svg";
-import mallImg4 from "@/assets/malls/4.svg";
-import mallImg5 from "@/assets/malls/5.svg";
-import mallImg6 from "@/assets/malls/6.svg";
+import { Image } from "react-vant";
 import token1Img from "@/assets/icon/token1.svg";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
-import { getMarketsCats } from "@/api/feature/app";
+import { getMarketsCats, getMarketsProp } from "@/api/feature/app";
 
 const NFTMarket = () => {
   const isAndroid = /android/i.test(navigator.userAgent);
-  const [marketDatas] = useState([
-    mallImg1,
-    mallImg2,
-    mallImg3,
-    mallImg4,
-    mallImg5,
-    mallImg6,
-  ]);
+  const [marketData, setmarketData] = useState<
+    Array<Record<string, string | number>>
+  >([]);
 
   const marketsOption1 = [
     { text: "Kitten", value: 0 },
@@ -35,6 +25,17 @@ const NFTMarket = () => {
     { text: "Common", value: 0 },
     { text: "Rare", value: 1 },
   ];
+
+  const getInitData = () => {
+    getMarketsCats().then((res: any) => {
+      console.log(res);
+      setmarketData(res);
+    });
+  };
+
+  useEffect(() => {
+    getInitData();
+  }, []);
 
   const [optionValue1, setOptionValue1] = useState(0);
   const [optionValue2, setOptionValue2] = useState(0);
@@ -61,28 +62,28 @@ const NFTMarket = () => {
       </div>
 
       <div className="items">
-        <Flex justify="center" align="center" wrap="wrap">
-          {marketDatas.map((item) => (
-            <Flex.Item span={12} key={item}>
+        <div className="flex justify-between flex-wrap">
+          {marketData.map((item) => (
+            <div key={item.token_id}>
               <div className="item" onClick={() => Toast("Hello")}>
                 <div className="bottom">
-                  {/* <img src={item} width={80} alt="" /> */}
-                  {isAndroid ? (
-                    <img src={item} alt="" />
-                  ) : (
-                    <object type="image/svg+xml" data={item}></object>
-                  )}
+                  <Image
+                    width="100%"
+                    height="100%"
+                    lazyload
+                    src={item.image as string}
+                  />
                 </div>
                 <div className="top">
-                  <span>Name</span>
+                  <span>{item.name}</span>
                   <span>#001</span>
                 </div>
               </div>
               <div className="price">10</div>
               <img src={token1Img} className="token-logo" alt="" />
-            </Flex.Item>
+            </div>
           ))}
-        </Flex>
+        </div>
       </div>
     </>
   );
@@ -90,19 +91,25 @@ const NFTMarket = () => {
 
 const NFTAdopt = () => {
   const isAndroid = /android/i.test(navigator.userAgent);
-  const [marketDatas] = useState([
-    mallImg1,
-    mallImg2,
-    mallImg3,
-    mallImg4,
-    mallImg5,
-    mallImg6,
-  ]);
+  const [marketData, setmarketData] = useState<
+    Array<Record<string, string | number>>
+  >([]);
 
   const marketsOption1 = [
     { text: "Props", value: 0 },
     { text: "Kitten", value: 1 },
   ];
+
+  const getInitData = () => {
+    getMarketsProp().then((res: any) => {
+      console.log(res);
+      setmarketData(res);
+    });
+  };
+
+  useEffect(() => {
+    getInitData();
+  }, []);
 
   const marketsOption2 = [
     {
@@ -168,28 +175,28 @@ const NFTAdopt = () => {
       </div>
 
       <div className="items">
-        <Flex justify="center" align="center" wrap="wrap">
-          {marketDatas.map((item) => (
-            <Flex.Item span={12} key={item}>
+        <div className="flex justify-between flex-wrap">
+          {marketData.map((item) => (
+            <div key={item.token_id}>
               <div className="item" onClick={() => Toast("Hello")}>
                 <div className="bottom">
-                  {/* <img src={item} width={80} alt="" /> */}
-                  {isAndroid ? (
-                    <img src={item} alt="" />
-                  ) : (
-                    <object type="image/svg+xml" data={item}></object>
-                  )}
+                  <Image
+                    lazyload
+                    width="100%"
+                    height="100%"
+                    src={item.image as string}
+                  />
                 </div>
                 <div className="top">
-                  <span>Name</span>
+                  <span>{item.name}</span>
                   <span>#001</span>
                 </div>
               </div>
               <div className="price">10</div>
               <img src={token1Img} className="token-logo" alt="" />
-            </Flex.Item>
+            </div>
           ))}
-        </Flex>
+        </div>
       </div>
     </>
   );

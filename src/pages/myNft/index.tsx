@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./index.scss";
-import { Flex } from "react-vant";
+import { Flex, Switch } from "react-vant";
 import catPng from "@/assets/cat/cat1.png";
 import musicSvg from "@/assets/icon/music.svg";
 import { getMarketsCats } from "@/api/feature/app";
@@ -46,7 +46,7 @@ const MyNFT = () => {
                   <div className="top">
                     <span>Name</span>
                     <span>#001</span>
-                    <div className="switch" style={{ marginBottom: "2px" }}>
+                    {/* <div className="switch" style={{ marginBottom: "2px" }}>
                       <div
                         className="switch-btn"
                         style={{ background: btnColors.outerColor }}
@@ -61,7 +61,12 @@ const MyNFT = () => {
                         style={{ transform: `translateX(${position}px)` }}
                         onClick={setMusicSwitchHandle}
                       />
-                    </div>
+                    </div> */}
+                    <Switch
+                      size="12px"
+                      activeColor="#7AD170"
+                      inactiveColor="#935C33"
+                    />
                   </div>
                   <div className="bottom">
                     <span>Resting</span>
