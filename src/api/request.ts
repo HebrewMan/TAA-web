@@ -1,8 +1,9 @@
 import Axios, { AxiosRequestConfig } from "axios";
 import { resData } from "./interface";
+import { Toast } from "react-vant";
 
 // 统一配置
-const baseURL = "https://api.theanimalage.com/api";
+const baseURL = "https://api.finbit.capital/api";
 export const service = Axios.create({
   baseURL,
   responseType: "json",
@@ -15,6 +16,11 @@ service.interceptors.request.use((config) => {
 
 service.interceptors.response.use(
   (response) => {
+    let code = response.data.code;
+    console.log(response.data);
+    if (code !== 1) {
+      Toast.info(response.data.msg || "请求失败");
+    }
     return Promise.resolve(response.data);
   },
   (err) => {

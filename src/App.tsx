@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import Footer from "./components/footer";
 import Web3Provider from "@/components/WalletConnect";
 import UseWeb3Provider from "./providers";
-
+import "./App.css";
 function App() {
   const location = useLocation();
   const isHomeOrTasks =

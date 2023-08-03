@@ -1,29 +1,38 @@
 import request from "../request";
 
-/* 用户列表 */
+/* 用户信息 */
 export const getUserInfo = (userAddress: string) =>
   request({
     url: `/address/${userAddress}`,
     method: "get",
   });
 
-// 我的猫
-export const getMyCats = (userAddress: string) =>
+/* 用户信息 */
+export const setUserName = (params: object) =>
   request({
-    url: `/my_cats/${userAddress}`,
+    url: `/set_name`,
+    method: "post",
+    data: params,
+  });
+
+// 任务列表/
+export const getTasks = () =>
+  request({
+    url: `/tasks`,
     method: "get",
   });
 
-// 市场列表
-export const getMarketsCats = () =>
+// 任务奖励/my_bag
+export const taskReward = (params: object) =>
   request({
-    url: `/markets/cat`,
-    method: "get",
+    url: `/claim_task_award`,
+    method: "post",
+    data: params,
   });
 
-// 道具列表
-export const getMarketsProp = () =>
+// 我的背包
+export const getMybag = (userAddress: string) =>
   request({
-    url: `/markets/prop`,
+    url: `/my_bag/${userAddress}`,
     method: "get",
   });

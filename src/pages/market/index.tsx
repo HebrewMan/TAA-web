@@ -8,7 +8,7 @@ import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
-import { getMarketsCats, getMarketsProp } from "@/api/feature/app";
+import { getMarketsCats, getMarketsProp } from "@/api/feature/market";
 
 const NFTMarket = () => {
   const isAndroid = /android/i.test(navigator.userAgent);

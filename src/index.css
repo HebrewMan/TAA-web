@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   width: 100%;
-  min-width:320px;
+  min-width: 320px;
   margin: 0 auto;
   /* padding: 2rem; */
   text-align: center;
@@ -37,7 +37,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  font-family: 'Days One';
+  font-family: "Days One";
   font-style: normal;
   font-weight: 400;
 }
@@ -79,41 +79,53 @@ button:focus-visible {
   }
 }
 
-.font-shadow-black{
-  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000;
-  color: #FFFFFF;
+.font-shadow-black {
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000,
+    -1px -1px 0 #000;
+  color: #ffffff;
 }
 
-p,ul,li{
+p,
+ul,
+li {
   padding: 0;
   margin: 0;
   font-weight: 400;
 }
 
-@font-face {  
-  font-family: 'Days One';
-  src: url('./font/DaysOne.ttf');
+@font-face {
+  font-family: "Days One";
+  src: url("./font/DaysOne.ttf");
 }
-@font-face {  
-  font-family: 'butter sans';
-  src: url('./font/buttersans-Regular.otf');
+@font-face {
+  font-family: "butter sans";
+  src: url("./font/buttersans-Regular.otf");
 }
 
-.text-after{
-  font-style:normal;
+.text-after {
+  font-style: normal;
   position: absolute;
-  left: 50%; 
-  transform: translate(-50%, -50%); 
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-
-.rv-popup{
+.rv-popup {
   overflow-y: initial;
 }
 
-
-@media all and (min-width: 1000px) {
-  #root{
+@media all and (min-width: 750px) {
+  #root {
     max-width: 2000px;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    -webkit-box-shadow: inset1px1px0rgba(0, 0, 0, 0.2);
   }
 }

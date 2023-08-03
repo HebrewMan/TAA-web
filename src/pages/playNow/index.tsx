@@ -22,7 +22,6 @@ import iqSvg from "@/assets/icon/iqLogo.svg";
 import shareSvg from "@/assets/icon/share.svg";
 import setSvg from "@/assets/icon/set.svg";
 import groupSvg from "@/assets/icon/group.svg";
-import catImg from "@/assets/cat/cat1.png";
 import knapsackImg from "@/assets/icon/knapsack.png";
 import friendsImg from "@/assets/icon/friends.png";
 import tasksImg from "@/assets/icon/tasks.png";
@@ -31,19 +30,18 @@ import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import { selectAppSlice, setPopusStatus } from "@/store/slices/appSlice";
 import LoginBtn from "./loginBtn";
 import Notice from "./notice";
+import { selectCatSlice } from "@/store/slices/catSlice";
 
-// import '../../assets/cat/cat1.png'
 const PlayNow = () => {
   const { status } = useRootSelector(selectAppSlice);
-
+  const { catInfo, catStatus } = useRootSelector(selectCatSlice);
+  const nav = useNavigate();
   const menu = [
     { title: "knapsack", img: knapsackImg },
     { title: "friends", img: friendsImg },
     { title: "tasks", img: tasksImg },
     { title: "salary", img: mallsImg },
   ];
-
-  const [catUrl] = useState(catImg);
 
   const [popup, setPopup] = useState("");
   const [showNotice, setShowNotice] = useState(false);
@@ -59,7 +57,7 @@ const PlayNow = () => {
     setPopup(status);
   }, [status]);
 
-  const attibute_list = [
+  const [attibute_list, setAttibute_list] = useState([
     {
       typeImg: staminaSvg,
       gradientBk: "linear-gradient(180deg, #FF8D8D 0%, #C93413 117.9%)",
@@ -80,9 +78,16 @@ const PlayNow = () => {
       gradientBk: "linear-gradient(180deg, #C9F7C2 0%, #3B8734 130%)",
       value: 40,
     },
-  ];
+  ]);
 
-  const nav = useNavigate();
+  // 猫咪属性
+  useEffect(() => {
+    attibute_list[3].value = catStatus.intellect;
+    attibute_list[2].value = catStatus.stamina;
+    attibute_list[0].value = catStatus.comfort;
+    attibute_list[1].value = catStatus.charm;
+    setAttibute_list([...attibute_list]);
+  }, [catStatus]);
 
   const routerHandle = (path: string) => {
     if (path == "salary") {
@@ -104,7 +109,7 @@ const PlayNow = () => {
   if (status === "Introduce") isIntroduce = <Introduce />;
 
   return (
-    <React.Fragment>
+    <>
       <div className="home">
         <div className="header flex justify-between items-center">
           {/* <div className="avatar pt-8px" onClick={() => setPopup("cat")}>
@@ -214,7 +219,7 @@ const PlayNow = () => {
           ))}
         </div>
         <div className="cat" onClick={() => setPopup("attibute")}>
-          <img src={catUrl} alt="" width={184} />
+          <img src={catInfo.image} alt="" width={184} />
         </div>
         <Notice visible={showNotice} onClose={setShowNotice}></Notice>
         <div className="menu">
@@ -234,7 +239,7 @@ const PlayNow = () => {
           ))}
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

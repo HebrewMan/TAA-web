@@ -1,8 +1,7 @@
 import React from "react";
 import "./style/attribute.scss";
-// import '../../assets/cat/cat1.png'
 const Attibute = (props: any) => {
-  // const [fkBkUrl, setFkBkUrl] = useState('../../src/assets/icon/fkbk.png');
+  const width = (props.value / 100) * props.logoWidth * 2;
 
   return (
     <React.Fragment>
@@ -26,7 +25,7 @@ const Attibute = (props: any) => {
           <div
             style={{
               background: props.gradientBk,
-              width: `${props?.width || 50}px`,
+              width: `${width}px`,
             }}
             className={`absolute left-0  h-28px`}
           ></div>

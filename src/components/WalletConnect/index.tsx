@@ -21,7 +21,6 @@ import { mainnet, polygon, optimism, arbitrum, goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
 // 自定义链  aithChain
-
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     mainnet,

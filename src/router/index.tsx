@@ -53,7 +53,7 @@ const Router = () => {
     {
       path: "/Introduce",
       element: (
-        <KeepAlive cacheKey="introduce">{LazyLoad("introduce")}</KeepAlive>
+        LazyLoad("introduce")
       ),
     },
     {

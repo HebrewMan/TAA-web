@@ -14,6 +14,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "crypto-js": "^4.1.1",
+    "current-device": "^0.10.2",
     "mitt": "^3.0.1",
     "react": "^18.2.0",
     "react-activation": "^0.12.4",

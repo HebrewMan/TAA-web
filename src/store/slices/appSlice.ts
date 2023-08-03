@@ -8,7 +8,11 @@ export interface AppState {
   status: string;
 }
 
-const initialState: AppState = { address: "", name: "", status: "" };
+const initialState: AppState = {
+  address: "",
+  name: "",
+  status: "",
+};
 
 export const appSlice = createSlice({
   name: "app",
@@ -19,8 +23,6 @@ export const appSlice = createSlice({
       state.name = action.payload.name;
     },
     setPopusStatus: (state, action: PayloadAction<string>) => {
-      console.log(action.payload);
-
       state.status = action.payload;
     },
   },

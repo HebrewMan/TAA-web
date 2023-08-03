@@ -15,6 +15,8 @@ const Footer = () => {
   let { pathname } = useLocation();
   const navigate = useNavigate();
   const dispatch = useRootDispatch();
+  let path = pathname.replace("/", "");
+  const [nav, setNav] = useState(path);
 
   const routerHandle = (path: string) => {
     if (window.screen.availWidth <= 1000) {
@@ -24,11 +26,6 @@ const Footer = () => {
     }
     dispatch(setPopusStatus(path));
   };
-
-  let path = pathname.replace("/", "");
-  path = path.slice(0, 1).toUpperCase() + path.slice(1).toLowerCase();
-
-  const [nav, setNav] = useState(path);
 
   const navBar = [
     { baseImage: playnowImg, baseCurImage: baseCurImg, path: "PlayNow" },
@@ -46,7 +43,11 @@ const Footer = () => {
         <ul>
           {navBar.map((item) => (
             <li
-              className={item.path == nav ? "li-cur" : ""}
+              className={
+                item.path.toLocaleLowerCase() == nav.toLocaleLowerCase()
+                  ? "li-cur"
+                  : ""
+              }
               onClick={() => routerHandle(item.path)}
               key={item.path}
             >

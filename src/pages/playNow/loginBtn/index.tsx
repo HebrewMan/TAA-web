@@ -2,10 +2,14 @@ import { useRootSelector } from "@/store/hooks";
 import { selectAppSlice } from "@/store/slices/appSlice";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import "./index.scss";
-import Attibute from "@/components/attribute";
+import { useAccount } from "wagmi";
 export default function index(props: { setPopup: any }) {
   const setPopup = props.setPopup;
   const { name } = useRootSelector(selectAppSlice);
+  const { address } = useAccount();
+  const addressHandle = (address: string) => {
+    return address.slice(0, 4) + "...." + address.slice(-4);
+  };
   const experience = "50%";
   return (
     <>
@@ -67,8 +71,10 @@ export default function index(props: { setPopup: any }) {
                         className="flex flex-col"
                         onClick={() => setPopup("cat")}
                       >
-                        <p className="font-shadow-black text-12px">NAME</p>
-                        <p className="text-#402209 text-8px ">{name}</p>
+                        <p className="font-shadow-black text-12px">{name}</p>
+                        <p className="text-#402209 text-8px ">
+                          {addressHandle(address as string)}
+                        </p>
                       </div>
                       <div className="experience">
                         <div className="experience-text text-8px">27</div>

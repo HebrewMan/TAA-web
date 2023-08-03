@@ -1,6 +1,6 @@
 .market {
   background-color: #ddb58a;
-  height: 100vh;
+  height: 100%;
   background-image: url("@/assets/bakeground/market_bk.png");
   background-size: 100% 100%;
   box-sizing: border-box;
@@ -158,7 +158,7 @@
 
 @media all and (min-width: 1000px) {
   .market {
-    height: auto;
+    // height: auto;
     border-radius: 4px;
   }
 }

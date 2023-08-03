@@ -1,84 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.scss";
-import { Flex, Switch } from "react-vant";
-import catPng from "@/assets/cat/cat1.png";
-import musicSvg from "@/assets/icon/music.svg";
-import { getMarketsCats } from "@/api/feature/app";
+import { Switch } from "react-vant";
+import { Image as VanImage } from "react-vant";
+import { getMyCats, startWork } from "@/api/feature/cat";
+import { useAccount } from "wagmi";
 const MyNFT = () => {
-  const [catUrl] = useState(catPng);
-  const height = window.innerHeight - 180;
+  const { address } = useAccount();
+  const [myNFTs, setMyNFTS] = useState([]);
 
-  const [myNFTs] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 0]);
-
-  let [musicSwitch, setMusicSwitch] = useState(false);
-  const [position, setPosition] = useState(0);
-  const [btnColors, setBtnColors] = useState({
-    outerColor: "#7AD170",
-    shadowColor: "#935C33",
-  });
-
-  const setMusicSwitchHandle = () => {
-    setMusicSwitch((musicSwitch = !musicSwitch));
-    setPosition(musicSwitch ? 20 : 0);
-    setBtnColors(
-      musicSwitch
-        ? { outerColor: "#7AD170", shadowColor: "#7AD170" }
-        : { outerColor: "#935C33", shadowColor: "#935C33" }
-    );
+  const switchChange = (val: boolean, item: any) => {
+    if (val) {
+      startWork({
+        address,
+        token_id: item.token_id,
+      }).then((res: any) => {});
+    }
   };
 
   const getMarkets = () => {
-    getMarketsCats().then((res) => {
+    getMyCats(address as string).then((res: any) => {
       console.log(res);
+      setMyNFTS(res);
     });
   };
 
-  getMarkets();
+  useEffect(() => {
+    getMarkets();
+  }, []);
 
   return (
-    <React.Fragment>
+    <>
       <div className="my-nft">
         <div className="main">
-          <Flex justify="center" align="center" wrap="wrap">
-            {myNFTs.map((item) => (
-              <Flex.Item span={12} key={item}>
-                <div className="item">
-                  <div className="top">
-                    <span>Name</span>
-                    <span>#001</span>
-                    {/* <div className="switch" style={{ marginBottom: "2px" }}>
-                      <div
-                        className="switch-btn"
-                        style={{ background: btnColors.outerColor }}
-                        onClick={setMusicSwitchHandle}
-                      ></div>
-                      <img
-                        src={musicSvg}
-                        className="music-logo"
-                        width={16}
-                        height={16}
-                        alt=""
-                        style={{ transform: `translateX(${position}px)` }}
-                        onClick={setMusicSwitchHandle}
-                      />
-                    </div> */}
-                    <Switch
-                      size="12px"
-                      activeColor="#7AD170"
-                      inactiveColor="#935C33"
-                    />
-                  </div>
-                  <div className="bottom">
-                    <span>Resting</span>
-                    <img src={catUrl} width={80} alt="" />
-                  </div>
+          {myNFTs.map((item: any) => (
+            <div className="item" key={item.token_id}>
+              <div className="top relative">
+                <span className="absolute z-2 left-0px top-0">Resting</span>
+                <VanImage
+                  className="important-absolute left-0 top-0"
+                  width="135"
+                  height="117"
+                  src={item.image}
+                />
+              </div>
+              <div className="bottom">
+                <span className="days-one">{item.name}</span>
+                <span className="days-one">#001</span>
+                <div className="ml-auto">
+                  <Switch
+                    defaultChecked={item.work_status}
+                    size="12px"
+                    activeColor="#7AD170"
+                    inactiveColor="#935C33"
+                    onChange={(val) => switchChange(val, item)}
+                  />
                 </div>
-              </Flex.Item>
-            ))}
-          </Flex>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
