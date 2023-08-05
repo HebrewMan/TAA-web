@@ -1,5 +1,5 @@
 import salaryImg from "@/assets/bakeground/salary_title.png";
-import salarybtnImg from "@/assets/bakeground/salary_btn.png";
+import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
 import lineImg from "@/assets/icon/line.svg";
 export default function salary(props) {
   return (

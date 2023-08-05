@@ -17,7 +17,6 @@ service.interceptors.request.use((config) => {
 service.interceptors.response.use(
   (response) => {
     let code = response.data.code;
-    console.log(response.data);
     if (code !== 1) {
       Toast.info(response.data.msg || "请求失败");
     }

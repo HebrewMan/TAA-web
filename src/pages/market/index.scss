@@ -1,6 +1,6 @@
 .market {
   background-color: #ddb58a;
-  height: 100%;
+  height: 100vh;
   background-image: url("@/assets/bakeground/market_bk.png");
   background-size: 100% 100%;
   box-sizing: border-box;
@@ -9,19 +9,23 @@
 
   .main {
     height: 100%;
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
 
     .metu-box {
       height: 100%;
+      display: flex;
       flex-direction: column;
+      align-items: center;
     }
     .metu {
+      width: 90%;
       display: flex;
       margin-top: 8px;
-      margin-bottom: 10px;
       .lang-btn {
         // box-sizing: border-box;
         // padding: 0 2px;
@@ -88,50 +92,9 @@
       overflow-y: scroll;
       flex: 1;
       position: relative;
-      padding-bottom: 100px;
-    }
-
-    .item {
-      width: 159px;
-      height: 185px;
-      background: #ffd28e;
-      border: 3px solid #402209;
-      border-radius: 17px;
-      display: flex;
-      // justify-content: center;
-      align-items: center; /* 垂直居中 */
-      flex-direction: column;
-      margin-bottom: 10px;
-      padding-top: 7px;
+      width: 100%;
+      padding: 10px 5% 100px;
       box-sizing: border-box;
-      .top {
-        margin-top: 5px;
-        width: 135px;
-        // margin-top: 8px;
-        font-family: "Days One";
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        color: #402209;
-        text-align: left;
-        padding-left: 10px;
-        span:nth-child(2) {
-          opacity: 0.6;
-          margin-left: 3px;
-        }
-      }
-      .bottom {
-        width: 135px;
-        height: 122px;
-        background: #ffefd7;
-        border: 2.5px solid #402209;
-        border-radius: 9px;
-        box-sizing: border-box;
-        // padding-top: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
     }
     .token-logo {
       position: absolute;
@@ -156,9 +119,218 @@
   }
 }
 
-@media all and (min-width: 1000px) {
+.market-cat-detail {
+  height: 100vh;
+  background: #fcd8cd;
+  line-height: 1;
+  padding-bottom: 210px;
+  .detail-title {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 85px;
+    font-size: 20px;
+    color: #402209;
+    .back {
+      position: fixed;
+      left: 8%;
+      top: 7%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+  }
+  .detail-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 665px;
+    flex-direction: column;
+    background: #fcd8cd;
+
+    .top-line-left {
+      position: absolute;
+      top: -100px;
+      left: 70px;
+      z-index: 10;
+    }
+    .top-line-right {
+      position: absolute;
+      top: -100px;
+      right: 70px;
+      z-index: 10;
+    }
+    .content-border1 {
+      position: absolute;
+      width: 317px;
+      height: 317px;
+      left: 49%;
+      top: 0;
+      transform: translateX(-50%);
+      border-radius: 9px;
+      border: 4px solid var(--unnamed, #402209);
+      background: #ffe0b1;
+      z-index: 2;
+      overflow: hidden;
+      box-sizing: border-box;
+      .img-wrap {
+        width: 100%;
+        height: 100%;
+        background-image: url("@/assets/bakeground/knapsack-bg.png");
+        background-size: 100% 100%;
+        border-bottom: 3px solid #402209;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .content-border2 {
+      padding-top: 300px;
+      box-sizing: border-box;
+      position: absolute;
+      width: 317px;
+      height: 430px;
+      left: 51%;
+      transform: translateX(-50%);
+      top: 1%;
+      border-radius: 9px;
+      border: 4px solid var(--unnamed, #402209);
+      background: #e2aa73;
+    }
+
+    .current-price {
+      border: 4px solid #402209;
+      background-color: #e2aa73;
+      border-radius: 9px;
+      height: 95px;
+      width: 325px;
+      margin-top: 470px;
+      box-sizing: border-box;
+      text-align: left;
+      .wrap-sign {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 20px;
+        padding-left: 10px;
+        padding-top: 14px;
+        .sign-box {
+          border: 3px solid #402209;
+          width: 100px;
+          height: 31px;
+          border-radius: 16px;
+          line-height: 25px;
+          font-size: 18px;
+          color: white;
+          background-color: #e78442;
+          text-align: center;
+          padding-left: 10px;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+}
+
+.use-box {
+  .back {
+    position: fixed;
+    left: 10%;
+    top: 6%;
+    transform: translate(-50%, -50%);
+  }
+  background-image: url("@/assets/bakeground/adopt-bg.png");
+  background-size: 100% 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  .use-box-wrap {
+    border: 3px solid #402209;
+    background: #ffefd7;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    .wrap-img {
+      background-color: #ffe0b1;
+      background-image: url("@/assets/bakeground/Subtract.png");
+      background-size: 100% 100%;
+    }
+    .wrap-sign {
+      height: 72px;
+      border-top: 3px solid #402209;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      .sign-box {
+        border: 3px solid #402209;
+        width: 97px;
+        height: 25px;
+        border-radius: 16px;
+        line-height: 25px;
+        font-size: 18px;
+        color: white;
+        background-color: #e78442;
+      }
+    }
+  }
+
+  .use-btn {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+}
+
+.buy-modal {
+  width: 295px;
+  height: 364px;
+  border-radius: 9px;
+  border: 4px solid var(--unnamed, #402209);
+  background: linear-gradient(0deg, #ffd28e 0%, #ffd28e 100%), #e2aa73;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  .close-special-popup {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    z-index: 99999;
+    cursor: pointer;
+  }
+  .detail-title {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .modal-content {
+    margin-top: 50px;
+    width: 215px;
+    height: 165px;
+    border-radius: 9px;
+    background: rgba(164, 69, 19, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    span {
+      color: #402209;
+      font-size: 20px;
+    }
+  }
+}
+
+@media all and (min-width: 750px) {
   .market {
-    // height: auto;
+    height: 100%;
     border-radius: 4px;
+  }
+  .market-cat-detail {
+    height: 100%;
   }
 }

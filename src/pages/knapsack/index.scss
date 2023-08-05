@@ -64,7 +64,7 @@
   }
 }
 
-.use-box {
+.knapsack-use-box {
   .back {
     position: fixed;
     left: 10%;
@@ -77,7 +77,7 @@
   .knapsack-wrap {
     border: 3px solid #402209;
     background: #ffefd7;
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px;
     overflow: hidden;
     .knapsack-img {
       background-image: url("@/assets/bakeground/knapsack-bg.png");

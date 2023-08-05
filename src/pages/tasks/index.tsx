@@ -4,8 +4,8 @@ import "./index.scss";
 import backLogo from "@/assets/icon/back.svg";
 import claimedLogo from "@/assets/icon/claimed.svg";
 import salaryImg from "@/assets/bakeground/succed-title.png";
-import salarybtnImg from "@/assets/bakeground/salary_btn.png";
-import { Image as VanImage } from "react-vant";
+import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
+import { Image } from "react-vant";
 import { getTasks, taskReward } from "@/api/feature/app";
 import { useAccount } from "wagmi";
 import device from "current-device";
@@ -129,14 +129,14 @@ const Tasks = () => {
             </div>
           )}
           <div className="flex flex-col justify-center items-center h-full butter-sans-text ">
-            <VanImage
+            <Image
               className="mb--25px relative z-2"
               width="285"
               height="75"
               src={salaryImg}
             />
             <div className="w-255px h-292px rounded-20px bg-#FFD28E px-12px pt-35px pb-14px flex flex-col items-center">
-              <VanImage
+              <Image
                 className="relative z-2"
                 width="255"
                 height="255"
@@ -147,7 +147,12 @@ const Tasks = () => {
               </div>
             </div>
             <div className="mt-24px w-278px h-51px relative cursor-pointer">
-              <img className="absolute left-0" src={salarybtnImg} alt="" />
+              <Image
+                className="absolute left-0"
+                width="278"
+                height="auto"
+                src={salarybtnImg}
+              />
               <i
                 className="absolute z-2 top-28px  text-after daysOne text-20px font-shadow-black"
                 onClick={closeRewardHandle}

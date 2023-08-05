@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
 import backLogo from "@/assets/icon/back.svg";
-import { Image as VanImage } from "react-vant";
+import { Image } from "react-vant";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import paginationImg from "@/assets/icon/pagination.svg";
-import salarybtnImg from "@/assets/bakeground/salary_btn.png";
+import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
 import { getMybag } from "@/api/feature/app";
 import { useAccount } from "wagmi";
 import device from "current-device";
@@ -85,7 +85,7 @@ const Knapsack = () => {
 
   return (
     <>
-      {!showUse ? (
+      <div style={{ display: !showUse ? "block" : "none" }}>
         <div className="knapsack">
           {isMobile && (
             <div className="back">
@@ -107,7 +107,7 @@ const Knapsack = () => {
                   key={item.token_id}
                 >
                   <div className="item" onClick={() => mallHandle(item)}>
-                    <VanImage width="100%" height="100%" src={item.image} />
+                    <Image width="100%" height="100%" src={item.image} />
                   </div>
                   <span className="font-shadow-black">2</span>
                 </div>
@@ -134,8 +134,9 @@ const Knapsack = () => {
             </div>
           </div>
         </div>
-      ) : (
-        <div className="use-box flex flex-col items-center pt-70px">
+      </div>
+      <div style={{ display: showUse ? "block" : "none" }}>
+        <div className="knapsack-use-box flex flex-col items-center pt-70px">
           {isMobile && (
             <div className="back">
               <img
@@ -150,7 +151,7 @@ const Knapsack = () => {
 
           <div className="knapsack-wrap">
             <div className="knapsack-img w-300px h-270px flex justify-center items-center">
-              <VanImage width="176" height="auto" src={actionKnapsack.image} />
+              <Image width="176" height="auto" src={actionKnapsack.image} />
             </div>
             <div className="knapsack-name h-48px days-one">
               Cat climbing frame
@@ -158,7 +159,7 @@ const Knapsack = () => {
           </div>
 
           <div className="knapsack-status flex justify-center items-center">
-            <VanImage
+            <Image
               width="75"
               height="75"
               src={knapsack_img[actionKnapsack.use]}
@@ -167,14 +168,19 @@ const Knapsack = () => {
               +{actionKnapsack.rate}
             </span>
           </div>
-          <div className="w-287px h-60px relative cursor-pointer">
-            <img className="absolute left-0" src={salarybtnImg} alt="" />
+          <div className="w-300px h-60px relative cursor-pointer">
+            <Image
+              className="absolute left-0"
+              width="300"
+              height="auto"
+              src={salarybtnImg}
+            />
             <i className="absolute z-2 top-28px  text-after text-20px font-shadow-black">
               Use
             </i>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };

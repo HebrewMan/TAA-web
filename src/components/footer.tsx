@@ -45,8 +45,8 @@ const Footer = () => {
             <li
               className={
                 item.path.toLocaleLowerCase() == nav.toLocaleLowerCase()
-                  ? "li-cur"
-                  : ""
+                  ? "li-cur cursor-pointer"
+                  : " cursor-pointer"
               }
               onClick={() => routerHandle(item.path)}
               key={item.path}

@@ -1,11 +1,11 @@
 import React from "react";
 import "./style/attribute.scss";
-// import '../../assets/cat/cat1.png'
+import device from "current-device";
 const Attibute = (props: any) => {
   const width = (props.value / 100) * props.logoWidth * 2;
-
+  const isMobile = device.mobile();
   return (
-    <React.Fragment>
+    <>
       <div className="attibute small relative mb-8px" style={{ width: "64px" }}>
         <img
           className="z-200"
@@ -28,14 +28,18 @@ const Attibute = (props: any) => {
             className={`absolute h-24px`}
           ></div>
           <span
-            className="font-shadow-black text-10px text-center z-500 absolute left-40%"
+            className={
+              isMobile
+                ? "font-shadow-black text-10px text-center z-500 absolute left-32%"
+                : "font-shadow-black text-10px text-center z-500 absolute left-40%"
+            }
             style={{ lineHeight: `${props.height}px` }}
           >
             {props.value}
           </span>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
