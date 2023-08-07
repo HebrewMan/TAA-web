@@ -6,12 +6,14 @@ export interface AppState {
   address: string;
   name: string;
   status: string;
+  isLogin: boolean;
 }
 
 const initialState: AppState = {
   address: "",
   name: "",
   status: "",
+  isLogin: false,
 };
 
 export const appSlice = createSlice({
@@ -25,9 +27,12 @@ export const appSlice = createSlice({
     setPopusStatus: (state, action: PayloadAction<string>) => {
       state.status = action.payload;
     },
+    setIsLogin: (state, action: PayloadAction<boolean>) => {
+      state.isLogin = action.payload;
+    },
   },
 });
 
 export const selectAppSlice = (state: RootState) => state.app;
-export const { setInfoData, setPopusStatus } = appSlice.actions;
+export const { setInfoData, setPopusStatus, setIsLogin } = appSlice.actions;
 export default appSlice.reducer;

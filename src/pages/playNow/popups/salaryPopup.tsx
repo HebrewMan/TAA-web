@@ -1,11 +1,17 @@
 import salaryImg from "@/assets/bakeground/salary_title.png";
 import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
 import lineImg from "@/assets/icon/line.svg";
+import { Image } from "react-vant";
 export default function salary(props) {
   return (
     <div className="flex flex-col justify-center items-center h-full butter-sans-text ">
-      <img className="mb--25px relative z-2" src={salaryImg} alt="" />
-      <div className="w-255px h-292px rounded-20px bg-#FFD28E px-12px pt-12px pb-14px">
+      <Image
+        className="mb--25px relative z-2"
+        width="287"
+        height="auto"
+        src={salaryImg}
+      />
+      <div className="w-255px h-292px box-border rounded-20px bg-#FFD28E px-12px pt-12px pb-14px">
         <div className="bg-#FFEFD7 rounded-20px w-full h-full ">
           <div className="min-w-186px flex flex-col justify-center items-center pt-25px">
             <div className="w-168px">
@@ -29,8 +35,13 @@ export default function salary(props) {
           </div>
         </div>
       </div>
-      <div className="mt-24px w-287px h-60px relative cursor-pointer">
-        <img className="absolute" src={salarybtnImg} alt="" />
+      <div className="mt-24px w-278px h-60px relative cursor-pointer">
+        <Image
+          className="absolute left-0"
+          width="278"
+          height="auto"
+          src={salarybtnImg}
+        />
         <i
           className="absolute z-2 top-28px  text-after text-20px font-shadow-black"
           onClick={props.onClose}

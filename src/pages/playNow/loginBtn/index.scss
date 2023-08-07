@@ -5,8 +5,13 @@
   // height: 40px;
   // padding: 0 14px;
   // border-radius: 12px;
-  margin-left: 30px;
-  height: 30px;
+  margin-left: 48px;
+  height: 100%;
+  width: calc(100% - 48px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .text-8px {
@@ -48,6 +53,22 @@
 }
 
 @media all and (min-width: 1000px) {
+  .custom-btn {
+    border: 0;
+    background: transparent;
+    transition: all 0.125s ease;
+    // height: 40px;
+    // padding: 0 14px;
+    // border-radius: 12px;
+    margin-left: 90px;
+    height: 100%;
+    width: calc(100% - 90px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    font-size: 26px;
+  }
   .experience {
     bottom: -17px;
     left: 60px;

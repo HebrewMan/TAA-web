@@ -17,13 +17,13 @@ export default function index(props: { item: any }) {
       <div className="top">
         <Image width="100%" height="100%" lazyload src={item.image as string} />
       </div>
-      <div className="bottom flex items-center justify-center">
+      <div className="bottom flex items-center justify-center h-15px mt-2px">
         <span className="days-one color-#402209 mr-4px text-14px">
           {item.name}
         </span>
         <span className="days-one color-#BB7A3A text-10px">#001</span>
       </div>
-      <div className="flex mt-2px justify-between w-130px pl-7px">
+      <div className="flex mt-2px justify-between w-130px pl-7px mt-7px">
         <div className="relative">
           <Image
             className="absolute left--10px top--5px"

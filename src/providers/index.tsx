@@ -1,7 +1,7 @@
 import { getUserInfo } from "@/api/feature/app";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import { setInfoData } from "@/store/slices/appSlice";
+import { setInfoData, setIsLogin } from "@/store/slices/appSlice";
 import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import {
   selectCatSlice,
@@ -27,9 +27,13 @@ export default function UseWeb3Provider({ children }: any) {
   };
 
   useEffect(() => {
+    if (!address) {
+      dispatch(setIsLogin(false));
+    }
     if (!address || flag) {
       return;
     }
+    dispatch(setIsLogin(true));
     flag = true;
     getUserInfo(address as string).then((res) => {
       dispatch(setInfoData({ address: address as string, name: res?.name }));

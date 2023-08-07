@@ -20,6 +20,8 @@ import tradeBtnImg from "@/assets/bakeground/trade-btn.svg";
 import TopLineImg from "@/assets/bakeground/top-line.svg";
 import { Loading, Popup } from "react-vant";
 import closeSvg from "@/assets/icon/close.svg";
+import { useRootSelector } from "@/store/hooks";
+import { selectAppSlice } from "@/store/slices/appSlice";
 const BuyModal = (props) => {
   return (
     <div className="buy-modal days-one">
@@ -53,6 +55,7 @@ const BuyModal = (props) => {
 };
 
 const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
+  const { isLogin } = useRootSelector(selectAppSlice);
   const isMobile = device.mobile();
   const detailData = props.detailData;
 
@@ -191,17 +194,19 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
             </div>
           </div>
         </div>
-        <div className="w-330px h-60px relative cursor-pointer mt-30px ">
-          <Image
-            className="absolute left-0"
-            width="330"
-            height="auto"
-            src={salarybtnImg}
-          />
-          <i className="absolute top-33px text-after text-26px font-shadow-black2">
-            Buy
-          </i>
-        </div>
+        {isLogin && (
+          <div className="w-330px h-60px relative cursor-pointer mt-30px ">
+            <Image
+              className="absolute left-0"
+              width="330"
+              height="auto"
+              src={salarybtnImg}
+            />
+            <i className="absolute top-33px text-after text-26px font-shadow-black2">
+              Buy
+            </i>
+          </div>
+        )}
       </div>
     </div>
   );

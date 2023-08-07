@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import "./index.scss";
 import Attibute from "@/components/attribute";
-
 import AttibuteDetailsPopup from "./popups/attributeDetailsPopup";
 import UserInfoPopup from "./popups/userInfoPopup";
 import SharePopup from "./popups/sharePopup";
@@ -12,9 +10,7 @@ import SetPopup from "./popups/setPopup";
 import SpecialPopup from "./popups/specialPopup";
 import SalaryPopup from "./popups/salaryPopup";
 import Introduce from "@/pages/introduce";
-
 import { Popup, Toast } from "react-vant";
-
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
@@ -33,7 +29,7 @@ import Notice from "./notice";
 import { selectCatSlice } from "@/store/slices/catSlice";
 
 const PlayNow = () => {
-  const { status } = useRootSelector(selectAppSlice);
+  const { status, isLogin } = useRootSelector(selectAppSlice);
   const { catInfo, catStatus } = useRootSelector(selectCatSlice);
   const nav = useNavigate();
   const menu = [
@@ -90,6 +86,9 @@ const PlayNow = () => {
   }, [catStatus]);
 
   const routerHandle = (path: string) => {
+    if (!isLogin) {
+      return;
+    }
     if (path == "salary") {
       setPopup(path);
       return;
@@ -204,23 +203,28 @@ const PlayNow = () => {
 
         {/* <Popup visible={ popup == 'Introduce'} style={{background:'none', height: '100%'}}  position='top'> */}
         {isIntroduce}
-        <div className="life-attribute">
-          <img src={groupSvg} alt="" className="group-left" />
-          <img src={groupSvg} alt="" className="group-right" />
-          {attibute_list.map((item) => (
-            <Attibute
-              height={25}
-              logoWidth={34}
-              typeImg={item.typeImg}
-              gradientBk={item.gradientBk}
-              value={item.value}
-              key={item.typeImg}
-            />
-          ))}
-        </div>
-        <div className="cat" onClick={() => setPopup("attibute")}>
-          <img src={catInfo.image} alt="" width={184} />
-        </div>
+        {isLogin && (
+          <div className="life-attribute">
+            <img src={groupSvg} alt="" className="group-left" />
+            <img src={groupSvg} alt="" className="group-right" />
+            {attibute_list.map((item) => (
+              <Attibute
+                height={25}
+                logoWidth={34}
+                typeImg={item.typeImg}
+                gradientBk={item.gradientBk}
+                value={item.value}
+                key={item.typeImg}
+              />
+            ))}
+          </div>
+        )}
+        {isLogin && (
+          <div className="cat" onClick={() => setPopup("attibute")}>
+            <img src={catInfo.image} alt="" width={184} />
+          </div>
+        )}
+
         <Notice visible={showNotice} onClose={setShowNotice}></Notice>
         <div className="menu">
           {menu.map((item) => (

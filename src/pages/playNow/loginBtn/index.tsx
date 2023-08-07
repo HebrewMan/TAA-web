@@ -13,7 +13,7 @@ export default function index(props: { setPopup: any }) {
   const experience = "50%";
   return (
     <>
-      <div className="avatar pt-8px relative z-2">
+      <div className="avatar relative z-2">
         <ConnectButton.Custom>
           {({
             account,
@@ -33,6 +33,7 @@ export default function index(props: { setPopup: any }) {
                 authenticationStatus === "authenticated");
             return (
               <div
+                className="h-full"
                 {...(!ready && {
                   "aria-hidden": true,
                   style: {
@@ -48,7 +49,7 @@ export default function index(props: { setPopup: any }) {
                       <button
                         onClick={openConnectModal}
                         type="button"
-                        className="custom-btn"
+                        className="custom-btn flex items-center"
                       >
                         Login
                       </button>
@@ -68,7 +69,7 @@ export default function index(props: { setPopup: any }) {
                   return (
                     <>
                       <div
-                        className="flex flex-col"
+                        className="flex flex-col h-full justify-center"
                         onClick={() => setPopup("cat")}
                       >
                         <p className="font-shadow-black text-12px">{name}</p>

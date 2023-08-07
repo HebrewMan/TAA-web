@@ -50,7 +50,7 @@
     // margin-top: 20px;\
 
     .nav {
-      width: 327px;
+      width: 90%;
       height: 37px;
       position: absolute;
       left: 50%;
@@ -123,7 +123,9 @@
   height: 100vh;
   background: #fcd8cd;
   line-height: 1;
-  padding-bottom: 210px;
+  padding-bottom: 110px;
+  box-sizing: border-box;
+  overflow-y: auto;
   .detail-title {
     display: flex;
     position: relative;
@@ -145,7 +147,6 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 665px;
     flex-direction: column;
     background: #fcd8cd;
 

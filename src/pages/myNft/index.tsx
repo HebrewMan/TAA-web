@@ -4,7 +4,6 @@ import { Switch } from "react-vant";
 import { Image } from "react-vant";
 import { getCatStatus, getMyCats, startWork } from "@/api/feature/cat";
 import { useAccount } from "wagmi";
-import catDetailTitle from "@/assets/icon/cat_detail.png";
 import device from "current-device";
 import backLogo from "@/assets/icon/back.svg";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
@@ -13,7 +12,7 @@ import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import AttibuteSmall from "@/components/attributeSmall";
 import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
-import buyTitleImg from "@/assets/bakeground/buy_title.svg";
+import buyTitleImg from "@/assets/bakeground/buy-title.png";
 import TopLineImg from "@/assets/bakeground/top-line.svg";
 import { Loading } from "react-vant";
 
