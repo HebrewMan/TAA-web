@@ -8,6 +8,9 @@ import { useAccount } from "wagmi";
 import { getUserInfo, setUserName } from "@/api/feature/app";
 import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import { selectAppSlice, setInfoData } from "@/store/slices/appSlice";
+import taaImg from "@/assets/bakeground/taa.png";
+import ethImg from "@/assets/bakeground/eth.png";
+import { Image } from "react-vant";
 
 const UserInfoPopup = (props: any) => {
   const { address } = useAccount();
@@ -87,19 +90,25 @@ const UserInfoPopup = (props: any) => {
             </div>
           </div>
         </div>
-        <div className="balance">
-          <div
-            className="star font-shadow-black"
-            style={{ backgroundImage: `url('${starBk}')` }}
-          >
-            10.1234
+        <div className="wrap-sign">
+          <div className="relative">
+            <Image
+              className="absolute left--20px top--7px"
+              width="48"
+              height="45"
+              src={taaImg}
+            />
+            <div className="sign-box">10</div>
           </div>
-          <div
-            className="feet font-shadow-black"
-            style={{ backgroundImage: `url('${feetBk}')` }}
-          >
-            10.1234
-          </div>
+          {/* <div className="relative mt-30px">
+            <Image
+              className="absolute left--20px top--7px"
+              width="48"
+              height="45"
+              src={ethImg}
+            />
+            <div className="sign-box days-one">10</div>
+          </div> */}
         </div>
       </div>
     </React.Fragment>

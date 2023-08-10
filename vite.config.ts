@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "./src"),
+      web3: resolve(__dirname, "./node_modules/web3/dist/web3.min.js"),
     },
   },
   css: {

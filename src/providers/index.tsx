@@ -1,6 +1,6 @@
 import { getUserInfo } from "@/api/feature/app";
 import { useEffect } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { setInfoData, setIsLogin } from "@/store/slices/appSlice";
 import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import {
@@ -10,10 +10,26 @@ import {
   setDefaultCat,
 } from "@/store/slices/catSlice";
 import { getMyCats, getCatInfo, getCatStatus } from "@/api/feature/cat";
-
+import taakAbi from "@/abi/taak.json";
+let useContractWriteFlag = true;
 export default function UseWeb3Provider({ children }: any) {
   const { address, isConnecting, isDisconnected } = useAccount();
   const { defaultCat } = useRootSelector(selectCatSlice);
+  // const { config } = usePrepareContractWrite({
+  //   address: "0x76FcD0cC9b90168EF589Bb79a1a9de25A3A99178",
+  //   abi: taakAbi,
+  //   functionName: "mint",
+  //   args: [10, "0x"],
+  // });
+  // const { data, isLoading, isSuccess, write } = useContractWrite(config);
+  // useEffect(() => {
+  //   if (useContractWriteFlag && write) {
+  //     useContractWriteFlag = false;
+  //     // write();
+  //   }
+  //   console.log(data);
+  // }, [data, isLoading, isSuccess, write]);
+
   const dispatch = useRootDispatch();
   let flag = false;
 

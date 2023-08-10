@@ -13,8 +13,8 @@ import backLogo from "@/assets/icon/back.svg";
 import AttibuteSmall from "@/components/attributeSmall";
 import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
 import MarketItem from "@/components/MarketItem";
-import experienceImg from "@/assets/bakeground/experience.svg";
-import priceImg from "@/assets/bakeground/price.svg";
+import taaImg from "@/assets/bakeground/taa.png";
+import ethImg from "@/assets/bakeground/eth.png";
 import buyTitleImg from "@/assets/bakeground/buy-title.png";
 import tradeBtnImg from "@/assets/bakeground/trade-btn.svg";
 import TopLineImg from "@/assets/bakeground/top-line.svg";
@@ -30,7 +30,7 @@ const BuyModal = (props) => {
         src={closeSvg}
         width="46"
         height="46"
-        onClick={props.onClose}
+        onClick={() => props.closeHandle("")}
       />
       <div className="detail-title">
         <Image width="200" height="auto" src={buyTitleImg} />
@@ -54,7 +54,11 @@ const BuyModal = (props) => {
   );
 };
 
-const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
+const MarketDetail = (props: {
+  detailData: any;
+  closeHandle: any;
+  buyHandle: any;
+}) => {
   const { isLogin } = useRootSelector(selectAppSlice);
   const isMobile = device.mobile();
   const detailData = props.detailData;
@@ -143,9 +147,9 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
         <div className="content-border2">
           <div className="flex items-end line-height-none pt-20px pl-14px">
             <div className=" color-#402209 text-28px">{detailData.name}</div>
-            <div className=" text-18px opacity-60 color-#2D1600 ml-8px">
+            {/* <div className=" text-18px opacity-60 color-#2D1600 ml-8px">
               #001
-            </div>
+            </div> */}
           </div>
           <div className="flex justify-between items-center px-14px">
             <div className=" color-#402209 text-14px text-left  pt-10px">
@@ -173,29 +177,32 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
         </div>
         <div className="current-price px-18px py-10px">
           <div className="text-16px color-#402209">Current price</div>
-          <div className="wrap-sign ">
+          <div className="wrap-sign">
             <div className="relative">
               <Image
                 className="absolute left--20px top--7px"
-                width="45"
+                width="48"
                 height="45"
-                src={experienceImg}
+                src={taaImg}
               />
               <div className="sign-box">10</div>
             </div>
             <div className="relative">
               <Image
                 className="absolute left--20px top--7px"
-                width="45"
+                width="48"
                 height="45"
-                src={priceImg}
+                src={ethImg}
               />
               <div className="sign-box days-one">10</div>
             </div>
           </div>
         </div>
         {isLogin && (
-          <div className="w-330px h-60px relative cursor-pointer mt-30px ">
+          <div
+            className="w-330px h-60px relative cursor-pointer mt-30px "
+            onClick={() => props.buyHandle("buy")}
+          >
             <Image
               className="absolute left-0"
               width="330"
@@ -242,7 +249,7 @@ const AdoptDetail = (props) => {
               className="absolute left--30px top--10px"
               width="50"
               height="50"
-              src={experienceImg}
+              src={taaImg}
             />
             <div className="sign-box days-one">10</div>
           </div>
@@ -454,6 +461,7 @@ const MyNFT = () => {
         <MarketDetail
           detailData={detailData}
           closeHandle={setShowDetail}
+          buyHandle={setPopup}
         ></MarketDetail>
       </div>
       <div
@@ -509,10 +517,7 @@ const MyNFT = () => {
         style={{ background: "none", height: "100%" }}
         position="top"
       >
-        <BuyModal
-          detailData={detailData}
-          closeHandle={setShowDetail}
-        ></BuyModal>
+        <BuyModal detailData={detailData} closeHandle={setPopup}></BuyModal>
       </Popup>
     </>
   );

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
 import backLogo from "@/assets/icon/back.svg";
-import { Image } from "react-vant";
+import { Image, Popup } from "react-vant";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
@@ -12,13 +12,64 @@ import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
 import { getMybag } from "@/api/feature/app";
 import { useAccount } from "wagmi";
 import device from "current-device";
+import closeSvg from "@/assets/icon/close.svg";
+
+const UseModal = (props) => {
+  const knapsack_img = {
+    stamina: cleanSvg,
+    charm: charismaSvg,
+    health: staminaSvg,
+    intellect: iqSvg,
+  };
+  const actionKnapsack = props.detailData;
+  return (
+    <div className="use-modal days-one">
+      <Image
+        className="close-special-popup"
+        src={closeSvg}
+        width="46"
+        height="46"
+        onClick={() => props.closeHandle("")}
+      />
+      <div className="use-modal-main">
+        <div className="modal-content">
+          <div className="knapsack-img h-240px flex justify-center items-center">
+            <Image width="176" height="auto" src={actionKnapsack.image} />
+          </div>
+          <div className="knapsack-option">
+            <Image
+              width="34"
+              height="auto"
+              src={knapsack_img[actionKnapsack.use]}
+            />
+            <span>+{actionKnapsack.use_val}</span>
+          </div>
+        </div>
+        <div className="modal-text">Cat climbing frame</div>
+        <div className="w-full h-60px relative cursor-pointer flex">
+          <Image
+            className="absolute left-12px top-10px"
+            width="267"
+            height="auto"
+            src={salarybtnImg}
+          />
+          <i className="absolute top-37px text-after text-26px font-shadow-black2">
+            Use
+          </i>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Knapsack = () => {
   const isMobile = device.mobile();
   const navigate = useNavigate();
   const handleGoBack = () => navigate(-1);
   const { address } = useAccount();
-  const [showUse, setShowUse] = useState(false);
   const [myMall, setMyMall] = useState([]);
+
+  const [popup, setPopup] = useState("");
   const [pagination, setPagination] = useState({
     page: 1,
     pageSize: 6,
@@ -33,18 +84,10 @@ const Knapsack = () => {
     use: "",
   });
   let allMalls: any = [];
-  const knapsack_img = {
-    stamina: cleanSvg,
-    charm: charismaSvg,
-    comfort: staminaSvg,
-    intellect: iqSvg,
-  };
 
   const mallHandle = (item: any) => {
-    console.log(item);
     setActionKnapsack(item);
-
-    setShowUse(true);
+    setPopup("use");
   };
 
   const getInitData = () => {
@@ -85,102 +128,61 @@ const Knapsack = () => {
 
   return (
     <>
-      <div style={{ display: !showUse ? "block" : "none" }}>
-        <div className="knapsack">
-          {isMobile && (
-            <div className="back">
-              <img
-                src={backLogo}
-                width={34}
-                height={34}
-                alt=""
-                onClick={handleGoBack}
-              />
-            </div>
-          )}
+      <div className="knapsack">
+        {isMobile && (
+          <div className="back">
+            <img
+              src={backLogo}
+              width={34}
+              height={34}
+              alt=""
+              onClick={handleGoBack}
+            />
+          </div>
+        )}
 
-          <div className="main">
-            <div className="items">
-              {myMall.map((item: any) => (
-                <div
-                  className="relative h-114px cursor-pointer"
-                  key={item.token_id}
-                >
-                  <div className="item" onClick={() => mallHandle(item)}>
-                    <Image width="100%" height="100%" src={item.image} />
-                  </div>
-                  <span className="font-shadow-black">2</span>
+        <div className="main">
+          <div className="items">
+            {myMall.map((item: any) => (
+              <div
+                className="relative h-114px cursor-pointer"
+                key={item.token_id}
+              >
+                <div className="item" onClick={() => mallHandle(item)}>
+                  <Image width="100%" height="100%" src={item.image} />
                 </div>
-              ))}
-            </div>
+                <span className="font-shadow-black">2</span>
+              </div>
+            ))}
+          </div>
 
-            <div
-              className="pages pb-10px pt-10px"
-              style={{ marginTop: window.innerHeight < 700 ? "4px" : "4px" }}
-            >
-              <img
-                src={paginationImg}
-                className="left mr-19px cursor-pointer"
-                alt=""
-                onClick={() => handlePagination("left")}
-              />
-              {pagination.page}/{pagination.pages}
-              <img
-                src={paginationImg}
-                className="right ml-19px cursor-pointer"
-                alt=""
-                onClick={() => handlePagination("right")}
-              />
-            </div>
+          <div
+            className="pages pb-10px pt-10px"
+            style={{ marginTop: window.innerHeight < 700 ? "4px" : "4px" }}
+          >
+            <img
+              src={paginationImg}
+              className="left mr-19px cursor-pointer"
+              alt=""
+              onClick={() => handlePagination("left")}
+            />
+            {pagination.page}/{pagination.pages}
+            <img
+              src={paginationImg}
+              className="right ml-19px cursor-pointer"
+              alt=""
+              onClick={() => handlePagination("right")}
+            />
           </div>
         </div>
       </div>
-      <div style={{ display: showUse ? "block" : "none" }}>
-        <div className="knapsack-use-box flex flex-col items-center pt-70px">
-          {isMobile && (
-            <div className="back">
-              <img
-                src={backLogo}
-                width={34}
-                height={34}
-                alt=""
-                onClick={() => setShowUse(false)}
-              />
-            </div>
-          )}
-
-          <div className="knapsack-wrap">
-            <div className="knapsack-img w-300px h-270px flex justify-center items-center">
-              <Image width="176" height="auto" src={actionKnapsack.image} />
-            </div>
-            <div className="knapsack-name h-48px days-one">
-              Cat climbing frame
-            </div>
-          </div>
-
-          <div className="knapsack-status flex justify-center items-center">
-            <Image
-              width="75"
-              height="75"
-              src={knapsack_img[actionKnapsack.use]}
-            />
-            <span className="days-one text-36px color-#402209 ml-50px">
-              +{actionKnapsack.rate}
-            </span>
-          </div>
-          <div className="w-300px h-60px relative cursor-pointer">
-            <Image
-              className="absolute left-0"
-              width="300"
-              height="auto"
-              src={salarybtnImg}
-            />
-            <i className="absolute z-2 top-28px  text-after text-20px font-shadow-black">
-              Use
-            </i>
-          </div>
-        </div>
-      </div>
+      <Popup
+        visible={popup == "use"}
+        style={{ background: "none", height: "100%" }}
+        position="top"
+      >
+        <UseModal detailData={actionKnapsack} closeHandle={setPopup}></UseModal>
+      </Popup>
     </>
   );
 };

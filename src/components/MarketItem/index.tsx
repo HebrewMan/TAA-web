@@ -1,6 +1,6 @@
 import { Image } from "react-vant";
-import experienceImg from "@/assets/bakeground/experience.svg";
-import priceImg from "@/assets/bakeground/price.svg";
+import taaImg from "@/assets/bakeground/taa.png";
+import ethImg from "@/assets/bakeground/eth.png";
 import hotImg from "@/assets/bakeground/hot.png";
 import "./index.scss";
 export default function index(props: { item: any }) {
@@ -28,8 +28,8 @@ export default function index(props: { item: any }) {
           <Image
             className="absolute left--10px top--5px"
             width="26"
-            height="26"
-            src={experienceImg}
+            height="24"
+            src={taaImg}
           />
           <div className="w-54px h-16px bg-#ECA756 rounded-8px days-one box-border leading-16px pl-8px color-#402209 text-13px">
             10
@@ -39,8 +39,8 @@ export default function index(props: { item: any }) {
           <Image
             className="absolute left--10px top--5px"
             width="26"
-            height="26"
-            src={priceImg}
+            height="24"
+            src={ethImg}
           />
           <div className="w-54px h-16px bg-#FFAD7E rounded-8px days-one box-border leading-16px pl-8px color-#402209 text-13px">
             10

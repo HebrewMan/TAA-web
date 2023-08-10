@@ -177,27 +177,38 @@
     }
   }
   .balance {
+    border-radius: 9px;
+    box-sizing: border-box;
+    padding-top: 24px;
+  }
+
+  .wrap-sign {
+    background: rgba(164, 69, 19, 0.2);
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
     top: 77%;
     width: 215px;
     height: 31%;
-    background: rgba(164, 69, 19, 0.2);
-    border-radius: 9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    padding-left: 10px;
     box-sizing: border-box;
-    padding-top: 24px;
-    div {
-      width: 78%;
-      height: 45px;
+    .sign-box {
+      border: 3px solid #402209;
+      width: 134px;
+      height: 31px;
+      border-radius: 16px;
+      line-height: 25px;
+      font-size: 18px;
+      color: white;
+      background-color: #e78442;
       text-align: center;
-      font-size: 14px;
-      margin: 0 auto;
-      background-size: 100% 100%;
-      line-height: 50px;
-      margin-bottom: 12px;
+      padding-left: 16px;
       box-sizing: border-box;
-      padding-left: 30px;
     }
   }
 }
