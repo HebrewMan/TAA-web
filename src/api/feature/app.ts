@@ -36,3 +36,11 @@ export const getMybag = (userAddress: string) =>
     url: `/my_bag/${userAddress}`,
     method: "get",
   });
+
+// 使用道具
+export const useProp = (params: object) =>
+  request({
+    url: `/use_prop`,
+    method: "post",
+    data: params,
+  });

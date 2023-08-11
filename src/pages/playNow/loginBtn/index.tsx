@@ -3,14 +3,23 @@ import { selectAppSlice } from "@/store/slices/appSlice";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import "./index.scss";
 import { useAccount } from "wagmi";
+import { selectCatSlice } from "@/store/slices/catSlice";
+import { useEffect, useState } from "react";
 export default function index(props: { setPopup: any }) {
   const setPopup = props.setPopup;
   const { name } = useRootSelector(selectAppSlice);
+  const { catInfo } = useRootSelector(selectCatSlice);
   const { address } = useAccount();
   const addressHandle = (address: string) => {
     return address.slice(0, 4) + "...." + address.slice(-4);
   };
-  const experience = "50%";
+  const [experience, serExperience] = useState("0%");
+
+  useEffect(() => {
+    if (Object.keys(catInfo).length > 0) {
+      serExperience(`${(catInfo.exp / catInfo.max_exp) * 100}%`);
+    }
+  }, [catInfo]);
   return (
     <>
       <div className="avatar relative z-2">
@@ -78,7 +87,9 @@ export default function index(props: { setPopup: any }) {
                         </p>
                       </div>
                       <div className="experience">
-                        <div className="experience-text text-8px">27</div>
+                        <div className="experience-text text-8px">
+                          {catInfo.level}
+                        </div>
                         <div className="experience-box">
                           <div
                             className="experience-line"

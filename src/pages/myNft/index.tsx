@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import "./index.scss";
 import { Switch } from "react-vant";
 import { Image } from "react-vant";
-import { getCatStatus, getMyCats, startWork } from "@/api/feature/cat";
+import {
+  getCatStatus,
+  getMyCats,
+  selectCat,
+  startWork,
+} from "@/api/feature/cat";
 import { useAccount } from "wagmi";
 import device from "current-device";
 import backLogo from "@/assets/icon/back.svg";
@@ -15,6 +20,9 @@ import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
 import buyTitleImg from "@/assets/bakeground/buy-title.png";
 import TopLineImg from "@/assets/bakeground/top-line.svg";
 import { Loading } from "react-vant";
+import { useActivate, useUnactivate } from "react-activation";
+import { useRootDispatch } from "@/store/hooks";
+import { setDefaultCat } from "@/store/slices/catSlice";
 
 const BuyModal = () => {
   return (
@@ -58,18 +66,18 @@ const CatDetail = (props: any) => {
     },
   ]);
 
-  const initData = () => {
+  const getInitData = () => {
     getCatStatus(detailData.token_id).then((res: any) => {
-      attibute_list[3].value = res.intellect;
+      attibute_list[3].value = res.comfort;
       attibute_list[2].value = res.stamina;
       attibute_list[0].value = res.comfort;
-      attibute_list[1].value = res.charm;
+      attibute_list[1].value = res.happiness;
       setAttibute_list([...attibute_list]);
     });
   };
 
   useEffect(() => {
-    initData();
+    getInitData();
   }, []);
 
   const closeSelf = () => {
@@ -155,11 +163,13 @@ const CatDetail = (props: any) => {
   );
 };
 
+let getMybagTimer = null;
 const MyNFT = () => {
   const { address } = useAccount();
   const [myNFTs, setMyNFTS] = useState([]);
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState({});
+  const dispatch = useRootDispatch();
 
   const switchChange = (val: boolean, item: any) => {
     if (val) {
@@ -170,21 +180,39 @@ const MyNFT = () => {
     }
   };
 
-  const getMarkets = () => {
+  const getMyNfts = () => {
     getMyCats(address as string).then((res: any) => {
       console.log(res);
       setMyNFTS(res);
     });
+    clearTimeout(getMybagTimer);
+    getMybagTimer = setTimeout(() => {
+      getMyNfts();
+    }, 10000);
   };
+
+  useEffect(() => {
+    getMyNfts();
+  }, []);
+
+  useActivate(() => {
+    getMyNfts();
+  });
+
+  useUnactivate(() => {
+    clearTimeout(getMybagTimer);
+  });
 
   const catDetailHandle = (item: any) => {
     setDetailData(item);
     setShowDetail(true);
   };
 
-  useEffect(() => {
-    getMarkets();
-  }, []);
+  const selectCathandle = (tokenid) => {
+    selectCat({ address, tokenid }).then((res) => {
+      dispatch(setDefaultCat(tokenid));
+    });
+  };
 
   return (
     <>
@@ -194,7 +222,11 @@ const MyNFT = () => {
         <div className="my-nft">
           <div className="main">
             {myNFTs.map((item: any) => (
-              <div className="item cursor-pointer" key={item.token_id}>
+              <div
+                className="item cursor-pointer"
+                key={item.token_id}
+                onClick={() => selectCathandle(item.token_id)}
+              >
                 <div
                   className="top relative"
                   onClick={() => catDetailHandle(item)}

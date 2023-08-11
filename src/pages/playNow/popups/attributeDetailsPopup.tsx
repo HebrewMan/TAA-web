@@ -43,10 +43,10 @@ const AttibuteDetails = (props: any) => {
 
   // 猫咪属性
   useEffect(() => {
-    attibute_list[3].value = catStatus.intellect;
+    attibute_list[3].value = catStatus.comfort;
     attibute_list[2].value = catStatus.stamina;
-    attibute_list[0].value = catStatus.comfort;
-    attibute_list[1].value = catStatus.charm;
+    attibute_list[0].value = catStatus.health;
+    attibute_list[1].value = catStatus.happiness;
     setAttibute_list([...attibute_list]);
   }, [catStatus]);
 

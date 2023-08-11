@@ -8,20 +8,57 @@ import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import paginationImg from "@/assets/icon/pagination.svg";
-import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
-import { getMybag } from "@/api/feature/app";
-import { useAccount } from "wagmi";
+import { getMybag, useProp } from "@/api/feature/app";
+import {
+  useAccount,
+  useContractWrite,
+  usePrepareContractWrite,
+  useSendTransaction,
+  useWaitForTransaction,
+} from "wagmi";
+import { encodeFunctionData, parseEther } from "viem";
 import device from "current-device";
 import closeSvg from "@/assets/icon/close.svg";
-
+import taapAbi from "@/abi/taap.json";
+import Button from "@/components/Button/index";
+import { useRootSelector } from "@/store/hooks";
+import { selectCatSlice } from "@/store/slices/catSlice";
+import { useActivate, useUnactivate } from "react-activation";
 const UseModal = (props) => {
+  const actionKnapsack = props.detailData;
+  const { address } = useAccount();
+  const { defaultCat } = useRootSelector(selectCatSlice);
+  const { config } = usePrepareContractWrite({
+    address: "0x13164aE7D47c0a57775106E1A34fCeA6615717FA",
+    abi: taapAbi,
+    functionName: "burn",
+    args: [address, actionKnapsack.token_id, 1],
+  });
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
+  useEffect(() => {
+    console.log(data, isLoading, isSuccess);
+    if (isSuccess) {
+      props.closeHandle();
+    }
+  }, [data, isLoading, isSuccess]);
   const knapsack_img = {
     stamina: cleanSvg,
-    charm: charismaSvg,
+    happiness: charismaSvg,
     health: staminaSvg,
-    intellect: iqSvg,
+    comfort: iqSvg,
   };
-  const actionKnapsack = props.detailData;
+
+  const burnHandle = () => {
+    write();
+    useProp({
+      address,
+      cat_token_id: defaultCat,
+      prop_token_id: actionKnapsack.token_id,
+    }).then((res) => {
+      console.log(res);
+    });
+  };
   return (
     <div className="use-modal days-one">
       <Image
@@ -29,7 +66,7 @@ const UseModal = (props) => {
         src={closeSvg}
         width="46"
         height="46"
-        onClick={() => props.closeHandle("")}
+        onClick={() => props.closeHandle()}
       />
       <div className="use-modal-main">
         <div className="modal-content">
@@ -46,22 +83,26 @@ const UseModal = (props) => {
           </div>
         </div>
         <div className="modal-text">Cat climbing frame</div>
-        <div className="w-full h-60px relative cursor-pointer flex">
-          <Image
-            className="absolute left-12px top-10px"
-            width="267"
-            height="auto"
-            src={salarybtnImg}
-          />
-          <i className="absolute top-37px text-after text-26px font-shadow-black2">
-            Use
-          </i>
+        <div className="flex justify-center items-center h-70px">
+          <div
+            className="w-267px h-60px relative cursor-pointer flex"
+            onClick={burnHandle}
+          >
+            <Button
+              bgColor1="#AAC211"
+              bgColor2="#bad60f"
+              text="Use"
+              size="26px"
+              status={isLoading ? 0 : 1}
+            ></Button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
+let getMybagTimer = null;
 const Knapsack = () => {
   const isMobile = device.mobile();
   const navigate = useNavigate();
@@ -100,6 +141,28 @@ const Knapsack = () => {
       pagination.pages = Math.ceil(res.length / pagination.pageSize);
       setPagination(pagination);
     });
+
+    clearTimeout(getMybagTimer);
+    getMybagTimer = setTimeout(() => {
+      getInitData();
+    }, 10000);
+  };
+
+  useActivate(() => {
+    getInitData();
+  });
+
+  useUnactivate(() => {
+    clearTimeout(getMybagTimer);
+  });
+
+  useEffect(() => {
+    getInitData();
+  }, [address]);
+
+  const closeHandle = () => {
+    setPopup("");
+    getInitData();
   };
 
   // 已有总数据，根据上面逻辑，手动分页
@@ -121,10 +184,6 @@ const Knapsack = () => {
     const result = allMalls.slice(start, end);
     setMyMall(result);
   };
-
-  useEffect(() => {
-    getInitData();
-  }, [address]);
 
   return (
     <>
@@ -181,7 +240,10 @@ const Knapsack = () => {
         style={{ background: "none", height: "100%" }}
         position="top"
       >
-        <UseModal detailData={actionKnapsack} closeHandle={setPopup}></UseModal>
+        <UseModal
+          detailData={actionKnapsack}
+          closeHandle={closeHandle}
+        ></UseModal>
       </Popup>
     </>
   );

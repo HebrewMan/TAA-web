@@ -36,3 +36,11 @@ export const setCatName = (params: object) =>
     method: "post",
     data: params,
   });
+
+// 选择猫
+export const selectCat = (params: object) =>
+  request({
+    url: `/select_cat`,
+    method: "post",
+    data: params,
+  });

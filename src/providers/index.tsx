@@ -1,5 +1,5 @@
 import { getUserInfo } from "@/api/feature/app";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { setInfoData, setIsLogin } from "@/store/slices/appSlice";
 import { useRootDispatch, useRootSelector } from "@/store/hooks";
@@ -11,58 +11,55 @@ import {
 } from "@/store/slices/catSlice";
 import { getMyCats, getCatInfo, getCatStatus } from "@/api/feature/cat";
 import taakAbi from "@/abi/taak.json";
-let useContractWriteFlag = true;
+let flag = false;
+let getCatStatusTimer = null;
 export default function UseWeb3Provider({ children }: any) {
   const { address, isConnecting, isDisconnected } = useAccount();
   const { defaultCat } = useRootSelector(selectCatSlice);
-  // const { config } = usePrepareContractWrite({
-  //   address: "0x76FcD0cC9b90168EF589Bb79a1a9de25A3A99178",
-  //   abi: taakAbi,
-  //   functionName: "mint",
-  //   args: [10, "0x"],
-  // });
-  // const { data, isLoading, isSuccess, write } = useContractWrite(config);
-  // useEffect(() => {
-  //   if (useContractWriteFlag && write) {
-  //     useContractWriteFlag = false;
-  //     // write();
-  //   }
-  //   console.log(data);
-  // }, [data, isLoading, isSuccess, write]);
 
   const dispatch = useRootDispatch();
-  let flag = false;
-
-  const fetchCatInfo = (tokenid: string) => {
+  const fetchCatInfo = useCallback((tokenid) => {
     getCatInfo(tokenid).then((res: any) => {
       dispatch(setCatInfo(res));
     });
-    getCatStatus(tokenid).then((res: any) => {
+  }, []);
+  const fetchCatStatus = useCallback((defaultCat) => {
+    getCatStatus(defaultCat).then((res: any) => {
       dispatch(setCatStatus(res));
     });
-  };
+  }, []);
+
+  useEffect(() => {
+    if (defaultCat) {
+      fetchCatInfo(defaultCat);
+      fetchCatStatus(defaultCat);
+      clearInterval(getCatStatusTimer);
+      getCatStatusTimer = setInterval(() => {
+        fetchCatStatus(defaultCat);
+      }, 1000 * 60);
+    }
+  }, [defaultCat]);
 
   useEffect(() => {
     if (!address) {
       dispatch(setIsLogin(false));
     }
-    if (!address || flag) {
+    if (flag) {
       return;
     }
-    dispatch(setIsLogin(true));
+
     flag = true;
+    dispatch(setIsLogin(true));
     getUserInfo(address as string).then((res) => {
       dispatch(setInfoData({ address: address as string, name: res?.name }));
     });
-    if (!defaultCat) {
-      getMyCats(address as string).then((res: any) => {
-        console.log(res);
-        dispatch(setDefaultCat(res[0].token_id));
-        fetchCatInfo(res[0].token_id);
+    getMyCats(address as string).then((res: any) => {
+      res.forEach((item) => {
+        if (item.selected) {
+          dispatch(setDefaultCat(item.token_id));
+        }
       });
-    } else {
-      fetchCatInfo(defaultCat);
-    }
+    });
   }, [address]);
 
   return <>{children}</>;

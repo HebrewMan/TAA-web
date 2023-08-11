@@ -2,14 +2,11 @@ import React from "react";
 import closeSvg from "@/assets/icon/close.svg";
 import avaterSvg from "@/assets/icon/avater.svg";
 import penSvg from "@/assets/icon/pen.svg";
-import starBk from "@/assets/bakeground/star_bk.png";
-import feetBk from "@/assets/bakeground/feet_bk.png";
 import { useAccount } from "wagmi";
 import { getUserInfo, setUserName } from "@/api/feature/app";
 import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import { selectAppSlice, setInfoData } from "@/store/slices/appSlice";
 import taaImg from "@/assets/bakeground/taa.png";
-import ethImg from "@/assets/bakeground/eth.png";
 import { Image } from "react-vant";
 
 const UserInfoPopup = (props: any) => {

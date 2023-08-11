@@ -12,12 +12,17 @@ export interface CatInfo {
   rate: number;
   stamina: number;
   token_id: number;
+  level: number;
+  selected: number;
+  work_status: number;
+  exp: number;
+  max_exp: number;
 }
 
 export interface CatStatus {
   stamina: number; //体力
-  charm: number; //魅力
-  intellect: number; //智力
+  happiness: number; //愉悦
+  health: number; //智力
   comfort: number; //舒适
 }
 
@@ -28,7 +33,7 @@ export interface CatState {
 }
 
 const initialState: CatState = {
-  defaultCat: getLocal("defaultCat") || "",
+  defaultCat: "",
   catInfo: getLocal("catInfo") || {
     charm: 0,
     comfort: 0,
@@ -39,6 +44,11 @@ const initialState: CatState = {
     rate: 0,
     stamina: 0,
     token_id: 0,
+    level: 0,
+    selected: 0,
+    work_status: 0,
+    exp: 0,
+    max_exp: 0,
   },
   catStatus: {} as CatStatus,
 };
