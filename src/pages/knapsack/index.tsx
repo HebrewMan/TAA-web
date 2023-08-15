@@ -8,7 +8,7 @@ import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import paginationImg from "@/assets/icon/pagination.svg";
-import { getMybag, useProp } from "@/api/feature/app";
+import { getMybag, useProp as usePropFetch } from "@/api/feature/app";
 import {
   useAccount,
   useContractWrite,
@@ -24,25 +24,24 @@ import Button from "@/components/Button/index";
 import { useRootSelector } from "@/store/hooks";
 import { selectCatSlice } from "@/store/slices/catSlice";
 import { useActivate, useUnactivate } from "react-activation";
-const UseModal = (props) => {
+const UseModal = (props: any) => {
   const actionKnapsack = props.detailData;
   const { address } = useAccount();
   const { defaultCat } = useRootSelector(selectCatSlice);
-  const { config } = usePrepareContractWrite({
+
+  const { data, isLoading, isSuccess, write } = useContractWrite({
     address: "0x13164aE7D47c0a57775106E1A34fCeA6615717FA",
     abi: taapAbi,
     functionName: "burn",
     args: [address, actionKnapsack.token_id, 1],
   });
-  const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
   useEffect(() => {
-    console.log(data, isLoading, isSuccess);
     if (isSuccess) {
       props.closeHandle();
     }
   }, [data, isLoading, isSuccess]);
-  const knapsack_img = {
+  const knapsack_img: any = {
     stamina: cleanSvg,
     happiness: charismaSvg,
     health: staminaSvg,
@@ -50,8 +49,12 @@ const UseModal = (props) => {
   };
 
   const burnHandle = () => {
+    if (isLoading) {
+      return;
+    }
     write();
-    useProp({
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    usePropFetch({
       address,
       cat_token_id: defaultCat,
       prop_token_id: actionKnapsack.token_id,
@@ -102,7 +105,7 @@ const UseModal = (props) => {
   );
 };
 
-let getMybagTimer = null;
+let getMybagTimer: any = null;
 const Knapsack = () => {
   const isMobile = device.mobile();
   const navigate = useNavigate();

@@ -1,9 +1,17 @@
 import "./index.scss";
-export default function Button({ bgColor1, bgColor2, text, size, status = 1 }) {
+export default function Button({
+  bgColor1,
+  bgColor2,
+  text,
+  size,
+  status = 1,
+  onClick,
+}: any) {
   return (
     <div
       className="taa-button w-full h-full days-one relative flex justify-center items-center"
       style={{ background: bgColor1 }}
+      onClick={onClick}
     >
       <div
         className="taa-button-bg absolute w-full h-full"

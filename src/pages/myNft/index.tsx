@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import "./index.scss";
-import { Switch } from "react-vant";
-import { Image } from "react-vant";
+import { Switch, Image, Popup, Toast } from "react-vant";
+import DropDown from "@/components/Dropdown";
 import {
+  getCatInfo,
   getCatStatus,
   getMyCats,
   selectCat,
   startWork,
+  stopWork,
 } from "@/api/feature/cat";
-import { useAccount } from "wagmi";
+import { useAccount, useContractRead, useContractWrite } from "wagmi";
 import device from "current-device";
 import backLogo from "@/assets/icon/back.svg";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
@@ -16,24 +18,161 @@ import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import AttibuteSmall from "@/components/attributeSmall";
-import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
 import buyTitleImg from "@/assets/bakeground/buy-title.png";
 import TopLineImg from "@/assets/bakeground/top-line.svg";
 import { Loading } from "react-vant";
 import { useActivate, useUnactivate } from "react-activation";
-import { useRootDispatch } from "@/store/hooks";
-import { setDefaultCat } from "@/store/slices/catSlice";
+import { useRootDispatch, useRootSelector } from "@/store/hooks";
+import { selectCatSlice, setDefaultCat } from "@/store/slices/catSlice";
+import Button from "@/components/Button/index";
+import marketABI from "@/abi/MarketPlaceTAA.json";
+import taakABI from "@/abi/taak.json";
+import closeSvg from "@/assets/icon/close.svg";
+import { payCoins } from "@/api/feature/app";
+import { market, taak } from "@/config/constantAddress";
+import { ethers } from "ethers";
+let marketsList: any = [];
+const SellModal = (props: any) => {
+  const { address } = useAccount();
+  const [marketsOption, setMarketsOption] = useState([]);
+  const [optionValue, setOptionValue] = useState(0);
+  const [price, setPrice] = useState("");
+  const {
+    data: marketData,
+    isLoading: marketIsLoading,
+    isSuccess: marketIsSuccess,
+    writeAsync,
+  } = useContractWrite({
+    address: market,
+    abi: marketABI.abi,
+    functionName: "createOrder",
+  });
 
-const BuyModal = () => {
+  const { data: isApprovedData, isLoading: isApprovedLoading } =
+    useContractRead({
+      address: taak,
+      abi: taakABI,
+      functionName: "isApprovedForAll",
+      args: [address, market],
+    });
+
+  const {
+    data: approveData,
+    isLoading: approveLoading,
+    isSuccess: approveSuccess,
+    writeAsync: approveWriteAsync,
+  } = useContractWrite({
+    address: taak,
+    abi: taakABI,
+    functionName: "setApprovalForAll",
+  });
+
+  const getInitData = () => {
+    payCoins().then((res: any) => {
+      let result: any = [];
+      marketsList = res;
+      res.forEach((item: any, index: number) => {
+        result.push({
+          text: (
+            <div className="flex items-center">
+              <Image width="20" height="20" src={item.image} />
+              <span className="ml-4px">{item.coin}</span>
+            </div>
+          ),
+          value: index,
+        });
+      });
+      setMarketsOption(result);
+    });
+  };
+  useEffect(() => {
+    getInitData();
+  }, []);
+
+  useEffect(() => {
+    if (marketIsSuccess) {
+      props.setPopup("");
+    }
+  }, [marketIsSuccess]);
+
+  useEffect(() => {
+    if (approveSuccess) {
+      writeAsync({
+        args: [
+          props.catInfo.nft_address,
+          marketsList[optionValue].coin_address,
+          props.catInfo.token_id,
+          ethers.parseUnits(price, 6),
+        ],
+      });
+    }
+  }, [approveSuccess]);
+
+  const sellHandle = () => {
+    if (!price || parseFloat(price) <= 0) {
+      Toast.info("请输入价格");
+      return;
+    }
+    if (approveLoading || marketIsLoading) return;
+
+    if (!isApprovedData) {
+      approveWriteAsync({
+        args: [market, true],
+      });
+    } else {
+      writeAsync({
+        args: [
+          props.catInfo.nft_address,
+          marketsList[optionValue].coin_address,
+          props.catInfo.token_id,
+          ethers.parseUnits(price, 6),
+        ],
+      });
+    }
+  };
+
   return (
-    <div className="buy-modal">
+    <div className="sell-modal days-one">
+      <Image
+        className="close-special-popup"
+        src={closeSvg}
+        width="46"
+        height="46"
+        onClick={() => props.setPopup("")}
+      />
       <div className="detail-title">
-        <Image
-          className="mt-20px"
-          width="260"
-          height="auto"
-          src={buyTitleImg}
-        />
+        <Image width="200" height="auto" src={buyTitleImg} />
+      </div>
+      {marketIsLoading ? (
+        <div className="modal-content">
+          <Loading color="#402209" size="50px" />
+          <span>Loading</span>
+        </div>
+      ) : (
+        <div className="sell-input">
+          <input
+            type="number"
+            value={price}
+            onChange={(e: any) => setPrice(e.target.value)}
+            placeholder="Please enter"
+          />
+          <div className="lang-shadow">
+            <DropDown
+              option={marketsOption}
+              setOption={setOptionValue}
+            ></DropDown>
+          </div>
+        </div>
+      )}
+      <div className="w-215px h-60px relative cursor-pointer mt-50px ">
+        <Button
+          bgColor1="#AAC211"
+          bgColor2="#bad60f"
+          text="Confirm"
+          size="26px"
+          status={approveLoading || marketIsLoading ? 0 : 1}
+          onClick={sellHandle}
+        ></Button>
       </div>
     </div>
   );
@@ -42,6 +181,15 @@ const BuyModal = () => {
 const CatDetail = (props: any) => {
   const isMobile = device.mobile();
   const detailData = props.detailData;
+  const [catInfo, setCatInfo] = useState({});
+  const [popup, setPopup] = useState("");
+  const { defaultCat } = useRootSelector(selectCatSlice);
+
+  useEffect(() => {
+    getCatInfo(defaultCat).then((res: any) => {
+      setCatInfo(res);
+    });
+  }, [defaultCat]);
 
   const [attibute_list, setAttibute_list] = useState([
     {
@@ -84,86 +232,97 @@ const CatDetail = (props: any) => {
     props.closeHandle();
   };
 
+  const openModal = () => {
+    setPopup("sell");
+  };
+
   return (
-    <div className="cat-detail">
-      <div className="detail-title">
-        {isMobile && (
-          <div className="back">
-            <Image
-              className="back-img"
-              width="34"
-              height="34"
-              src={backLogo}
-              onClick={closeSelf}
-            />
-          </div>
-        )}
-        <div>Cat detail</div>
-      </div>
-      <div className="detail-content">
-        <Image
-          className="top-line-left"
-          width="30"
-          height="125"
-          src={TopLineImg}
-        />
-        <Image
-          className="top-line-right"
-          width="30"
-          height="125"
-          src={TopLineImg}
-        />
-        <div className="content-border1">
-          <div className="img-wrap w-315px h-265px flex justify-center items-center">
-            <Image
-              className=""
-              width="220"
-              height="auto"
-              src={detailData.image}
-            />
-          </div>
-          <div className="flex items-end line-height-none pt-20px pl-14px">
-            <div className=" color-#402209 text-28px">{detailData.name}</div>
-            <div className=" text-18px opacity-60 color-#2D1600 ml-8px">
-              #001
-            </div>
-          </div>
-          <div className="flex justify-between items-center px-14px">
-            <div className=" color-#402209 text-14px text-left  pt-10px">
-              ID: {detailData.token_id}
-            </div>
-          </div>
-          <div className="attibute_list flex px-10px justify-between mt-5px">
-            {attibute_list.map((item) => (
-              <AttibuteSmall
-                logoWidth={25}
-                height={16}
-                typeImg={item.typeImg}
-                gradientBk={item.gradientBk}
-                value={item.value}
-                key={item.typeImg}
+    <>
+      <div className="cat-detail">
+        <div className="detail-title">
+          {isMobile && (
+            <div className="back">
+              <Image
+                className="back-img"
+                width="34"
+                height="34"
+                src={backLogo}
+                onClick={closeSelf}
               />
-            ))}
+            </div>
+          )}
+          <div>Cat detail</div>
+        </div>
+        <div className="detail-content">
+          <Image
+            className="top-line-left"
+            width="30"
+            height="125"
+            src={TopLineImg}
+          />
+          <Image
+            className="top-line-right"
+            width="30"
+            height="125"
+            src={TopLineImg}
+          />
+          <div className="content-border1">
+            <div className="img-wrap w-315px h-265px flex justify-center items-center">
+              <Image
+                className=""
+                width="220"
+                height="auto"
+                src={detailData.image}
+              />
+            </div>
+            <div className="flex items-end line-height-none pt-20px pl-14px">
+              <div className=" color-#402209 text-28px">{detailData.name}</div>
+              <div className=" text-18px opacity-60 color-#2D1600 ml-8px">
+                #001
+              </div>
+            </div>
+            <div className="flex justify-between items-center px-14px">
+              <div className=" color-#402209 text-14px text-left  pt-10px">
+                ID: {detailData.token_id}
+              </div>
+            </div>
+            <div className="attibute_list flex px-10px justify-between mt-5px">
+              {attibute_list.map((item) => (
+                <AttibuteSmall
+                  logoWidth={25}
+                  height={16}
+                  typeImg={item.typeImg}
+                  gradientBk={item.gradientBk}
+                  value={item.value}
+                  key={item.typeImg}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="content-border2"></div>
+          <div className="w-330px h-60px relative cursor-pointer mt-490px ">
+            <Button
+              bgColor1="#AAC211"
+              bgColor2="#bad60f"
+              text="Sell"
+              size="26px"
+              onClick={openModal}
+            ></Button>
           </div>
         </div>
-        <div className="content-border2"></div>
-        <div className="w-330px h-60px relative cursor-pointer mt-490px ">
-          <Image
-            className="absolute left-0"
-            width="330"
-            height="auto"
-            src={salarybtnImg}
-          />
-          <i className="absolute top-33px text-after text-26px font-shadow-black2">
-            Sell
-          </i>
-        </div>
       </div>
-    </div>
+      <Popup
+        visible={popup == "sell"}
+        style={{ background: "none", height: "100%" }}
+        position="top"
+      >
+        <SellModal setPopup={setPopup} catInfo={catInfo}></SellModal>
+      </Popup>
+    </>
   );
 };
 
-let getMybagTimer = null;
+let getMybagTimer: any = null;
 const MyNFT = () => {
   const { address } = useAccount();
   const [myNFTs, setMyNFTS] = useState([]);
@@ -177,12 +336,16 @@ const MyNFT = () => {
         address,
         token_id: item.token_id,
       }).then((res: any) => {});
+    } else {
+      stopWork({
+        address,
+        token_id: item.token_id,
+      }).then((res: any) => {});
     }
   };
 
   const getMyNfts = () => {
     getMyCats(address as string).then((res: any) => {
-      console.log(res);
       setMyNFTS(res);
     });
     clearTimeout(getMybagTimer);
@@ -208,7 +371,7 @@ const MyNFT = () => {
     setShowDetail(true);
   };
 
-  const selectCathandle = (tokenid) => {
+  const selectCathandle = (tokenid: any) => {
     selectCat({ address, tokenid }).then((res) => {
       dispatch(setDefaultCat(tokenid));
     });
@@ -222,11 +385,7 @@ const MyNFT = () => {
         <div className="my-nft">
           <div className="main">
             {myNFTs.map((item: any) => (
-              <div
-                className="item cursor-pointer"
-                key={item.token_id}
-                onClick={() => selectCathandle(item.token_id)}
-              >
+              <div className="item cursor-pointer" key={item.token_id}>
                 <div
                   className="top relative"
                   onClick={() => catDetailHandle(item)}

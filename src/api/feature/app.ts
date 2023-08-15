@@ -22,6 +22,14 @@ export const getTasks = () =>
     method: "get",
   });
 
+// 任务详情/
+export const getTaskDetail = (params: object, address: string) =>
+  request({
+    url: `/task/${address}`,
+    method: "post",
+    data: params,
+  });
+
 // 任务奖励/my_bag
 export const taskReward = (params: object) =>
   request({
@@ -43,4 +51,19 @@ export const useProp = (params: object) =>
     url: `/use_prop`,
     method: "post",
     data: params,
+  });
+
+// 用户签到
+export const doSign = (params: object) =>
+  request({
+    url: `/do_sign`,
+    method: "post",
+    data: params,
+  });
+
+// 获取卖出币种
+export const payCoins = () =>
+  request({
+    url: `/pay_coins`,
+    method: "get",
   });

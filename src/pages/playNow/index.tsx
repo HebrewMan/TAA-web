@@ -10,7 +10,7 @@ import SetPopup from "./popups/setPopup";
 import SpecialPopup from "./popups/specialPopup";
 import SalaryPopup from "./popups/salaryPopup";
 import Introduce from "@/pages/introduce";
-import { Popup, Toast } from "react-vant";
+import { Popup, Toast, Image } from "react-vant";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
@@ -26,11 +26,20 @@ import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import { selectAppSlice, setPopusStatus } from "@/store/slices/appSlice";
 import LoginBtn from "./loginBtn";
 import Notice from "./notice";
-import { selectCatSlice } from "@/store/slices/catSlice";
-
+import {
+  selectCatSlice,
+  setCatInfo,
+  setCatStatus,
+  setDefaultCat,
+} from "@/store/slices/catSlice";
+import catChangeImg from "@/assets/icon/cat_change.svg";
+import { getCatInfo, getCatStatus, selectCat } from "@/api/feature/cat";
+import { useAccount } from "wagmi";
 const PlayNow = () => {
+  const { address } = useAccount();
   const { status, isLogin } = useRootSelector(selectAppSlice);
-  const { catInfo, catStatus } = useRootSelector(selectCatSlice);
+  const { catInfo, catStatus, catList, defaultCat } =
+    useRootSelector(selectCatSlice);
   const nav = useNavigate();
   const menu = [
     { title: "knapsack", img: knapsackImg },
@@ -102,6 +111,28 @@ const PlayNow = () => {
       return;
     }
     dispatch(setPopusStatus(path));
+  };
+
+  const selectCathandle = () => {
+    let index = 0;
+    for (let i = 0; i < catList.length; i++) {
+      if (catList[i].token_id == defaultCat) {
+        if (i < catList.length - 1) {
+          index = i + 1;
+        } else {
+          index = 0;
+        }
+      }
+    }
+    selectCat({ address, tokenid: catList[index].token_id }).then((res) => {
+      dispatch(setDefaultCat(catList[index].token_id));
+    });
+    getCatInfo(catList[index].token_id).then((res: any) => {
+      dispatch(setCatInfo(res));
+    });
+    getCatStatus(catList[index].token_id).then((res: any) => {
+      dispatch(setCatStatus(res));
+    });
   };
 
   let isIntroduce;
@@ -220,8 +251,23 @@ const PlayNow = () => {
           </div>
         )}
         {isLogin && (
-          <div className="cat" onClick={() => setPopup("attibute")}>
-            <img src={catInfo.image} alt="" width={184} />
+          <div className="cat">
+            <Image
+              className="absolute top--8px left--8px z-2"
+              width="184"
+              height="auto"
+              src={catInfo.image}
+              onClick={() => setPopup("attibute")}
+            />
+            {catList.length > 1 && (
+              <Image
+                className="absolute top-150px left-150px z-3"
+                width="36"
+                height="auto"
+                src={catChangeImg}
+                onClick={selectCathandle}
+              />
+            )}
           </div>
         )}
 

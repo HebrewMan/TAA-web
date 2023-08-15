@@ -30,6 +30,7 @@ export interface CatState {
   defaultCat: string;
   catInfo: CatInfo;
   catStatus: CatStatus;
+  catList: Array<any>;
 }
 
 const initialState: CatState = {
@@ -51,6 +52,7 @@ const initialState: CatState = {
     max_exp: 0,
   },
   catStatus: {} as CatStatus,
+  catList: [],
 };
 
 export const catSlice = createSlice({
@@ -68,9 +70,13 @@ export const catSlice = createSlice({
     setCatStatus: (state, action: PayloadAction<any>) => {
       state.catStatus = action.payload;
     },
+    setCatList: (state, action: PayloadAction<any>) => {
+      state.catList = action.payload;
+    },
   },
 });
 
 export const selectCatSlice = (state: RootState) => state.cat;
-export const { setDefaultCat, setCatInfo, setCatStatus } = catSlice.actions;
+export const { setDefaultCat, setCatInfo, setCatStatus, setCatList } =
+  catSlice.actions;
 export default catSlice.reducer;

@@ -1,23 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
 import backLogo from "@/assets/icon/back.svg";
 import claimedLogo from "@/assets/icon/claimed.svg";
 import salaryImg from "@/assets/bakeground/succed-title.png";
-import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
-import { Image } from "react-vant";
-import { getTasks, taskReward } from "@/api/feature/app";
-import { useAccount } from "wagmi";
+import { Image, Swiper } from "react-vant";
+import { doSign, getTaskDetail, getTasks } from "@/api/feature/app";
+import { useAccount, useContractWrite } from "wagmi";
 import device from "current-device";
+import staminaSvg from "@/assets/icon/staminaLogo.svg";
+import charismaSvg from "@/assets/icon/charismaLogo.svg";
+import cleanSvg from "@/assets/icon/cleanLogo.svg";
+import iqSvg from "@/assets/icon/iqLogo.svg";
+import { ArrowLeft, Arrow } from "@react-vant/icons";
+import taapABI from "@/abi/taap.json";
+import { taap } from "@/config/constantAddress";
+import Button from "@/components/Button/index";
 const Tasks = () => {
   const isMobile = device.mobile();
-  const [taskList, setTaskList] = useState([]);
+  const [taskList, setTaskList] = useState<any>([]);
   const [currentIndex, setCurrentIndex] = useState<null | number>(null);
   const [showReward, setShowReward] = useState(false);
-  const [actionItem, setActionItem] = useState({});
+  const [actionItem, setActionItem] = useState<any>({});
   const { address } = useAccount();
   const navigate = useNavigate();
   const handleGoBack = () => navigate(-1);
+  const ref = useRef<any>(null);
+  const { data, isLoading, isSuccess, writeAsync } = useContractWrite({
+    address: taap,
+    abi: taapABI,
+    functionName: "mint",
+  });
+
+  let initialSwipe = 0;
+  const knapsack_img = {
+    stamina: cleanSvg,
+    happiness: charismaSvg,
+    health: staminaSvg,
+    comfort: iqSvg,
+  };
 
   const showClaimHandle = (index: number) => {
     // setCurrentIndex(null)
@@ -26,18 +47,35 @@ const Tasks = () => {
 
   const claimHandle = (index: number) => (event: any) => {
     event.stopPropagation();
-    setActionItem(taskList[index]);
-    setShowReward(true);
+    getTaskDetail({ address }, taskList[index].task_id).then((res) => {
+      setActionItem(res);
+      setShowReward(true);
+    });
   };
 
-  const closeRewardHandle = () => {
-    taskReward({
-      address: address,
-      task_id: actionItem.task_id,
-    }).then((res: any) => {
+  useEffect(() => {
+    if (isSuccess) {
       setShowReward(false);
       setCurrentIndex(null);
       getInitData();
+    }
+  }, [isSuccess]);
+
+  const closeRewardHandle = () => {
+    if (isLoading) {
+      return;
+    }
+    doSign({
+      address,
+      token_id: actionItem.task_award[initialSwipe].tokenid,
+    }).then((res: any) => {
+      writeAsync({
+        args: [
+          actionItem.task_award[initialSwipe].tokenid,
+          actionItem.task_award[initialSwipe].amount,
+          res.signature,
+        ],
+      });
     });
   };
 
@@ -49,6 +87,18 @@ const Tasks = () => {
   useEffect(() => {
     getInitData();
   }, []);
+
+  const swiperChange = (index: any) => {
+    initialSwipe = index;
+  };
+
+  const swiperLeftHandle = () => {
+    ref.current.swipePrev();
+  };
+
+  const swiperRightHandle = () => {
+    ref?.current?.swipeNext();
+  };
 
   return (
     <>
@@ -118,47 +168,70 @@ const Tasks = () => {
       ) : (
         <div className="task-reward overflow-hidden">
           {isMobile && (
-            <div className="back">
-              <img
+            <div className="back z-10 relative">
+              <Image
                 src={backLogo}
-                width={34}
-                height={34}
+                width="34"
+                height="34"
                 alt=""
                 onClick={() => setShowReward(false)}
               />
             </div>
           )}
-          <div className="flex flex-col justify-center items-center h-full butter-sans-text ">
-            <Image
-              className="mb--25px relative z-2"
-              width="285"
-              height="75"
-              src={salaryImg}
-            />
-            <div className="w-255px h-292px rounded-20px bg-#FFD28E px-12px pt-35px pb-14px flex flex-col items-center">
-              <Image
-                className="relative z-2"
-                width="255"
-                height="255"
-                src={actionItem.task_cover}
-              />
-              <div className="daysOne text-20px color-#402209 mt-12px">
-                {actionItem.task_award}
-              </div>
+          <div className="flex flex-col justify-center items-center h-full butter-sans-text relative">
+            <div
+              className="absolute left-10px top-50% z-10"
+              onClick={swiperLeftHandle}
+            >
+              <ArrowLeft className="text-30px" />
             </div>
+            <div
+              className="absolute right-10px top-50% z-10"
+              onClick={swiperRightHandle}
+            >
+              <Arrow className="text-30px" />
+            </div>
+            <Swiper indicator={false} ref={ref} onChange={swiperChange}>
+              {actionItem.task_award.map((task_award: any) => (
+                <Swiper.Item
+                  key={task_award.tokenid}
+                  className="flex flex-col justify-center items-center"
+                >
+                  <Image
+                    className="mb--25px relative z-2"
+                    width="285"
+                    height="75"
+                    src={salaryImg}
+                  />
+                  <div className="w-255px h-292px rounded-20px bg-#FFD28E px-12px pt-35px pb-14px flex flex-col items-center">
+                    <Image
+                      className="relative z-2"
+                      width="255"
+                      height="255"
+                      src={task_award.image}
+                    />
+                    <div className="daysOne text-20px color-#402209 mt-12px flex">
+                      {/* <Image
+                        width="34"
+                        height="auto"
+                        src={knapsack_img[task_award.use]}
+                      /> */}
+                      {/* <span>+{task_award.amount}</span> */}
+                    </div>
+                  </div>
+                </Swiper.Item>
+              ))}
+            </Swiper>
+
             <div className="mt-24px w-278px h-51px relative cursor-pointer">
-              <Image
-                className="absolute left-0"
-                width="278"
-                height="auto"
-                src={salarybtnImg}
-              />
-              <i
-                className="absolute z-2 top-28px  text-after daysOne text-20px font-shadow-black"
+              <Button
+                bgColor1="#AAC211"
+                bgColor2="#bad60f"
+                text="Claim"
+                size="26px"
+                status={isLoading ? 0 : 1}
                 onClick={closeRewardHandle}
-              >
-                Claim
-              </i>
+              ></Button>
             </div>
           </div>
         </div>

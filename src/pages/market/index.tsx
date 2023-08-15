@@ -22,7 +22,7 @@ import { Loading, Popup } from "react-vant";
 import closeSvg from "@/assets/icon/close.svg";
 import { useRootSelector } from "@/store/hooks";
 import { selectAppSlice } from "@/store/slices/appSlice";
-const BuyModal = (props) => {
+const BuyModal = (props: any) => {
   return (
     <div className="buy-modal days-one">
       <Image
@@ -219,7 +219,7 @@ const MarketDetail = (props: {
   );
 };
 
-const AdoptDetail = (props) => {
+const AdoptDetail = (props: any) => {
   const detailData = props.detailData;
   const isMobile = device.mobile();
   const closeSelf = () => {

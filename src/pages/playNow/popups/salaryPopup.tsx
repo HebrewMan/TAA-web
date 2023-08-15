@@ -2,9 +2,34 @@ import salaryImg from "@/assets/bakeground/salary_title.png";
 import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
 import lineImg from "@/assets/icon/line.svg";
 import { Image } from "react-vant";
-export default function salary(props) {
+import Button from "@/components/Button/index";
+import { useRootSelector } from "@/store/hooks";
+import { selectCatSlice } from "@/store/slices/catSlice";
+import { catWorkInfo, claimTaa } from "@/api/feature/cat";
+import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+export default function Salary(props: any) {
+  const { address } = useAccount();
+  const { defaultCat } = useRootSelector(selectCatSlice);
+  const [salary, setSalary] = useState<any>({});
+  const getInitData = () => {
+    catWorkInfo(defaultCat).then((res) => {
+      setSalary(res);
+    });
+  };
+
+  useEffect(() => {
+    getInitData();
+  }, [defaultCat]);
+
+  const onClick = () => {
+    claimTaa({ address, tokenid: defaultCat }).then((res) => {
+      getInitData();
+      props.onClose();
+    });
+  };
   return (
-    <div className="flex flex-col justify-center items-center h-full butter-sans-text ">
+    <div className="flex flex-col justify-center items-center h-full butter-sans-text line-height-none">
       <Image
         className="mb--25px relative z-2"
         width="287"
@@ -19,35 +44,32 @@ export default function salary(props) {
                 Unclaimed Salary:
               </div>
             </div>
-            <div className="text-32px color-#402209 w-168px my-20px">
-              178112345
+            <div className="text-32px color-#402209 w-168px mt-20px mb-30px">
+              {salary.un_salary}
             </div>
             <div className="flex items-end w-168px ">
               <span className="inline-block w-50px font-shadow-black ">
                 Claimed Salary:{" "}
               </span>
-              <span className="color-#402209 ml-20px">11112345</span>
+              <span className="color-#402209 ml-20px leading-10px">
+                {salary.salary}
+              </span>
             </div>
-            <img src={lineImg} alt="" className="mt-20px" />
-            <div className="text-12px color-#402209 text-center mt-10px w-135px">
-              Today's Salary Pool 875
+            <img src={lineImg} alt="" className="mt-30px" />
+            <div className="text-12px color-#402209 text-center mt-10px w-135px leading-20px">
+              Today's Salary Pool {salary.computility}
             </div>
           </div>
         </div>
       </div>
-      <div className="mt-24px w-278px h-60px relative cursor-pointer">
-        <Image
-          className="absolute left-0"
-          width="278"
-          height="auto"
-          src={salarybtnImg}
-        />
-        <i
-          className="absolute z-2 top-28px  text-after text-20px font-shadow-black"
-          onClick={props.onClose}
-        >
-          Claim
-        </i>
+      <div className="mt-24px w-278px h-50px relative cursor-pointer">
+        <Button
+          bgColor1="#AAC211"
+          bgColor2="#bad60f"
+          text="Claim"
+          size="24px"
+          onClick={onClick}
+        ></Button>
       </div>
     </div>
   );

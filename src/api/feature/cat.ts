@@ -21,10 +21,18 @@ export const getCatStatus = (tokenid: string) =>
     method: "get",
   });
 
-// 猫的属性值
+// 开始挖矿
 export const startWork = (params: object) =>
   request({
     url: `/start_work`,
+    method: "post",
+    data: params,
+  });
+
+// 关闭挖矿
+export const stopWork = (params: object) =>
+  request({
+    url: `/stop_work`,
     method: "post",
     data: params,
   });
@@ -41,6 +49,21 @@ export const setCatName = (params: object) =>
 export const selectCat = (params: object) =>
   request({
     url: `/select_cat`,
+    method: "post",
+    data: params,
+  });
+
+// 猫工作详情
+export const catWorkInfo = (tokenid: string) =>
+  request({
+    url: `/cat_work_info/${tokenid}`,
+    method: "get",
+  });
+
+// 领取挖矿收益
+export const claimTaa = (params: object) =>
+  request({
+    url: `/claim_taa`,
     method: "post",
     data: params,
   });
