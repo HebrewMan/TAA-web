@@ -31,7 +31,7 @@ export default function index(props: { item: any }) {
             height="24"
             src={taaImg}
           />
-          <div className="w-54px h-16px bg-#ECA756 rounded-8px days-one box-border leading-16px pl-8px color-#402209 text-13px">
+          <div className="w-54px h-16px text-center bg-#ECA756 rounded-8px days-one box-border leading-16px pl-8px color-#402209 text-13px">
             10
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function index(props: { item: any }) {
             height="24"
             src={ethImg}
           />
-          <div className="w-54px h-16px bg-#FFAD7E rounded-8px days-one box-border leading-16px pl-8px color-#402209 text-13px">
+          <div className="w-54px h-16px text-center bg-#FFAD7E rounded-8px days-one box-border leading-16px pl-8px color-#402209 text-13px">
             10
           </div>
         </div>

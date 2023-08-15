@@ -95,7 +95,7 @@ const PlayNow = () => {
   }, [catStatus]);
 
   const routerHandle = (path: string) => {
-    if (!isLogin) {
+    if (!isLogin || !address) {
       return;
     }
     if (path == "salary") {
@@ -234,7 +234,7 @@ const PlayNow = () => {
 
         {/* <Popup visible={ popup == 'Introduce'} style={{background:'none', height: '100%'}}  position='top'> */}
         {isIntroduce}
-        {isLogin && (
+        {isLogin && address && (
           <div className="life-attribute">
             <img src={groupSvg} alt="" className="group-left" />
             <img src={groupSvg} alt="" className="group-right" />

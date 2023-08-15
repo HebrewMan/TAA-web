@@ -48,7 +48,7 @@ export default function UseWeb3Provider({ children }: any) {
   }, []);
 
   useEffect(() => {
-    if (defaultCat) {
+    if (defaultCat && address) {
       fetchCatInfo(defaultCat);
       fetchCatStatus(defaultCat);
       clearInterval(getCatStatusTimer);
@@ -56,11 +56,12 @@ export default function UseWeb3Provider({ children }: any) {
         fetchCatStatus(defaultCat);
       }, 1000 * 60);
     }
-  }, [defaultCat]);
+  }, [defaultCat, address]);
 
   useEffect(() => {
     if (!address) {
       dispatch(setIsLogin(false));
+      return;
     }
     if (flag) {
       return;

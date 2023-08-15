@@ -9,9 +9,12 @@ import introduceImg from "@/assets/icon/introduce.png";
 import baseCurImg from "@/assets/icon/base-cur.png";
 
 import "./style/footer.scss";
-import { useRootDispatch } from "@/store/hooks";
-import { setPopusStatus } from "@/store/slices/appSlice";
+import { useRootDispatch, useRootSelector } from "@/store/hooks";
+import { selectAppSlice, setPopusStatus } from "@/store/slices/appSlice";
+import { useAccount } from "wagmi";
 const Footer = () => {
+  const { address } = useAccount();
+  const { isLogin } = useRootSelector(selectAppSlice);
   let { pathname } = useLocation();
   const navigate = useNavigate();
   const dispatch = useRootDispatch();
@@ -19,6 +22,9 @@ const Footer = () => {
   const [nav, setNav] = useState(path);
 
   const routerHandle = (path: string) => {
+    if (!isLogin || !address) {
+      return;
+    }
     if (window.screen.availWidth <= 1000) {
       setNav(path);
       navigate(`/${path.toLowerCase()}`);
