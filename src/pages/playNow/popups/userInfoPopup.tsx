@@ -7,7 +7,10 @@ import { getUserInfo, setUserName } from "@/api/feature/app";
 import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import { selectAppSlice, setInfoData } from "@/store/slices/appSlice";
 import taaImg from "@/assets/bakeground/taa.png";
+import titleLineImg from "@/assets/bakeground/user-title.svg";
+import titleBgImg from "@/assets/bakeground/title-bg.png";
 import { Image } from "react-vant";
+import Button from "@/components/Button/index";
 
 const UserInfoPopup = (props: any) => {
   const { address } = useAccount();
@@ -47,65 +50,58 @@ const UserInfoPopup = (props: any) => {
   return (
     <React.Fragment>
       <div className="user-info-popup">
-        <span className="font-shadow-black">Title</span>
+        <Image
+          className="title-line"
+          width="155"
+          height="253"
+          src={titleLineImg}
+        />
+        <Image
+          className="title-bg"
+          width="186"
+          height={"auto"}
+          src={titleBgImg}
+        />
         <img
-          className="close"
+          className="close z-2"
           src={closeSvg}
           width={46}
           alt=""
           onClick={props.onClose}
         />
-        <div className="user-info">
-          <div
-            className="shadow-cur"
-            style={{ boxShadow: "0px 6px 0px 0px #E2AA73" }}
-          >
-            <img className="avater" src={avaterSvg} width={40} alt="" />
-            <div className="info">
-              <p className="font-shadow-black text-16px">
-                {!isSetUsername ? (
-                  name
-                ) : (
-                  <input
-                    type="text"
-                    className="bg-transparent border-0 border-b font-shadow-black w-110px"
-                    value={username}
-                    onChange={(e) => changeHandle(e)}
+        <div className="user-info-wrap">
+          <div className="user-info">
+            <div
+              className="shadow-cur"
+              style={{ boxShadow: "0px 6px 0px 0px #E2AA73" }}
+            >
+              <img className="avater" src={avaterSvg} width={40} alt="" />
+              <div className="info">
+                <p className="font-shadow-black text-16px">
+                  {!isSetUsername ? (
+                    name
+                  ) : (
+                    <input
+                      type="text"
+                      className="bg-transparent border-0 border-b font-shadow-black w-110px"
+                      value={username}
+                      onChange={(e) => changeHandle(e)}
+                    />
+                  )}
+                  <img
+                    src={penSvg}
+                    width={16}
+                    alt=""
+                    onClick={setUserNameHandle}
+                    className="ml-7px"
                   />
-                )}
-                <img
-                  src={penSvg}
-                  width={16}
-                  alt=""
-                  onClick={setUserNameHandle}
-                  className="ml-7px"
-                />
-              </p>
-              <p className="text-#402209 text-12px">
-                {addressHandle(address as string)}
-              </p>
+                </p>
+                <p className="text-#402209 text-12px">
+                  {addressHandle(address as string)}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="wrap-sign">
-          <div className="relative">
-            <Image
-              className="absolute left--20px top--7px"
-              width="48"
-              height="45"
-              src={taaImg}
-            />
-            <div className="sign-box">10</div>
-          </div>
-          {/* <div className="relative mt-30px">
-            <Image
-              className="absolute left--20px top--7px"
-              width="48"
-              height="45"
-              src={ethImg}
-            />
-            <div className="sign-box days-one">10</div>
-          </div> */}
         </div>
       </div>
     </React.Fragment>

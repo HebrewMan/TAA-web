@@ -5,8 +5,25 @@ import musicSvg from "@/assets/icon/music.svg";
 import downSvg from "@/assets/icon/down.svg";
 
 import BtnWithShadow from "@/components/btnWithShadow";
+import { useRootSelector } from "@/store/hooks";
+import { selectAppSlice } from "@/store/slices/appSlice";
 
 const SetPopup = (props: any) => {
+  const { isLogin } = useRootSelector(selectAppSlice);
+
+  const logout = () => {
+    localStorage.clear();
+    props.onClose();
+    location.reload();
+  };
+
+  let [musicSwitch, setMusicSwitch] = useState(false);
+  const [position, setPosition] = useState(0);
+  const [btnColors, setBtnColors] = useState({
+    outerColor: "#A02424",
+    shadowColor: "linear-gradient(0deg, #D64F4F, #D64F4F), #BAD60F",
+  });
+
   const btn = {
     logo: "",
     text: "Setting",
@@ -26,15 +43,6 @@ const SetPopup = (props: any) => {
     width: 120,
   };
 
-  const logout = () => {};
-
-  let [musicSwitch, setMusicSwitch] = useState(false);
-  const [position, setPosition] = useState(0);
-  const [btnColors, setBtnColors] = useState({
-    outerColor: "#A02424",
-    shadowColor: "linear-gradient(0deg, #D64F4F, #D64F4F), #BAD60F",
-  });
-
   const setMusicSwitchHandle = () => {
     setMusicSwitch((musicSwitch = !musicSwitch));
     setPosition(musicSwitch ? 90 : 0);
@@ -50,7 +58,7 @@ const SetPopup = (props: any) => {
 
   return (
     <React.Fragment>
-      <div className="share-popup set-popup" style={{ height: "260px" }}>
+      <div className="share-popup set-popup" style={{ height: "200px" }}>
         <BtnWithShadow item={btn} />
         <img
           className="close"
@@ -83,7 +91,7 @@ const SetPopup = (props: any) => {
           />
         </div>
 
-        <div className="switch" style={{ marginTop: "25px" }}>
+        {/* <div className="switch" style={{ marginTop: "25px" }}>
           <span>Language</span>
 
           <div className="lang-btn" onClick={setMusicSwitchHandle}>
@@ -92,13 +100,15 @@ const SetPopup = (props: any) => {
               <img src={langBtn.logo} width={12} height={12} alt="" />
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="btn">
-          <div className="text font-shadow-block" onClick={logout}>
-            Log out
+        {isLogin && (
+          <div className="btn">
+            <div className="text font-shadow-block" onClick={logout}>
+              Log out
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </React.Fragment>
   );

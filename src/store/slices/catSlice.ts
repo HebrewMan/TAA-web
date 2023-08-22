@@ -17,6 +17,7 @@ export interface CatInfo {
   work_status: number;
   exp: number;
   max_exp: number;
+  taa: string;
 }
 
 export interface CatStatus {
@@ -50,6 +51,7 @@ const initialState: CatState = {
     work_status: 0,
     exp: 0,
     max_exp: 0,
+    taa: "",
   },
   catStatus: {} as CatStatus,
   catList: [],

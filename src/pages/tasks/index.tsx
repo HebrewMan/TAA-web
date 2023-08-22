@@ -4,14 +4,10 @@ import "./index.scss";
 import backLogo from "@/assets/icon/back.svg";
 import claimedLogo from "@/assets/icon/claimed.svg";
 import salaryImg from "@/assets/bakeground/succed-title.png";
-import { Image, Swiper } from "react-vant";
+import { Image, Swiper, Toast } from "react-vant";
 import { doSign, getTaskDetail, getTasks } from "@/api/feature/app";
 import { useAccount, useContractWrite } from "wagmi";
 import device from "current-device";
-import staminaSvg from "@/assets/icon/staminaLogo.svg";
-import charismaSvg from "@/assets/icon/charismaLogo.svg";
-import cleanSvg from "@/assets/icon/cleanLogo.svg";
-import iqSvg from "@/assets/icon/iqLogo.svg";
 import { ArrowLeft, Arrow } from "@react-vant/icons";
 import taapABI from "@/abi/taap.json";
 import { taap } from "@/config/constantAddress";
@@ -33,12 +29,6 @@ const Tasks = () => {
   });
 
   let initialSwipe = 0;
-  const knapsack_img = {
-    stamina: cleanSvg,
-    happiness: charismaSvg,
-    health: staminaSvg,
-    comfort: iqSvg,
-  };
 
   const showClaimHandle = (index: number) => {
     // setCurrentIndex(null)
@@ -61,6 +51,21 @@ const Tasks = () => {
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (isLoading) {
+      Toast.loading({
+        message: "Loading",
+        duration: 60000,
+        overlay: true,
+        overlayStyle: {
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+        },
+      });
+    } else {
+      Toast.clear();
+    }
+  }, [isLoading]);
+
   const closeRewardHandle = () => {
     if (isLoading) {
       return;
@@ -70,11 +75,7 @@ const Tasks = () => {
       token_id: actionItem.task_award[initialSwipe].tokenid,
     }).then((res: any) => {
       writeAsync({
-        args: [
-          actionItem.task_award[initialSwipe].tokenid,
-          actionItem.task_award[initialSwipe].amount,
-          res.signature,
-        ],
+        args: [res.tokenid, res.amount, res.signature],
       });
     });
   };
@@ -178,7 +179,7 @@ const Tasks = () => {
               />
             </div>
           )}
-          <div className="flex flex-col justify-center items-center h-full butter-sans-text relative">
+          <div className="important-flex flex-col justify-center items-center h-full butter-sans-text relative">
             <div
               className="absolute left-10px top-50% z-10"
               onClick={swiperLeftHandle}

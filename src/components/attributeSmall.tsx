@@ -1,4 +1,3 @@
-
 import "./style/attribute.scss";
 import device from "current-device";
 const Attibute = (props: any) => {

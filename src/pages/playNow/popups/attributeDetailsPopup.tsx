@@ -5,13 +5,14 @@ import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import penSvg from "@/assets/icon/pen.svg";
-
+import closeSvg from "@/assets/icon/close.svg";
 import AttibuteSmall from "@/components/attributeSmall";
 import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import { selectCatSlice, setCatInfo } from "@/store/slices/catSlice";
 import { getCatInfo, setCatName } from "@/api/feature/cat";
 import { useAccount } from "wagmi";
-
+import { Image } from "react-vant";
+import taaImg from "@/assets/bakeground/taa.png";
 const AttibuteDetails = (props: any) => {
   const { address } = useAccount();
   const { catInfo, catStatus } = useRootSelector(selectCatSlice);
@@ -79,8 +80,15 @@ const AttibuteDetails = (props: any) => {
 
   return (
     <React.Fragment>
-      <div className="attibute-details-popup" onClick={props.onClose}>
+      <div className="attibute-details-popup">
         <div className="main">
+          <img
+            className="close absolute right--16px top-100px z-2"
+            src={closeSvg}
+            width={46}
+            alt=""
+            onClick={props.onClose}
+          />
           <div className="title font-shadow-black">Cat Detail</div>
           <img className="cat" src={catInfo.image} alt="" />
           <p className="name" onClick={stopPropagation}>
@@ -89,7 +97,7 @@ const AttibuteDetails = (props: any) => {
             ) : (
               <input
                 type="text"
-                className="bg-transparent border-0 border-b w-110px h-26px text-28px color-#213547"
+                className="bg-transparent border-0 border-b w-250px h-26px text-28px color-#213547"
                 value={username}
                 onChange={(e) => changeHandle(e)}
               />
@@ -117,9 +125,17 @@ const AttibuteDetails = (props: any) => {
         </div>
         <div className="attibutes">
           <div className="btn" style={{ boxShadow: "0px 5px 0px 0px #E2AA73" }}>
-            {attibute_list.map((item) => (
-              <img src={item.typeImg} width={48} alt="" key={item.typeImg} />
-            ))}
+            <div className="wrap-sign">
+              <div className="h-45px relative flex items-center">
+                <Image
+                  className="important-absolute left--20px top-0"
+                  width="48"
+                  height="45"
+                  src={taaImg}
+                />
+                <div className="sign-box">{catInfo.taa}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -2,21 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
 import backLogo from "@/assets/icon/back.svg";
-import { Image, Popup } from "react-vant";
+import { Image, Popup, Toast } from "react-vant";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import paginationImg from "@/assets/icon/pagination.svg";
 import { getMybag, useProp as usePropFetch } from "@/api/feature/app";
-import {
-  useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useSendTransaction,
-  useWaitForTransaction,
-} from "wagmi";
-import { encodeFunctionData, parseEther } from "viem";
+import { useAccount, useContractWrite } from "wagmi";
 import device from "current-device";
 import closeSvg from "@/assets/icon/close.svg";
 import taapAbi from "@/abi/taap.json";
@@ -24,6 +17,13 @@ import Button from "@/components/Button/index";
 import { useRootSelector } from "@/store/hooks";
 import { selectCatSlice } from "@/store/slices/catSlice";
 import { useActivate, useUnactivate } from "react-activation";
+
+const knapsack_img: any = {
+  stamina: cleanSvg,
+  happiness: charismaSvg,
+  health: staminaSvg,
+  comfort: iqSvg,
+};
 const UseModal = (props: any) => {
   const actionKnapsack = props.detailData;
   const { address } = useAccount();
@@ -38,20 +38,35 @@ const UseModal = (props: any) => {
 
   useEffect(() => {
     if (isSuccess) {
+      Toast.clear();
       props.closeHandle();
     }
+    if (isLoading) {
+      Toast.loading({
+        message: "Loading",
+        duration: 60000,
+        overlay: true,
+        overlayStyle: {
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+        },
+      });
+    } else {
+      Toast.clear();
+    }
   }, [data, isLoading, isSuccess]);
-  const knapsack_img: any = {
-    stamina: cleanSvg,
-    happiness: charismaSvg,
-    health: staminaSvg,
-    comfort: iqSvg,
-  };
 
   const burnHandle = () => {
     if (isLoading) {
       return;
     }
+    Toast.loading({
+      message: "Loading",
+      duration: 60000,
+      overlay: true,
+      overlayStyle: {
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+      },
+    });
     write();
     // eslint-disable-next-line react-hooks/rules-of-hooks
     usePropFetch({
@@ -211,9 +226,15 @@ const Knapsack = () => {
                 key={item.token_id}
               >
                 <div className="item" onClick={() => mallHandle(item)}>
+                  <Image
+                    className="important-absolute z-2 left-10px bottom-10px"
+                    width="34"
+                    height="auto"
+                    src={knapsack_img[item.use]}
+                  />
                   <Image width="100%" height="100%" src={item.image} />
                 </div>
-                <span className="font-shadow-black">2</span>
+                <span className="font-shadow-black">{item.num}</span>
               </div>
             ))}
           </div>

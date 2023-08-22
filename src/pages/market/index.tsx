@@ -8,7 +8,7 @@ import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import { getMarketsCats, getMarketsProp } from "@/api/feature/market";
 import device from "current-device";
-import { getCatStatus } from "@/api/feature/cat";
+import { getCatInfo } from "@/api/feature/cat";
 import backLogo from "@/assets/icon/back.svg";
 import AttibuteSmall from "@/components/attributeSmall";
 import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
@@ -22,7 +22,75 @@ import { Loading, Popup } from "react-vant";
 import closeSvg from "@/assets/icon/close.svg";
 import { useRootSelector } from "@/store/hooks";
 import { selectAppSlice } from "@/store/slices/appSlice";
+import { useAccount, useContractRead, useContractWrite } from "wagmi";
+import { market, taak } from "@/config/constantAddress";
+import marketABI from "@/abi/MarketPlaceTAA.json";
+import failImg from "@/assets/icon/fail.svg";
+import successImg from "@/assets/icon/success.svg";
+import taakABI from "@/abi/taak.json";
 const BuyModal = (props: any) => {
+  const { address } = useAccount();
+  const [isLoading, setIsloading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { data: isApprovedData, isLoading: isApprovedLoading } =
+    useContractRead({
+      address: taak,
+      abi: taakABI,
+      functionName: "isApprovedForAll",
+      args: [address, taak],
+    });
+
+  const {
+    data: approveData,
+    isLoading: approveLoading,
+    isSuccess: approveSuccess,
+    writeAsync: approveWriteAsync,
+  } = useContractWrite({
+    address: taak,
+    abi: taakABI,
+    functionName: "setApprovalForAll",
+  });
+  const {
+    data: marketData,
+    isLoading: marketIsLoading,
+    isSuccess: marketIsSuccess,
+    writeAsync: marketWriteAsync,
+  } = useContractWrite({
+    address: market,
+    abi: marketABI.abi,
+    functionName: "buyOrder",
+  });
+
+  useEffect(() => {
+    console.log(marketData, isApprovedData);
+  }, [marketData, isApprovedData]);
+
+  useEffect(() => {
+    if (marketIsLoading || approveLoading) {
+      setIsloading(true);
+    } else {
+      setIsloading(false);
+    }
+    if (marketIsSuccess || approveSuccess) {
+      setIsSuccess(true);
+    } else {
+      setIsSuccess(false);
+    }
+  }, [marketIsLoading, marketIsSuccess, approveLoading, approveSuccess]);
+
+  useEffect(() => {
+    if (!isApprovedData) {
+      approveWriteAsync({
+        args: [taak, true],
+      });
+    } else {
+      if (!!marketWriteAsync) {
+        marketWriteAsync({
+          args: [props.carInfo.order_info.order_id],
+        });
+      }
+    }
+  }, [isApprovedData, marketWriteAsync]);
   return (
     <div className="buy-modal days-one">
       <Image
@@ -36,10 +104,21 @@ const BuyModal = (props: any) => {
         <Image width="200" height="auto" src={buyTitleImg} />
       </div>
       <div className="modal-content">
-        <Loading color="#402209" size="50px" />
-        <span>Loading</span>
+        {isLoading ? (
+          <>
+            <Loading color="#402209" size="50px" />
+            <span>Loading</span>
+          </>
+        ) : isSuccess ? (
+          <Image width="50" height="auto" src={successImg} />
+        ) : (
+          <Image width="50" height="auto" src={failImg} />
+        )}
       </div>
-      <div className="w-215px h-60px relative cursor-pointer mt-50px ">
+      <div
+        className="w-215px h-60px relative cursor-pointer mt-50px "
+        onClick={() => props.closeHandle("")}
+      >
         <Image
           className="absolute left-0"
           width="215"
@@ -47,22 +126,19 @@ const BuyModal = (props: any) => {
           src={tradeBtnImg}
         />
         <i className="absolute top-27px text-after text-26px font-shadow-black2">
-          OK
+          {isLoading ? ". . ." : "OK"}
         </i>
       </div>
     </div>
   );
 };
 
-const MarketDetail = (props: {
-  detailData: any;
-  closeHandle: any;
-  buyHandle: any;
-}) => {
+const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
   const { isLogin } = useRootSelector(selectAppSlice);
   const isMobile = device.mobile();
   const detailData = props.detailData;
-
+  const [carInfo, setCarInfo] = useState<any>({});
+  const [popup, setPopup] = useState("");
   const [attibute_list, setAttibute_list] = useState([
     {
       typeImg: staminaSvg,
@@ -88,11 +164,12 @@ const MarketDetail = (props: {
 
   const initData = () => {
     if (!detailData.token_id) return;
-    getCatStatus(detailData.token_id).then((res: any) => {
-      attibute_list[3].value = res.intellect;
+    getCatInfo(detailData.token_id).then((res: any) => {
+      attibute_list[3].value = res.comfort;
       attibute_list[2].value = res.stamina;
-      attibute_list[0].value = res.comfort;
-      attibute_list[1].value = res.charm;
+      attibute_list[0].value = res.health;
+      attibute_list[1].value = res.happiness;
+      setCarInfo(res);
       setAttibute_list([...attibute_list]);
     });
   };
@@ -201,7 +278,7 @@ const MarketDetail = (props: {
         {isLogin && (
           <div
             className="w-330px h-60px relative cursor-pointer mt-30px "
-            onClick={() => props.buyHandle("buy")}
+            onClick={() => setPopup("buy")}
           >
             <Image
               className="absolute left-0"
@@ -215,6 +292,14 @@ const MarketDetail = (props: {
           </div>
         )}
       </div>
+
+      <Popup
+        visible={popup == "buy"}
+        style={{ background: "none", height: "100%" }}
+        position="top"
+      >
+        <BuyModal carInfo={carInfo} closeHandle={setPopup}></BuyModal>
+      </Popup>
     </div>
   );
 };
@@ -290,7 +375,6 @@ const NFTMarket = (props: {
 
   const getInitData = () => {
     getMarketsCats().then((res: any) => {
-      console.log(res);
       setmarketData(res);
     });
   };
@@ -446,11 +530,10 @@ const NFTAdopt = (props: {
   );
 };
 
-const MyNFT = () => {
+const Market = () => {
   const [type, setType] = useState("Market");
   const [showDetail, setShowDetail] = useState("");
   const [detailData, setDetailData] = useState({});
-  const [popup, setPopup] = useState("");
 
   return (
     <>
@@ -461,7 +544,6 @@ const MyNFT = () => {
         <MarketDetail
           detailData={detailData}
           closeHandle={setShowDetail}
-          buyHandle={setPopup}
         ></MarketDetail>
       </div>
       <div
@@ -512,15 +594,8 @@ const MyNFT = () => {
           closeHandle={setShowDetail}
         ></AdoptDetail>
       </div>
-      <Popup
-        visible={popup == "buy"}
-        style={{ background: "none", height: "100%" }}
-        position="top"
-      >
-        <BuyModal detailData={detailData} closeHandle={setPopup}></BuyModal>
-      </Popup>
     </>
   );
 };
 
-export default MyNFT;
+export default Market;

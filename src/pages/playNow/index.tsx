@@ -253,15 +253,15 @@ const PlayNow = () => {
         {isLogin && (
           <div className="cat">
             <Image
-              className="absolute top--8px left--8px z-2"
-              width="184"
+              className="absolute top--8px left-0px z-2"
+              width="400"
               height="auto"
               src={catInfo.image}
               onClick={() => setPopup("attibute")}
             />
             {catList.length > 1 && (
               <Image
-                className="absolute top-150px left-150px z-3"
+                className="important-absolute top-320px left-275px z-3"
                 width="36"
                 height="auto"
                 src={catChangeImg}

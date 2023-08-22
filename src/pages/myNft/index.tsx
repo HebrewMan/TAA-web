@@ -85,6 +85,7 @@ const SellModal = (props: any) => {
       setMarketsOption(result);
     });
   };
+
   useEffect(() => {
     getInitData();
   }, []);
@@ -92,6 +93,7 @@ const SellModal = (props: any) => {
   useEffect(() => {
     if (marketIsSuccess) {
       props.setPopup("");
+      Toast.clear();
     }
   }, [marketIsSuccess]);
 
@@ -113,6 +115,15 @@ const SellModal = (props: any) => {
       Toast.info("请输入价格");
       return;
     }
+
+    Toast.loading({
+      message: "Loading",
+      duration: 60000,
+      overlay: true,
+      overlayStyle: {
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+      },
+    });
     if (approveLoading || marketIsLoading) return;
 
     if (!isApprovedData) {
@@ -140,8 +151,13 @@ const SellModal = (props: any) => {
         height="46"
         onClick={() => props.setPopup("")}
       />
-      <div className="detail-title">
-        <Image width="200" height="auto" src={buyTitleImg} />
+      <div className="detail-title w-200px h-55px">
+        <Button
+          bgColor1="#a44513"
+          bgColor2="#c6601d"
+          text="Sell"
+          size="24px"
+        ></Button>
       </div>
       {marketIsLoading ? (
         <div className="modal-content">
@@ -183,13 +199,22 @@ const CatDetail = (props: any) => {
   const detailData = props.detailData;
   const [catInfo, setCatInfo] = useState({});
   const [popup, setPopup] = useState("");
-  const { defaultCat } = useRootSelector(selectCatSlice);
+  const {
+    data: marketData,
+    isLoading: marketIsLoading,
+    isSuccess: marketIsSuccess,
+    writeAsync,
+  } = useContractWrite({
+    address: market,
+    abi: marketABI.abi,
+    functionName: "cancelOrder",
+  });
 
   useEffect(() => {
-    getCatInfo(defaultCat).then((res: any) => {
+    getCatInfo(detailData.token_id).then((res: any) => {
       setCatInfo(res);
     });
-  }, [defaultCat]);
+  }, [detailData.token_id]);
 
   const [attibute_list, setAttibute_list] = useState([
     {
@@ -232,7 +257,35 @@ const CatDetail = (props: any) => {
     props.closeHandle();
   };
 
+  useEffect(() => {
+    if (marketIsSuccess) {
+      closeSelf();
+      Toast.success("cancel success");
+    }
+  }, [marketIsSuccess]);
+
+  useEffect(() => {
+    if (marketIsLoading) {
+      Toast.loading({
+        message: "Loading",
+        duration: 60000,
+        overlay: true,
+        overlayStyle: {
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+        },
+      });
+    } else {
+      Toast.clear();
+    }
+  }, [marketIsLoading]);
+
   const openModal = () => {
+    if (detailData.is_owners == 0) {
+      writeAsync({
+        args: [detailData.order_info.order_id],
+      });
+      return;
+    }
     setPopup("sell");
   };
 
@@ -300,11 +353,11 @@ const CatDetail = (props: any) => {
             </div>
           </div>
           <div className="content-border2"></div>
-          <div className="w-330px h-60px relative cursor-pointer mt-490px ">
+          <div className="w-330px h-60px relative cursor-pointer mt-460px">
             <Button
               bgColor1="#AAC211"
               bgColor2="#bad60f"
-              text="Sell"
+              text={detailData.is_owners == 1 ? "Sell" : "Cancel Sell"}
               size="26px"
               onClick={openModal}
             ></Button>
@@ -390,7 +443,9 @@ const MyNFT = () => {
                   className="top relative"
                   onClick={() => catDetailHandle(item)}
                 >
-                  <span className="absolute z-2 left-0px top-0">Resting</span>
+                  <span className="absolute z-2 left-0px top-0">
+                    {item.is_owners == 1 ? "Resting" : "OnSell"}
+                  </span>
                   <Image
                     className="important-absolute left-0 top-0"
                     width="135"
@@ -400,8 +455,8 @@ const MyNFT = () => {
                 </div>
                 <div className="bottom">
                   <span className="days-one">{item.name}</span>
-                  <span className="days-one">#001</span>
-                  <div className="ml-auto">
+                  <span className="days-one">#{item.token_id}</span>
+                  {/* <div className="ml-auto">
                     <Switch
                       defaultChecked={item.work_status}
                       size="12px"
@@ -409,7 +464,7 @@ const MyNFT = () => {
                       inactiveColor="#935C33"
                       onChange={(val) => switchChange(val, item)}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}

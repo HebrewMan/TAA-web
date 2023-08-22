@@ -57,7 +57,7 @@ export default function Salary(props: any) {
             </div>
             <img src={lineImg} alt="" className="mt-30px" />
             <div className="text-12px color-#402209 text-center mt-10px w-135px leading-20px">
-              Today's Salary Pool {salary.computility}
+              Today's Salary Pool {salary.total_salary}
             </div>
           </div>
         </div>

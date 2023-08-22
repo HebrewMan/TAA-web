@@ -106,6 +106,7 @@
   height: 100vh;
   background: #fcd8cd;
   padding-bottom: 40px;
+  box-sizing: border-box;
   .detail-title {
     display: flex;
     position: relative;
@@ -127,7 +128,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 456px;
+    height: auto;
     .top-line-left {
       position: absolute;
       top: -100px;

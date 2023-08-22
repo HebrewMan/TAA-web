@@ -37,3 +37,7 @@
 .days-one {
   font-family: "Days One" !important;
 }
+
+.rv-image__img {
+  width: 100%;
+}
