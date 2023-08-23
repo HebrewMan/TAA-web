@@ -19,6 +19,7 @@ service.interceptors.response.use(
     let code = response.data.code;
     if (code !== 1) {
       Toast.info(response.data.msg || "请求失败");
+      return Promise.reject(response.data.msg);
     }
     return Promise.resolve(response.data);
   },

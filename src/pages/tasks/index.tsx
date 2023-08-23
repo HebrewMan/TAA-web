@@ -196,7 +196,7 @@ const Tasks = () => {
               {actionItem.task_award.map((task_award: any) => (
                 <Swiper.Item
                   key={task_award.tokenid}
-                  className="flex flex-col justify-center items-center"
+                  className="important-flex flex-col justify-center items-center"
                 >
                   <Image
                     className="mb--25px relative z-2"

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
 import Attibute from "@/components/attribute";
@@ -35,7 +35,12 @@ import {
 import catChangeImg from "@/assets/icon/cat_change.svg";
 import { getCatInfo, getCatStatus, selectCat } from "@/api/feature/cat";
 import { useAccount } from "wagmi";
+import { useActivate, useUnactivate } from "react-activation";
+import device from "current-device";
+
+let catTimer: any = null;
 const PlayNow = () => {
+  const isMobile = device.mobile();
   const { address } = useAccount();
   const { status, isLogin } = useRootSelector(selectAppSlice);
   const { catInfo, catStatus, catList, defaultCat } =
@@ -94,11 +99,43 @@ const PlayNow = () => {
     setAttibute_list([...attibute_list]);
   }, [catStatus]);
 
+  const fetchCatInfo = useCallback((tokenid: any) => {
+    getCatInfo(tokenid).then((res: any) => {
+      dispatch(setCatInfo(res));
+    });
+  }, []);
+  const fetchCatStatus = useCallback((defaultCat: any) => {
+    getCatStatus(defaultCat).then((res: any) => {
+      dispatch(setCatStatus(res));
+    });
+  }, []);
+
+  const timeCatInfo = () => {
+    clearInterval(catTimer);
+    fetchCatInfo(defaultCat);
+    fetchCatStatus(defaultCat);
+    catTimer = setInterval(() => {
+      timeCatInfo();
+    }, 5000);
+  };
+
+  useEffect(() => {
+    timeCatInfo();
+  }, []);
+
+  useActivate(() => {
+    timeCatInfo();
+  });
+
+  useUnactivate(() => {
+    clearInterval(catTimer);
+  });
+
   const routerHandle = (path: string) => {
     if (!isLogin || !address) {
       return;
     }
-    if (path == "salary") {
+    if (path == "salary" && isMobile) {
       setPopup(path);
       return;
     }
@@ -126,12 +163,12 @@ const PlayNow = () => {
     }
     selectCat({ address, tokenid: catList[index].token_id }).then((res) => {
       dispatch(setDefaultCat(catList[index].token_id));
-    });
-    getCatInfo(catList[index].token_id).then((res: any) => {
-      dispatch(setCatInfo(res));
-    });
-    getCatStatus(catList[index].token_id).then((res: any) => {
-      dispatch(setCatStatus(res));
+      getCatInfo(catList[index].token_id).then((res: any) => {
+        dispatch(setCatInfo(res));
+      });
+      getCatStatus(catList[index].token_id).then((res: any) => {
+        dispatch(setCatStatus(res));
+      });
     });
   };
 
@@ -216,10 +253,12 @@ const PlayNow = () => {
             popup == "Market" ||
             popup == "MyNFT" ||
             popup == "knapsack" ||
-            popup == "tasks"
+            popup == "tasks" ||
+            (popup == "salary" && !isMobile)
           }
           style={{ background: "none", height: "100%" }}
           position="top"
+          destroyOnClose={true}
         >
           <SpecialPopup popupStatus={status} onClose={onClose} />
         </Popup>

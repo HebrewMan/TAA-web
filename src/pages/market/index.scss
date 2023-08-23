@@ -17,6 +17,7 @@
     box-sizing: border-box;
 
     .metu-box {
+      width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -218,7 +219,7 @@
         padding-top: 14px;
         .sign-box {
           border: 3px solid #402209;
-          width: 100px;
+          width: 115px;
           height: 31px;
           border-radius: 16px;
           line-height: 25px;

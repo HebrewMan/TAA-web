@@ -6,7 +6,6 @@ import {
   getCatInfo,
   getCatStatus,
   getMyCats,
-  selectCat,
   startWork,
   stopWork,
 } from "@/api/feature/cat";
@@ -18,12 +17,10 @@ import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import AttibuteSmall from "@/components/attributeSmall";
-import buyTitleImg from "@/assets/bakeground/buy-title.png";
 import TopLineImg from "@/assets/bakeground/top-line.svg";
 import { Loading } from "react-vant";
 import { useActivate, useUnactivate } from "react-activation";
-import { useRootDispatch, useRootSelector } from "@/store/hooks";
-import { selectCatSlice, setDefaultCat } from "@/store/slices/catSlice";
+import { useRootDispatch } from "@/store/hooks";
 import Button from "@/components/Button/index";
 import marketABI from "@/abi/MarketPlaceTAA.json";
 import taakABI from "@/abi/taak.json";
@@ -249,10 +246,6 @@ const CatDetail = (props: any) => {
     });
   };
 
-  useEffect(() => {
-    getInitData();
-  }, []);
-
   const closeSelf = () => {
     props.closeHandle();
   };
@@ -278,6 +271,12 @@ const CatDetail = (props: any) => {
       Toast.clear();
     }
   }, [marketIsLoading]);
+
+  useEffect(() => {
+    if (popup == "") {
+      getInitData();
+    }
+  }, [popup]);
 
   const openModal = () => {
     if (detailData.is_owners == 0) {
@@ -383,32 +382,23 @@ const MyNFT = () => {
   const [detailData, setDetailData] = useState({});
   const dispatch = useRootDispatch();
 
-  const switchChange = (val: boolean, item: any) => {
-    if (val) {
-      startWork({
-        address,
-        token_id: item.token_id,
-      }).then((res: any) => {});
-    } else {
-      stopWork({
-        address,
-        token_id: item.token_id,
-      }).then((res: any) => {});
-    }
-  };
-
   const getMyNfts = () => {
+    clearTimeout(getMybagTimer);
     getMyCats(address as string).then((res: any) => {
       setMyNFTS(res);
     });
-    clearTimeout(getMybagTimer);
+
     getMybagTimer = setTimeout(() => {
       getMyNfts();
-    }, 10000);
+    }, 5000);
   };
 
   useEffect(() => {
     getMyNfts();
+    return () => {
+      clearTimeout(getMybagTimer);
+      setShowDetail(false);
+    };
   }, []);
 
   useActivate(() => {
@@ -417,17 +407,12 @@ const MyNFT = () => {
 
   useUnactivate(() => {
     clearTimeout(getMybagTimer);
+    setShowDetail(false);
   });
 
   const catDetailHandle = (item: any) => {
     setDetailData(item);
     setShowDetail(true);
-  };
-
-  const selectCathandle = (tokenid: any) => {
-    selectCat({ address, tokenid }).then((res) => {
-      dispatch(setDefaultCat(tokenid));
-    });
   };
 
   return (

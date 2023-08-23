@@ -5,10 +5,11 @@ import Market from "@/pages/market";
 import MyNft from "@/pages/myNft";
 import Tasks from "@/pages/tasks";
 import Knapsack from "@/pages/knapsack";
-
+import SalaryPopup from "./salaryPopup";
 const SpecialPopup = (props: any) => {
   const { popupStatus } = props;
   let content;
+  console.log(popupStatus);
 
   switch (popupStatus) {
     case "Market":
@@ -22,6 +23,9 @@ const SpecialPopup = (props: any) => {
       break;
     case "knapsack":
       content = <Knapsack />;
+      break;
+    case "salary":
+      content = <SalaryPopup />;
       break;
     default:
       content = <Market />;

@@ -105,8 +105,9 @@
 .cat-detail {
   height: 100vh;
   background: #fcd8cd;
-  padding-bottom: 40px;
+  padding-bottom: 100px;
   box-sizing: border-box;
+  overflow-y: auto;
   .detail-title {
     display: flex;
     position: relative;

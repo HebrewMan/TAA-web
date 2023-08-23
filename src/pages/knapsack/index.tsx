@@ -163,8 +163,15 @@ const Knapsack = () => {
     clearTimeout(getMybagTimer);
     getMybagTimer = setTimeout(() => {
       getInitData();
-    }, 10000);
+    }, 5000);
   };
+
+  useEffect(() => {
+    getInitData();
+    return () => {
+      clearTimeout(getMybagTimer);
+    };
+  }, [address]);
 
   useActivate(() => {
     getInitData();
@@ -173,10 +180,6 @@ const Knapsack = () => {
   useUnactivate(() => {
     clearTimeout(getMybagTimer);
   });
-
-  useEffect(() => {
-    getInitData();
-  }, [address]);
 
   const closeHandle = () => {
     setPopup("");

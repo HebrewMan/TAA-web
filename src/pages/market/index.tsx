@@ -22,34 +22,20 @@ import { Loading, Popup } from "react-vant";
 import closeSvg from "@/assets/icon/close.svg";
 import { useRootSelector } from "@/store/hooks";
 import { selectAppSlice } from "@/store/slices/appSlice";
-import { useAccount, useContractRead, useContractWrite } from "wagmi";
-import { market, taak } from "@/config/constantAddress";
+import { erc20ABI, useAccount, useContractRead, useContractWrite } from "wagmi";
+import { market, taak, ercEth } from "@/config/constantAddress";
 import marketABI from "@/abi/MarketPlaceTAA.json";
 import failImg from "@/assets/icon/fail.svg";
 import successImg from "@/assets/icon/success.svg";
 import taakABI from "@/abi/taak.json";
+import { useActivate, useUnactivate } from "react-activation";
+import { ethers } from "ethers";
+import { parseGwei } from "viem";
 const BuyModal = (props: any) => {
   const { address } = useAccount();
   const [isLoading, setIsloading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const { data: isApprovedData, isLoading: isApprovedLoading } =
-    useContractRead({
-      address: taak,
-      abi: taakABI,
-      functionName: "isApprovedForAll",
-      args: [address, taak],
-    });
 
-  const {
-    data: approveData,
-    isLoading: approveLoading,
-    isSuccess: approveSuccess,
-    writeAsync: approveWriteAsync,
-  } = useContractWrite({
-    address: taak,
-    abi: taakABI,
-    functionName: "setApprovalForAll",
-  });
   const {
     data: marketData,
     isLoading: marketIsLoading,
@@ -62,35 +48,13 @@ const BuyModal = (props: any) => {
   });
 
   useEffect(() => {
-    console.log(marketData, isApprovedData);
-  }, [marketData, isApprovedData]);
-
-  useEffect(() => {
-    if (marketIsLoading || approveLoading) {
-      setIsloading(true);
-    } else {
-      setIsloading(false);
-    }
-    if (marketIsSuccess || approveSuccess) {
-      setIsSuccess(true);
-    } else {
-      setIsSuccess(false);
-    }
-  }, [marketIsLoading, marketIsSuccess, approveLoading, approveSuccess]);
-
-  useEffect(() => {
-    if (!isApprovedData) {
-      approveWriteAsync({
-        args: [taak, true],
+    if (!!marketWriteAsync) {
+      marketWriteAsync({
+        args: [props.carInfo.order_info.order_id],
+        value: parseGwei("50"),
       });
-    } else {
-      if (!!marketWriteAsync) {
-        marketWriteAsync({
-          args: [props.carInfo.order_info.order_id],
-        });
-      }
     }
-  }, [isApprovedData, marketWriteAsync]);
+  }, [marketWriteAsync]);
   return (
     <div className="buy-modal days-one">
       <Image
@@ -257,7 +221,7 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
           <div className="wrap-sign">
             <div className="relative">
               <Image
-                className="absolute left--20px top--7px"
+                className="important-absolute left--20px top--7px"
                 width="48"
                 height="45"
                 src={taaImg}
@@ -266,7 +230,7 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
             </div>
             <div className="relative">
               <Image
-                className="absolute left--20px top--7px"
+                className="important-absolute left--20px top--7px"
                 width="48"
                 height="45"
                 src={ethImg}
@@ -355,6 +319,7 @@ const AdoptDetail = (props: any) => {
   );
 };
 
+let marketTimer: any = null;
 const NFTMarket = (props: {
   openHandle: any;
   setDetailData: (arg0: Record<string, string | number>) => void;
@@ -374,14 +339,30 @@ const NFTMarket = (props: {
   ];
 
   const getInitData = () => {
+    clearTimeout(marketTimer);
     getMarketsCats().then((res: any) => {
       setmarketData(res);
     });
+
+    marketTimer = setTimeout(() => {
+      getInitData();
+    }, 5000);
   };
 
   useEffect(() => {
     getInitData();
+    return () => {
+      clearTimeout(marketTimer);
+    };
   }, []);
+
+  useActivate(() => {
+    getInitData();
+  });
+
+  useUnactivate(() => {
+    clearTimeout(marketTimer);
+  });
 
   const openHandle = (data: Record<string, string | number>) => {
     props.openHandle("market");
@@ -425,6 +406,7 @@ const NFTMarket = (props: {
   );
 };
 
+let adoptTimer: any = null;
 const NFTAdopt = (props: {
   openHandle: any;
   setDetailData: (arg0: Record<string, string | number>) => void;
@@ -439,15 +421,29 @@ const NFTAdopt = (props: {
   ];
 
   const getInitData = () => {
+    clearInterval(adoptTimer);
     getMarketsProp().then((res: any) => {
-      console.log(res);
       setmarketData(res);
     });
+    adoptTimer = setTimeout(() => {
+      getInitData();
+    }, 5000);
   };
 
   useEffect(() => {
     getInitData();
+    return () => {
+      clearTimeout(adoptTimer);
+    };
   }, []);
+
+  useActivate(() => {
+    getInitData();
+  });
+
+  useUnactivate(() => {
+    clearTimeout(adoptTimer);
+  });
 
   const openHandle = (data: Record<string, string | number>) => {
     props.openHandle("adopt");
@@ -534,6 +530,18 @@ const Market = () => {
   const [type, setType] = useState("Market");
   const [showDetail, setShowDetail] = useState("");
   const [detailData, setDetailData] = useState({});
+
+  useUnactivate(() => {
+    setShowDetail("");
+    setDetailData({});
+  });
+
+  useEffect(() => {
+    return () => {
+      setShowDetail("");
+      setDetailData({});
+    };
+  }, []);
 
   return (
     <>
