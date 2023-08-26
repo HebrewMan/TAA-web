@@ -67,3 +67,9 @@ export const claimTaa = (params: object) =>
     method: "post",
     data: params,
   });
+
+export const propDetail = (tokenid: string) =>
+  request({
+    url: `/prop/${tokenid}`,
+    method: "get",
+  });

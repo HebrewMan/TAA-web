@@ -30,7 +30,7 @@ import successImg from "@/assets/icon/success.svg";
 import taakABI from "@/abi/taak.json";
 import { useActivate, useUnactivate } from "react-activation";
 import { ethers } from "ethers";
-import { parseGwei } from "viem";
+import { parseEther, parseGwei } from "viem";
 const BuyModal = (props: any) => {
   const { address } = useAccount();
   const [isLoading, setIsloading] = useState(false);
@@ -51,7 +51,7 @@ const BuyModal = (props: any) => {
     if (!!marketWriteAsync) {
       marketWriteAsync({
         args: [props.carInfo.order_info.order_id],
-        value: parseGwei("50"),
+        value: parseEther(props.carInfo.order_info.price),
       });
     }
   }, [marketWriteAsync]);

@@ -9,7 +9,6 @@ import SalaryPopup from "./salaryPopup";
 const SpecialPopup = (props: any) => {
   const { popupStatus } = props;
   let content;
-  console.log(popupStatus);
 
   switch (popupStatus) {
     case "Market":

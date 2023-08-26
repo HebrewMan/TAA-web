@@ -28,6 +28,7 @@ import closeSvg from "@/assets/icon/close.svg";
 import { payCoins } from "@/api/feature/app";
 import { market, taak } from "@/config/constantAddress";
 import { ethers } from "ethers";
+import { parseEther, parseGwei } from "viem";
 let marketsList: any = [];
 const SellModal = (props: any) => {
   const { address } = useAccount();
@@ -38,6 +39,7 @@ const SellModal = (props: any) => {
     data: marketData,
     isLoading: marketIsLoading,
     isSuccess: marketIsSuccess,
+    isError: marketIsError,
     writeAsync,
   } = useContractWrite({
     address: market,
@@ -95,6 +97,21 @@ const SellModal = (props: any) => {
   }, [marketIsSuccess]);
 
   useEffect(() => {
+    if (approveLoading || marketIsLoading) {
+      Toast.loading({
+        message: "Loading",
+        duration: 60000,
+        overlay: true,
+        overlayStyle: {
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+        },
+      });
+    } else {
+      Toast.clear();
+    }
+  }, [approveLoading, marketIsLoading]);
+
+  useEffect(() => {
     if (approveSuccess) {
       writeAsync({
         args: [
@@ -113,14 +130,6 @@ const SellModal = (props: any) => {
       return;
     }
 
-    Toast.loading({
-      message: "Loading",
-      duration: 60000,
-      overlay: true,
-      overlayStyle: {
-        backgroundColor: "rgba(0, 0, 0, 0.4)",
-      },
-    });
     if (approveLoading || marketIsLoading) return;
 
     if (!isApprovedData) {
@@ -196,6 +205,7 @@ const CatDetail = (props: any) => {
   const detailData = props.detailData;
   const [catInfo, setCatInfo] = useState({});
   const [popup, setPopup] = useState("");
+
   const {
     data: marketData,
     isLoading: marketIsLoading,

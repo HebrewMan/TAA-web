@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
 import backLogo from "@/assets/icon/back.svg";
-import { Image, Popup, Toast } from "react-vant";
+import { Image, Popup, Toast, Loading } from "react-vant";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
 import paginationImg from "@/assets/icon/pagination.svg";
-import { getMybag, useProp as usePropFetch } from "@/api/feature/app";
-import { useAccount, useContractWrite } from "wagmi";
+import { getMybag, payCoins, useProp as usePropFetch } from "@/api/feature/app";
+import { useAccount, useContractRead, useContractWrite } from "wagmi";
 import device from "current-device";
 import closeSvg from "@/assets/icon/close.svg";
 import taapAbi from "@/abi/taap.json";
@@ -17,31 +17,204 @@ import Button from "@/components/Button/index";
 import { useRootSelector } from "@/store/hooks";
 import { selectCatSlice } from "@/store/slices/catSlice";
 import { useActivate, useUnactivate } from "react-activation";
-
+import { market, taap } from "@/config/constantAddress";
+import marketABI from "@/abi/MarketPlaceTAA.json";
+import DropDown from "@/components/Dropdown";
+import { ethers } from "ethers";
+import { propDetail } from "@/api/feature/cat";
+import { parseEther } from "viem";
 const knapsack_img: any = {
   stamina: cleanSvg,
   happiness: charismaSvg,
   health: staminaSvg,
   comfort: iqSvg,
 };
+let marketsList: any = [];
+const SellModal = (props: any) => {
+  const { address } = useAccount();
+  const [marketsOption, setMarketsOption] = useState([]);
+  const [optionValue, setOptionValue] = useState(0);
+  const [price, setPrice] = useState("");
+  const {
+    data: marketData,
+    isLoading: marketIsLoading,
+    isSuccess: marketIsSuccess,
+    writeAsync,
+  } = useContractWrite({
+    address: market,
+    abi: marketABI.abi,
+    functionName: "createOrder",
+  });
+
+  const { data: isApprovedData, isLoading: isApprovedLoading } =
+    useContractRead({
+      address: taap,
+      abi: taapAbi,
+      functionName: "isApprovedForAll",
+      args: [address, market],
+    });
+
+  const {
+    data: approveData,
+    isLoading: approveLoading,
+    isSuccess: approveSuccess,
+    writeAsync: approveWriteAsync,
+  } = useContractWrite({
+    address: taap,
+    abi: taapAbi,
+    functionName: "setApprovalForAll",
+  });
+
+  const getInitData = () => {
+    payCoins().then((res: any) => {
+      let result: any = [];
+      marketsList = res;
+      res.forEach((item: any, index: number) => {
+        result.push({
+          text: (
+            <div className="flex items-center">
+              <Image width="20" height="20" src={item.image} />
+              <span className="ml-4px">{item.coin}</span>
+            </div>
+          ),
+          value: index,
+        });
+      });
+      setMarketsOption(result);
+    });
+  };
+
+  useEffect(() => {
+    getInitData();
+  }, []);
+
+  useEffect(() => {
+    if (marketIsSuccess) {
+      props.setPopup("");
+      Toast.clear();
+    }
+  }, [marketIsSuccess]);
+
+  useEffect(() => {
+    if (approveSuccess) {
+      writeAsync({
+        args: [
+          props.propInfo.prop_address,
+          marketsList[optionValue].coin_address,
+          props.propInfo.token_id,
+          parseEther(`${parseFloat(price)}`),
+        ],
+      });
+    }
+  }, [approveSuccess]);
+
+  const sellHandle = () => {
+    if (!price || parseFloat(price) <= 0) {
+      Toast.info("请输入价格");
+      return;
+    }
+
+    Toast.loading({
+      message: "Loading",
+      duration: 60000,
+      overlay: true,
+      overlayStyle: {
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+      },
+    });
+    if (approveLoading || marketIsLoading) return;
+
+    if (!isApprovedData) {
+      approveWriteAsync({
+        args: [market, true],
+      });
+    } else {
+      writeAsync({
+        args: [
+          props.propInfo.prop_address,
+          marketsList[optionValue].coin_address,
+          props.propInfo.token_id,
+          parseEther(`${parseFloat(price)}`),
+        ],
+      });
+    }
+  };
+
+  return (
+    <div className="sell-modal days-one">
+      <Image
+        className="close-special-popup"
+        src={closeSvg}
+        width="46"
+        height="46"
+        onClick={() => props.setPopup("")}
+      />
+      <div className="detail-title w-200px h-55px">
+        <Button
+          bgColor1="#a44513"
+          bgColor2="#c6601d"
+          text="Sell"
+          size="24px"
+        ></Button>
+      </div>
+      {marketIsLoading ? (
+        <div className="modal-content">
+          <Loading color="#402209" size="50px" />
+          <span>Loading</span>
+        </div>
+      ) : (
+        <div className="sell-input">
+          <input
+            type="number"
+            value={price}
+            onChange={(e: any) => setPrice(e.target.value)}
+            placeholder="Please enter"
+          />
+          <div className="lang-shadow">
+            <DropDown
+              option={marketsOption}
+              setOption={setOptionValue}
+            ></DropDown>
+          </div>
+        </div>
+      )}
+      <div className="w-215px h-60px relative cursor-pointer mt-50px ">
+        <Button
+          bgColor1="#AAC211"
+          bgColor2="#bad60f"
+          text="Confirm"
+          size="26px"
+          status={approveLoading || marketIsLoading ? 0 : 1}
+          onClick={sellHandle}
+        ></Button>
+      </div>
+    </div>
+  );
+};
 const UseModal = (props: any) => {
   const actionKnapsack = props.detailData;
   const { address } = useAccount();
   const { defaultCat } = useRootSelector(selectCatSlice);
-
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    address: "0x13164aE7D47c0a57775106E1A34fCeA6615717FA",
+  const [popup, setPopup] = useState("");
+  const [propInfo, setPropInfo] = useState({});
+  const {
+    data: burnData,
+    isLoading: burnIsLoading,
+    isSuccess: burnIsSuccess,
+    write: burnWrite,
+  } = useContractWrite({
+    address: taap,
     abi: taapAbi,
     functionName: "burn",
     args: [address, actionKnapsack.token_id, 1],
   });
 
   useEffect(() => {
-    if (isSuccess) {
+    if (burnIsSuccess) {
       Toast.clear();
       props.closeHandle();
     }
-    if (isLoading) {
+    if (burnIsLoading) {
       Toast.loading({
         message: "Loading",
         duration: 60000,
@@ -53,21 +226,19 @@ const UseModal = (props: any) => {
     } else {
       Toast.clear();
     }
-  }, [data, isLoading, isSuccess]);
+  }, [burnData, burnIsLoading, burnIsSuccess]);
+
+  useEffect(() => {
+    propDetail(props.detailData.token_id).then((res) => {
+      setPropInfo(res);
+    });
+  }, []);
 
   const burnHandle = () => {
-    if (isLoading) {
+    if (burnIsLoading) {
       return;
     }
-    Toast.loading({
-      message: "Loading",
-      duration: 60000,
-      overlay: true,
-      overlayStyle: {
-        backgroundColor: "rgba(0, 0, 0, 0.4)",
-      },
-    });
-    write();
+    burnWrite();
     // eslint-disable-next-line react-hooks/rules-of-hooks
     usePropFetch({
       address,
@@ -76,6 +247,10 @@ const UseModal = (props: any) => {
     }).then((res) => {
       console.log(res);
     });
+  };
+
+  const sellHandle = () => {
+    setPopup("sell");
   };
   return (
     <div className="use-modal days-one">
@@ -103,7 +278,7 @@ const UseModal = (props: any) => {
         <div className="modal-text">Cat climbing frame</div>
         <div className="flex justify-center items-center h-70px">
           <div
-            className="w-267px h-60px relative cursor-pointer flex"
+            className="w-130px h-50px relative cursor-pointer flex mr-10px"
             onClick={burnHandle}
           >
             <Button
@@ -111,11 +286,30 @@ const UseModal = (props: any) => {
               bgColor2="#bad60f"
               text="Use"
               size="26px"
-              status={isLoading ? 0 : 1}
+              status={burnIsLoading ? 0 : 1}
+            ></Button>
+          </div>
+          <div
+            className="w-130px h-50px relative cursor-pointer flex"
+            onClick={sellHandle}
+          >
+            <Button
+              bgColor1="#AAC211"
+              bgColor2="#bad60f"
+              text="Sell"
+              size="26px"
+              status={1}
             ></Button>
           </div>
         </div>
       </div>
+      <Popup
+        visible={popup == "sell"}
+        style={{ background: "none", height: "100%" }}
+        position="top"
+      >
+        <SellModal setPopup={setPopup} propInfo={propInfo}></SellModal>
+      </Popup>
     </div>
   );
 };

@@ -112,8 +112,10 @@ const PlayNow = () => {
 
   const timeCatInfo = () => {
     clearInterval(catTimer);
-    fetchCatInfo(defaultCat);
-    fetchCatStatus(defaultCat);
+    if (defaultCat) {
+      fetchCatInfo(defaultCat);
+      fetchCatStatus(defaultCat);
+    }
     catTimer = setInterval(() => {
       timeCatInfo();
     }, 5000);
@@ -121,7 +123,7 @@ const PlayNow = () => {
 
   useEffect(() => {
     timeCatInfo();
-  }, []);
+  }, [defaultCat]);
 
   useActivate(() => {
     timeCatInfo();
