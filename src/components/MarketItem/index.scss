@@ -11,6 +11,12 @@
   margin-bottom: 10px;
   padding-top: 7px;
   box-sizing: border-box;
+  // 溢出隐藏
+  .nft-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .top {
     width: 135px;
     height: 122px;

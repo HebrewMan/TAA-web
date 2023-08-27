@@ -35,6 +35,7 @@ const SellModal = (props: any) => {
   const [marketsOption, setMarketsOption] = useState([]);
   const [optionValue, setOptionValue] = useState(0);
   const [price, setPrice] = useState("");
+  const [isSell, setIsSell] = useState(false);
   const {
     data: marketData,
     isLoading: marketIsLoading,
@@ -53,6 +54,8 @@ const SellModal = (props: any) => {
       abi: taakABI,
       functionName: "isApprovedForAll",
       args: [address, market],
+      watch: true,
+      enabled: !!address,
     });
 
   const {
@@ -112,38 +115,30 @@ const SellModal = (props: any) => {
   }, [approveLoading, marketIsLoading]);
 
   useEffect(() => {
-    if (approveSuccess) {
+    if (isApprovedData && isSell) {
       writeAsync({
         args: [
           props.catInfo.nft_address,
           marketsList[optionValue].coin_address,
           props.catInfo.token_id,
-          ethers.parseUnits(price, 6),
+          ethers.parseUnits(price, 18),
         ],
       });
     }
-  }, [approveSuccess]);
+  }, [isApprovedData, isSell]);
 
   const sellHandle = () => {
     if (!price || parseFloat(price) <= 0) {
       Toast.info("请输入价格");
       return;
     }
+    setIsSell(true);
 
     if (approveLoading || marketIsLoading) return;
 
     if (!isApprovedData) {
       approveWriteAsync({
         args: [market, true],
-      });
-    } else {
-      writeAsync({
-        args: [
-          props.catInfo.nft_address,
-          marketsList[optionValue].coin_address,
-          props.catInfo.token_id,
-          ethers.parseUnits(price, 6),
-        ],
       });
     }
   };

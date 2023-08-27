@@ -35,10 +35,12 @@ const SellModal = (props: any) => {
   const [marketsOption, setMarketsOption] = useState([]);
   const [optionValue, setOptionValue] = useState(0);
   const [price, setPrice] = useState("");
+  const [isSell, setIsSell] = useState(false);
   const {
     data: marketData,
     isLoading: marketIsLoading,
     isSuccess: marketIsSuccess,
+    isError: marketIsError,
     writeAsync,
   } = useContractWrite({
     address: market,
@@ -52,12 +54,15 @@ const SellModal = (props: any) => {
       abi: taapAbi,
       functionName: "isApprovedForAll",
       args: [address, market],
+      watch: true,
+      enabled: !!address,
     });
 
   const {
     data: approveData,
     isLoading: approveLoading,
     isSuccess: approveSuccess,
+    isError: approveError,
     writeAsync: approveWriteAsync,
   } = useContractWrite({
     address: taap,
@@ -96,23 +101,30 @@ const SellModal = (props: any) => {
   }, [marketIsSuccess]);
 
   useEffect(() => {
-    if (approveSuccess) {
+    if (marketIsError || approveError) {
+      Toast.clear();
+    }
+  }, [marketIsError, approveError]);
+
+  useEffect(() => {
+    if (isApprovedData && isSell) {
       writeAsync({
         args: [
           props.propInfo.prop_address,
           marketsList[optionValue].coin_address,
           props.propInfo.token_id,
-          parseEther(`${parseFloat(price)}`),
+          ethers.parseUnits(price, 18),
         ],
       });
     }
-  }, [approveSuccess]);
+  }, [isApprovedData, isSell]);
 
   const sellHandle = () => {
     if (!price || parseFloat(price) <= 0) {
       Toast.info("请输入价格");
       return;
     }
+    setIsSell(true);
 
     Toast.loading({
       message: "Loading",
@@ -127,15 +139,6 @@ const SellModal = (props: any) => {
     if (!isApprovedData) {
       approveWriteAsync({
         args: [market, true],
-      });
-    } else {
-      writeAsync({
-        args: [
-          props.propInfo.prop_address,
-          marketsList[optionValue].coin_address,
-          props.propInfo.token_id,
-          parseEther(`${parseFloat(price)}`),
-        ],
       });
     }
   };
@@ -209,6 +212,17 @@ const UseModal = (props: any) => {
     args: [address, actionKnapsack.token_id, 1],
   });
 
+  const {
+    data: marketData,
+    isLoading: marketIsLoading,
+    isSuccess: marketIsSuccess,
+    writeAsync: marketWriteAsync,
+  } = useContractWrite({
+    address: market,
+    abi: marketABI.abi,
+    functionName: "cancelOrder",
+  });
+
   useEffect(() => {
     if (burnIsSuccess) {
       Toast.clear();
@@ -234,6 +248,21 @@ const UseModal = (props: any) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (marketIsLoading) {
+      Toast.loading({
+        message: "Loading",
+        duration: 60000,
+        overlay: true,
+        overlayStyle: {
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+        },
+      });
+    } else {
+      Toast.clear();
+    }
+  }, [marketIsLoading]);
+
   const burnHandle = () => {
     if (burnIsLoading) {
       return;
@@ -250,7 +279,13 @@ const UseModal = (props: any) => {
   };
 
   const sellHandle = () => {
-    setPopup("sell");
+    if (actionKnapsack.is_owners == 0) {
+      marketWriteAsync({
+        args: [actionKnapsack.order_info.order_id],
+      });
+    } else {
+      setPopup("sell");
+    }
   };
   return (
     <div className="use-modal days-one">
@@ -296,7 +331,7 @@ const UseModal = (props: any) => {
             <Button
               bgColor1="#AAC211"
               bgColor2="#bad60f"
-              text="Sell"
+              text={actionKnapsack.is_owners ? "Sell" : "Cancel"}
               size="26px"
               status={1}
             ></Button>

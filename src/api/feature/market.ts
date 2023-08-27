@@ -13,3 +13,9 @@ export const getMarketsProp = () =>
     url: `/markets/prop`,
     method: "get",
   });
+
+export const getOrderInfo = (orderid: string) =>
+  request({
+    url: `/order/${orderid}`,
+    method: "get",
+  });

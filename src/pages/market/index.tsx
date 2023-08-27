@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import "./index.scss";
 import DropDown from "@/components/Dropdown";
-import { Image } from "react-vant";
+import { Image, Toast } from "react-vant";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
-import { getMarketsCats, getMarketsProp } from "@/api/feature/market";
+import {
+  getMarketsCats,
+  getMarketsProp,
+  getOrderInfo,
+} from "@/api/feature/market";
 import device from "current-device";
-import { getCatInfo } from "@/api/feature/cat";
+import { getCatInfo, propDetail } from "@/api/feature/cat";
 import backLogo from "@/assets/icon/back.svg";
 import AttibuteSmall from "@/components/attributeSmall";
 import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
@@ -30,11 +34,8 @@ import successImg from "@/assets/icon/success.svg";
 import taakABI from "@/abi/taak.json";
 import { useActivate, useUnactivate } from "react-activation";
 import { ethers } from "ethers";
-import { parseEther, parseGwei } from "viem";
 const BuyModal = (props: any) => {
   const { address } = useAccount();
-  const [isLoading, setIsloading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     data: marketData,
@@ -48,10 +49,25 @@ const BuyModal = (props: any) => {
   });
 
   useEffect(() => {
+    if (marketIsLoading) {
+      Toast.loading({
+        message: "Loading",
+        duration: 60000,
+        overlay: true,
+        overlayStyle: {
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+        },
+      });
+    } else {
+      Toast.clear();
+    }
+  }, [marketIsLoading]);
+
+  useEffect(() => {
     if (!!marketWriteAsync) {
       marketWriteAsync({
-        args: [props.carInfo.order_info.order_id],
-        value: parseEther(props.carInfo.order_info.price),
+        args: [props.orderInfo.order_id],
+        value: ethers.parseUnits(props.orderInfo.pay_amount, 18),
       });
     }
   }, [marketWriteAsync]);
@@ -68,12 +84,12 @@ const BuyModal = (props: any) => {
         <Image width="200" height="auto" src={buyTitleImg} />
       </div>
       <div className="modal-content">
-        {isLoading ? (
+        {marketIsLoading ? (
           <>
             <Loading color="#402209" size="50px" />
             <span>Loading</span>
           </>
-        ) : isSuccess ? (
+        ) : marketIsSuccess ? (
           <Image width="50" height="auto" src={successImg} />
         ) : (
           <Image width="50" height="auto" src={failImg} />
@@ -90,7 +106,7 @@ const BuyModal = (props: any) => {
           src={tradeBtnImg}
         />
         <i className="absolute top-27px text-after text-26px font-shadow-black2">
-          {isLoading ? ". . ." : "OK"}
+          {marketIsLoading ? ". . ." : "OK"}
         </i>
       </div>
     </div>
@@ -101,7 +117,6 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
   const { isLogin } = useRootSelector(selectAppSlice);
   const isMobile = device.mobile();
   const detailData = props.detailData;
-  const [carInfo, setCarInfo] = useState<any>({});
   const [popup, setPopup] = useState("");
   const [attibute_list, setAttibute_list] = useState([
     {
@@ -133,7 +148,6 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
       attibute_list[2].value = res.stamina || 0;
       attibute_list[0].value = res.health || 0;
       attibute_list[1].value = res.happiness || 0;
-      setCarInfo(res);
       setAttibute_list([...attibute_list]);
     });
   };
@@ -262,7 +276,7 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
         style={{ background: "none", height: "100%" }}
         position="top"
       >
-        <BuyModal carInfo={carInfo} closeHandle={setPopup}></BuyModal>
+        <BuyModal orderInfo={detailData} closeHandle={setPopup}></BuyModal>
       </Popup>
     </div>
   );
@@ -271,6 +285,8 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
 const AdoptDetail = (props: any) => {
   const detailData = props.detailData;
   const isMobile = device.mobile();
+  const [popup, setPopup] = useState("");
+
   const closeSelf = () => {
     props.closeHandle("");
   };
@@ -298,13 +314,16 @@ const AdoptDetail = (props: any) => {
               className="absolute left--30px top--10px"
               width="50"
               height="50"
-              src={taaImg}
+              src={ethImg}
             />
-            <div className="sign-box days-one">10</div>
+            <div className="sign-box days-one">{detailData.pay_amount}</div>
           </div>
         </div>
       </div>
-      <div className="w-300px h-60px relative use-btn cursor-pointer">
+      <div
+        className="w-300px h-60px relative use-btn cursor-pointer"
+        onClick={() => setPopup("buy")}
+      >
         <Image
           className="absolute left-0"
           width="300"
@@ -315,6 +334,14 @@ const AdoptDetail = (props: any) => {
           Adopt
         </i>
       </div>
+
+      <Popup
+        visible={popup == "buy"}
+        style={{ background: "none", height: "100%" }}
+        position="top"
+      >
+        <BuyModal orderInfo={detailData} closeHandle={setPopup}></BuyModal>
+      </Popup>
     </div>
   );
 };
@@ -396,7 +423,7 @@ const NFTMarket = (props: {
       <div className="items">
         <div className="flex justify-between flex-wrap line-height-none">
           {marketData.map((item) => (
-            <div key={item.token_id} onClick={() => openHandle(item)}>
+            <div key={item.order_id} onClick={() => openHandle(item)}>
               <MarketItem item={item}></MarketItem>
             </div>
           ))}
@@ -516,7 +543,7 @@ const NFTAdopt = (props: {
       <div className="items">
         <div className="flex justify-between flex-wrap">
           {marketData.map((item) => (
-            <div key={item.token_id} onClick={() => openHandle(item)}>
+            <div key={item.order_id} onClick={() => openHandle(item)}>
               <MarketItem item={item}></MarketItem>
             </div>
           ))}
@@ -545,15 +572,15 @@ const Market = () => {
 
   return (
     <>
-      <div
-        style={{ display: showDetail == "market" ? "block" : "none" }}
-        className="h-full"
-      >
-        <MarketDetail
-          detailData={detailData}
-          closeHandle={setShowDetail}
-        ></MarketDetail>
-      </div>
+      {showDetail == "market" && (
+        <div className="h-full">
+          <MarketDetail
+            detailData={detailData}
+            closeHandle={setShowDetail}
+          ></MarketDetail>
+        </div>
+      )}
+
       <div
         className="market"
         style={{ display: !showDetail ? "block" : "none" }}
@@ -593,15 +620,14 @@ const Market = () => {
           </div>
         </div>
       </div>
-      <div
-        style={{ display: showDetail == "adopt" ? "block" : "none" }}
-        className="h-full"
-      >
-        <AdoptDetail
-          detailData={detailData}
-          closeHandle={setShowDetail}
-        ></AdoptDetail>
-      </div>
+      {showDetail == "adopt" && (
+        <div className="h-full">
+          <AdoptDetail
+            detailData={detailData}
+            closeHandle={setShowDetail}
+          ></AdoptDetail>
+        </div>
+      )}
     </>
   );
 };

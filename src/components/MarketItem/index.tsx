@@ -19,7 +19,7 @@ export default function index(props: { item: any }) {
         <Image width="100%" height="100%" lazyload src={item.image as string} />
       </div>
       <div className="bottom flex items-center h-15px mt-2px pr-10px">
-        <span className="days-one color-#402209 mr-4px text-14px">
+        <span className="days-one nft-name color-#402209 mr-4px text-14px">
           {item.name}
         </span>
         <span className="days-one color-#BB7A3A text-10px">
@@ -27,7 +27,7 @@ export default function index(props: { item: any }) {
         </span>
       </div>
       <div className="flex mt-2px justify-between w-130px pl-7px mt-7px">
-        <div className="relative">
+        {/* <div className="relative">
           <Image
             className="important-absolute left--10px top--4px"
             width="26"
@@ -37,7 +37,7 @@ export default function index(props: { item: any }) {
           <div className="w-54px h-16px text-center bg-#ECA756 rounded-8px days-one box-border leading-16px pl-8px color-#402209 text-12px">
             10
           </div>
-        </div>
+        </div> */}
         <div className="relative">
           <Image
             className="important-absolute left--10px top--4px"
@@ -45,8 +45,8 @@ export default function index(props: { item: any }) {
             height="24"
             src={ethImg}
           />
-          <div className="w-54px h-16px text-center bg-#FFAD7E rounded-8px days-one box-border leading-16px pl-8px color-#402209 text-12px">
-            10
+          <div className="w-110px h-16px text-center bg-#FFAD7E rounded-8px days-one box-border leading-16px pl-8px color-#402209 text-12px">
+            {item.pay_amount}
           </div>
         </div>
       </div>
