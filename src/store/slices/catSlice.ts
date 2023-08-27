@@ -36,7 +36,7 @@ export interface CatState {
 
 const initialState: CatState = {
   defaultCat: "",
-  catInfo: getLocal("catInfo") || {
+  catInfo: {
     charm: 0,
     comfort: 0,
     desc: "",

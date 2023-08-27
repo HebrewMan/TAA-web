@@ -71,31 +71,31 @@ const PlayNow = () => {
     {
       typeImg: staminaSvg,
       gradientBk: "linear-gradient(180deg, #FF8D8D 0%, #C93413 117.9%)",
-      value: 100,
+      value: 0,
     },
     {
       typeImg: charismaSvg,
       gradientBk: "linear-gradient(180deg, #DB8EFF 0%, #6C1794 118.75%)",
-      value: 80,
+      value: 0,
     },
     {
       typeImg: cleanSvg,
       gradientBk: "linear-gradient(180deg, #98CEFF 0%, #0A569D 118.75%)",
-      value: 50,
+      value: 0,
     },
     {
       typeImg: iqSvg,
       gradientBk: "linear-gradient(180deg, #C9F7C2 0%, #3B8734 130%)",
-      value: 40,
+      value: 0,
     },
   ]);
 
   // 猫咪属性
   useEffect(() => {
-    attibute_list[3].value = catStatus.comfort;
-    attibute_list[2].value = catStatus.stamina;
-    attibute_list[0].value = catStatus.health;
-    attibute_list[1].value = catStatus.happiness;
+    attibute_list[3].value = catStatus.comfort || 0;
+    attibute_list[2].value = catStatus.stamina || 0;
+    attibute_list[0].value = catStatus.health || 0;
+    attibute_list[1].value = catStatus.happiness || 0;
     setAttibute_list([...attibute_list]);
   }, [catStatus]);
 

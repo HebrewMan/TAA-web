@@ -107,32 +107,32 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
     {
       typeImg: staminaSvg,
       gradientBk: "linear-gradient(180deg, #FF8D8D 0%, #C93413 117.9%)",
-      value: 100,
+      value: 0,
     },
     {
       typeImg: charismaSvg,
       gradientBk: "linear-gradient(180deg, #DB8EFF 0%, #6C1794 118.75%)",
-      value: 80,
+      value: 0,
     },
     {
       typeImg: cleanSvg,
       gradientBk: "linear-gradient(180deg, #98CEFF 0%, #0A569D 118.75%)",
-      value: 50,
+      value: 0,
     },
     {
       typeImg: iqSvg,
       gradientBk: "linear-gradient(180deg, #C9F7C2 0%, #3B8734 130%)",
-      value: 40,
+      value: 0,
     },
   ]);
 
   const initData = () => {
     if (!detailData.token_id) return;
     getCatInfo(detailData.token_id).then((res: any) => {
-      attibute_list[3].value = res.comfort;
-      attibute_list[2].value = res.stamina;
-      attibute_list[0].value = res.health;
-      attibute_list[1].value = res.happiness;
+      attibute_list[3].value = res.comfort || 0;
+      attibute_list[2].value = res.stamina || 0;
+      attibute_list[0].value = res.health || 0;
+      attibute_list[1].value = res.happiness || 0;
       setCarInfo(res);
       setAttibute_list([...attibute_list]);
     });
