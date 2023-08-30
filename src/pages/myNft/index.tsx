@@ -434,7 +434,7 @@ const MyNFT = () => {
                   onClick={() => catDetailHandle(item)}
                 >
                   <span className="absolute z-2 left-0px top-0">
-                    {item.is_owners == 1 ? "Resting" : "OnSell"}
+                    {item.is_owners == 1 ? "Resting" : "On Sale"}
                   </span>
                   <Image
                     className="important-absolute left-0 top-0"

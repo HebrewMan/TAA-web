@@ -59,7 +59,7 @@ const wagmiConfig = createConfig({
 
 export default function Web3Provider({ children }: any) {
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full overflow-hidden">
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
       </WagmiConfig>

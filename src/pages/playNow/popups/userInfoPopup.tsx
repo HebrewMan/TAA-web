@@ -11,7 +11,7 @@ import titleLineImg from "@/assets/bakeground/user-title.svg";
 import titleBgImg from "@/assets/bakeground/title-bg.png";
 import { Image } from "react-vant";
 import Button from "@/components/Button/index";
-
+import { Success } from "@react-vant/icons";
 const UserInfoPopup = (props: any) => {
   const { address } = useAccount();
   const { name } = useRootSelector(selectAppSlice);
@@ -88,13 +88,21 @@ const UserInfoPopup = (props: any) => {
                       onChange={(e) => changeHandle(e)}
                     />
                   )}
-                  <img
-                    src={penSvg}
-                    width={16}
-                    alt=""
-                    onClick={setUserNameHandle}
-                    className="ml-7px"
-                  />
+                  {isSetUsername ? (
+                    <Success
+                      color="#402209"
+                      fontSize="20px"
+                      onClick={setUserNameHandle}
+                    />
+                  ) : (
+                    <img
+                      src={penSvg}
+                      width={16}
+                      alt=""
+                      onClick={setUserNameHandle}
+                      className="ml-7px"
+                    />
+                  )}
                 </p>
                 <p className="text-#402209 text-12px">
                   {addressHandle(address as string)}

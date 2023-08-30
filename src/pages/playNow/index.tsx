@@ -137,6 +137,12 @@ const PlayNow = () => {
     if (!isLogin || !address) {
       return;
     }
+
+    console.log(path);
+
+    if (path == "salary" && !defaultCat) {
+      return;
+    }
     if (path == "salary" && isMobile) {
       setPopup(path);
       return;
@@ -266,7 +272,7 @@ const PlayNow = () => {
         </Popup>
 
         <Popup
-          visible={popup == "salary"}
+          visible={popup == "salary" && isMobile}
           style={{ background: "none", height: "100%" }}
           position="top"
         >

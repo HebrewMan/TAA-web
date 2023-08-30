@@ -57,7 +57,7 @@ const SetPopup = (props: any) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <div className="share-popup set-popup" style={{ height: "200px" }}>
         <BtnWithShadow item={btn} />
         <img
@@ -110,7 +110,7 @@ const SetPopup = (props: any) => {
           </div>
         )}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

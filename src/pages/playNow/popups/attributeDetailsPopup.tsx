@@ -13,6 +13,7 @@ import { getCatInfo, setCatName } from "@/api/feature/cat";
 import { useAccount } from "wagmi";
 import { Image } from "react-vant";
 import taaImg from "@/assets/bakeground/taa.png";
+import { Success } from "@react-vant/icons";
 const AttibuteDetails = (props: any) => {
   const { address } = useAccount();
   const { catInfo, catStatus } = useRootSelector(selectCatSlice);
@@ -83,7 +84,7 @@ const AttibuteDetails = (props: any) => {
       <div className="attibute-details-popup">
         <div className="main">
           <img
-            className="close absolute right--16px top-100px z-2"
+            className="close absolute right--16px top-16% z-2 cursor-pointer"
             src={closeSvg}
             width={46}
             alt=""
@@ -102,13 +103,21 @@ const AttibuteDetails = (props: any) => {
                 onChange={(e) => changeHandle(e)}
               />
             )}
-            <img
-              src={penSvg}
-              alt=""
-              width={22}
-              onClick={setUserNameHandle}
-              className="ml-8px cursor-pointer"
-            />
+            {isSetUsername ? (
+              <Success
+                color="#402209"
+                fontSize="20px"
+                onClick={setUserNameHandle}
+              />
+            ) : (
+              <img
+                src={penSvg}
+                width={16}
+                alt=""
+                onClick={setUserNameHandle}
+                className="ml-7px"
+              />
+            )}
           </p>
           <div className="attibute_list">
             {attibute_list.map((item) => (
