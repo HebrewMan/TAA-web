@@ -61,7 +61,7 @@ const SetPopup = (props: any) => {
       <div className="share-popup set-popup" style={{ height: "200px" }}>
         <BtnWithShadow item={btn} />
         <img
-          className="close"
+          className="close cursor-pointer"
           src={closeSvg}
           width={46}
           alt=""

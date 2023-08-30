@@ -11,7 +11,7 @@ import { useRootDispatch, useRootSelector } from "@/store/hooks";
 import { selectCatSlice, setCatInfo } from "@/store/slices/catSlice";
 import { getCatInfo, setCatName } from "@/api/feature/cat";
 import { useAccount } from "wagmi";
-import { Image } from "react-vant";
+import { Image, Toast } from "react-vant";
 import taaImg from "@/assets/bakeground/taa.png";
 import { Success } from "@react-vant/icons";
 const AttibuteDetails = (props: any) => {
@@ -62,6 +62,10 @@ const AttibuteDetails = (props: any) => {
 
   const setUserNameHandle = (e: any) => {
     if (isSetUsername) {
+      if (username.length > 7) {
+        Toast.info("name is too long");
+        return;
+      }
       setCatName({
         address,
         name: username,

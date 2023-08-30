@@ -118,6 +118,7 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
   const isMobile = device.mobile();
   const detailData = props.detailData;
   const [popup, setPopup] = useState("");
+  const [catInfo, setCatInfo] = useState({});
   const [attibute_list, setAttibute_list] = useState([
     {
       typeImg: staminaSvg,
@@ -149,6 +150,7 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
       attibute_list[0].value = res.health || 0;
       attibute_list[1].value = res.happiness || 0;
       setAttibute_list([...attibute_list]);
+      setCatInfo(res);
     });
   };
 
@@ -232,16 +234,16 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
         </div>
         <div className="current-price px-18px py-10px">
           <div className="text-16px color-#402209">Current price</div>
-          <div className="wrap-sign">
-            <div className="relative">
+          <div className="wrap-sign flex important-justify-center">
+            {/* <div className="relative">
               <Image
                 className="important-absolute left--20px top--7px"
                 width="48"
                 height="45"
                 src={taaImg}
               />
-              <div className="sign-box">10</div>
-            </div>
+              <div className="sign-box">{detailData.taa}</div>
+            </div> */}
             <div className="relative">
               <Image
                 className="important-absolute left--20px top--7px"
@@ -249,7 +251,9 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
                 height="45"
                 src={ethImg}
               />
-              <div className="sign-box days-one">10</div>
+              <div className="sign-box days-one important-w-150px">
+                {detailData.pay_amount}{" "}
+              </div>
             </div>
           </div>
         </div>
@@ -311,7 +315,7 @@ const AdoptDetail = (props: any) => {
         <div className="wrap-sign ">
           <div className="relative">
             <Image
-              className="absolute left--30px top--10px"
+              className="important-absolute left--30px top--10px"
               width="50"
               height="50"
               src={ethImg}
@@ -325,7 +329,7 @@ const AdoptDetail = (props: any) => {
         onClick={() => setPopup("buy")}
       >
         <Image
-          className="absolute left-0"
+          className="important-absolute left-0"
           width="300"
           height="auto"
           src={salarybtnImg}

@@ -128,7 +128,7 @@
       box-sizing: border-box;
       .sign-box {
         border: 3px solid #402209;
-        width: 134px;
+        width: 150px;
         height: 31px;
         border-radius: 16px;
         line-height: 25px;
@@ -632,10 +632,23 @@
   .home {
     background-image: url("@/assets/bakeground/play_now_large.png");
   }
-  .set {
+  .share {
     position: fixed;
     bottom: 46px;
     left: 350px;
+    z-index: 999;
+    cursor: pointer;
+    .text-10px {
+      display: none;
+    }
+    img {
+      width: 60px;
+    }
+  }
+  .set {
+    position: fixed;
+    bottom: 46px;
+    left: 420px;
     z-index: 999;
     cursor: pointer;
     // animation: tada 1s;

@@ -27,11 +27,7 @@ const Attibute = (props: any) => {
             className={`absolute h-24px`}
           ></div>
           <span
-            className={
-              isMobile
-                ? "font-shadow-black text-10px text-center z-500 absolute left-32%"
-                : "font-shadow-black text-10px text-center z-500 absolute left-40%"
-            }
+            className="font-shadow-black text-10px"
             style={{ lineHeight: `${props.height}px` }}
           >
             {props.value}

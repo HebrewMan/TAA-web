@@ -9,7 +9,7 @@ import { selectAppSlice, setInfoData } from "@/store/slices/appSlice";
 import taaImg from "@/assets/bakeground/taa.png";
 import titleLineImg from "@/assets/bakeground/user-title.svg";
 import titleBgImg from "@/assets/bakeground/title-bg.png";
-import { Image } from "react-vant";
+import { Image, Toast } from "react-vant";
 import Button from "@/components/Button/index";
 import { Success } from "@react-vant/icons";
 const UserInfoPopup = (props: any) => {
@@ -29,6 +29,10 @@ const UserInfoPopup = (props: any) => {
 
   const setUserNameHandle = (e: any) => {
     if (isSetUsername) {
+      if (username.length > 7) {
+        Toast.info("name is too long");
+        return;
+      }
       setUserName({
         address,
         name: username,

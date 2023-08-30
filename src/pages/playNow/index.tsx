@@ -138,7 +138,10 @@ const PlayNow = () => {
       return;
     }
 
-    console.log(path);
+    if (path == "friends") {
+      window.open("https://discord.com/invite/CSPaTUXPEu");
+      return;
+    }
 
     if (path == "salary" && !defaultCat) {
       return;
@@ -195,7 +198,7 @@ const PlayNow = () => {
 
           <div className="flex">
             <span
-              className="set relative cursor-pointer"
+              className="share relative cursor-pointer"
               onClick={() => setPopup("share")}
             >
               <img src={shareSvg} width={45} alt="" />
@@ -244,6 +247,7 @@ const PlayNow = () => {
         <Popup
           visible={popup == "share"}
           style={{ background: "none", height: "100%" }}
+          position="top"
         >
           <SharePopup onClose={onClose} />
         </Popup>

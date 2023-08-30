@@ -50,7 +50,7 @@ const SharePopup = (props: any) => {
       <div className="share-popup">
         <BtnWithShadow item={btns[0]} />
         <img
-          className="close"
+          className="close cursor-pointer"
           src={closeSvg}
           width={46}
           alt=""
