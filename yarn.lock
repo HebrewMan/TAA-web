@@ -4655,6 +4655,11 @@ react-transition-group@4.4.2:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-typewriter-hook@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/react-typewriter-hook/-/react-typewriter-hook-1.0.2.tgz#f98788541a400b13abe418b93742ff027739d57b"
+  integrity sha512-ICHmPaUfBMXz8EGtyNPhY0ftcHr/HC0bg3rQjoNp9kC4Dha+JK541MKdXphWgtnurftBCJ/f22kIjvbv8NYRgQ==
+
 react-vant@^3.2.7:
   version "3.3.1"
   resolved "https://registry.npmmirror.com/react-vant/-/react-vant-3.3.1.tgz#635a8db3fa813a5d147a4a1369fb13670e7a36ce"

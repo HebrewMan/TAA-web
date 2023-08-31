@@ -7,6 +7,7 @@ import downSvg from "@/assets/icon/down.svg";
 import BtnWithShadow from "@/components/btnWithShadow";
 import { useRootSelector } from "@/store/hooks";
 import { selectAppSlice } from "@/store/slices/appSlice";
+import { videoStart, videoStop } from "@/utils";
 
 const SetPopup = (props: any) => {
   const { isLogin } = useRootSelector(selectAppSlice);
@@ -17,12 +18,21 @@ const SetPopup = (props: any) => {
     location.reload();
   };
 
-  let [musicSwitch, setMusicSwitch] = useState(false);
-  const [position, setPosition] = useState(0);
-  const [btnColors, setBtnColors] = useState({
-    outerColor: "#A02424",
-    shadowColor: "linear-gradient(0deg, #D64F4F, #D64F4F), #BAD60F",
-  });
+  let [musicSwitch, setMusicSwitch] = useState(
+    localStorage.taaVideo && localStorage.taaVideo == 1
+  );
+
+  const [position, setPosition] = useState(
+    localStorage.taaVideo && localStorage.taaVideo == 1 ? 90 : 0
+  );
+  const [btnColors, setBtnColors] = useState(
+    musicSwitch
+      ? {
+          outerColor: "#A02424",
+          shadowColor: "linear-gradient(0deg, #D64F4F, #D64F4F), #BAD60F",
+        }
+      : { outerColor: "#C9955C", shadowColor: "#FFD28E" }
+  );
 
   const btn = {
     logo: "",
@@ -33,26 +43,25 @@ const SetPopup = (props: any) => {
     height: 46,
     width: 186,
   };
-  const langBtn = {
-    logo: downSvg,
-    text: "English",
-    font: "16px",
-    outerColor: "#D38F5B",
-    shadowColor: "#FFD28E",
-    height: 34,
-    width: 120,
-  };
 
   const setMusicSwitchHandle = () => {
     setMusicSwitch((musicSwitch = !musicSwitch));
     setPosition(musicSwitch ? 90 : 0);
+    if (musicSwitch) {
+      videoStart();
+      localStorage.taaVideo = 1;
+    } else {
+      videoStop();
+      localStorage.taaVideo = 0;
+    }
+
     setBtnColors(
       musicSwitch
-        ? { outerColor: "#C9955C", shadowColor: "#FFD28E" }
-        : {
+        ? {
             outerColor: "#A02424",
             shadowColor: "linear-gradient(0deg, #D64F4F, #D64F4F), #BAD60F",
           }
+        : { outerColor: "#C9955C", shadowColor: "#FFD28E" }
     );
   };
 

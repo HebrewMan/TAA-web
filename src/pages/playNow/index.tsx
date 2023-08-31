@@ -39,6 +39,7 @@ import { useActivate, useUnactivate } from "react-activation";
 import device from "current-device";
 
 let catTimer: any = null;
+let noticeTimer: any = null;
 const PlayNow = () => {
   const isMobile = device.mobile();
   const { address } = useAccount();
@@ -121,16 +122,34 @@ const PlayNow = () => {
     }, 5000);
   };
 
+  const noticeHandle = () => {
+    clearInterval(noticeTimer);
+    noticeTimer = setInterval(() => {
+      if (!popup) {
+        setShowNotice(true);
+      }
+      setTimeout(() => {
+        setShowNotice(false);
+      }, 10000);
+    }, 25000);
+  };
+
   useEffect(() => {
     timeCatInfo();
   }, [defaultCat]);
 
+  useEffect(() => {
+    noticeHandle();
+  }, [popup]);
+
   useActivate(() => {
+    noticeHandle();
     timeCatInfo();
   });
 
   useUnactivate(() => {
     clearInterval(catTimer);
+    clearInterval(noticeTimer);
   });
 
   const routerHandle = (path: string) => {
