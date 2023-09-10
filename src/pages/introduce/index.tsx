@@ -30,7 +30,7 @@ const Introduce = () => {
         position="top"
       >
         <div className="introduce-popup">
-          <span className="font-shadow-black">Introduce</span>
+          <span className="font-shadow-black">Introduction</span>
           <img
             className="close"
             src={closeSvg}
@@ -39,23 +39,15 @@ const Introduce = () => {
             onClick={popupHandle}
           />
           <div className="main">
-            Aliquam pulvinar vestibulum blandit. Donec sed nisl libero. Fusce
-            dignissim luctus sem eu dapibus. Pellentesque vulputate quam a quam
-            volutpat, sed ullamcorper erat commodo. Vestibulum sit amet ipsum
-            vitae mauris mattis vulputate lacinia nec neque. Aenean quis
-            consectetur nisi, ac interdum elit. Aliquam sit amet luctus elit, id
-            tempus purus. Donec sed erat ut magna suscipit mattis. Aliquam erat
-            volutpat. Morbi in orci risus. Donec pretium fringilla blandit.
-            Etiam ut accumsan leo. Aliquam id mi quam. Vivamus dictum ut erat
-            nec congue. Etiam facilisis lacus ut arcu vulputate, non
-            pellentesque sem convallis. Proin tempus sapien nisl, nec varius
-            risus tristique a. Etiam ligula lacus, ultricies at cursus id,
-            fringilla nec nulla. Fusce pretium laoreet diam a mollis. In finibus
-            purus sed tortor fringilla, eu luctus lorem sodales.Ut dignissim
-            ante ac augue vulputate tristique. Mauris venenatis tincidunt nibh,
-            sit amet fringilla augue malesuada a. Mauris a nunc congue, viverra
-            lectus sed, imperdiet quam. Aenean tempor sem sed lorem ultricies
-            lacinia. Sed sit amet tortor nibh. Donec
+            The Animal Age is an animal-themed metaverse, starting with our
+            million-cat community, creating an animal-themed metaverse and
+            providing more NFTs. Our animal NFTs will cooperate with many IPs,
+            brands, and animal organizations. Users can raise adopted animals by
+            consuming items obtained from daily goals and milestones. By
+            interacting with animals, participating in competitions, and
+            exploring the world, users can earn TAA coins as rewards. TAA coins
+            can be used to buy more items to raise animals or sell on the
+            market.
           </div>
         </div>
       </Popup>

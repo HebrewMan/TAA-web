@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { DropdownMenu } from "react-vant";
 import rightIcon from "@/assets/icon/right.svg";
 import "./index.scss";
-export default function dropDown(props: { option: any; setOption: any }) {
+export default function dropDown(props: {
+  option: any;
+  setOption: any;
+  defaultValue?: any;
+}) {
   const option = props.option;
   const setOption = props.setOption;
   const [value, setValue] = useState<Record<string, string | number>>({
-    value: 0,
+    value: props.defaultValue,
   });
   useEffect(() => {
     setOption(value.value);

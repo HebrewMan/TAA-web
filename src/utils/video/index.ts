@@ -23,6 +23,9 @@ function videoStop() {
   music1.pause();
   music2.pause();
   music3.pause();
+  music1 = null;
+  music2 = null;
+  music3 = null;
 }
 
 export { videoStart, videoStop };

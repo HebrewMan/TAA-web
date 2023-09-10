@@ -51,13 +51,11 @@ const Router = () => {
       element: <KeepAlive cacheKey="tasks">{LazyLoad("tasks")}</KeepAlive>,
     },
     {
-      path: "/Introduce",
-      element: (
-        LazyLoad("introduce")
-      ),
+      path: "/Introduction",
+      element: LazyLoad("introduce"),
     },
     {
-      path: "/Knapsack",
+      path: "/my bag",
       element: (
         <KeepAlive cacheKey="knapsack">{LazyLoad("knapsack")}</KeepAlive>
       ),

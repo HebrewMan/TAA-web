@@ -37,7 +37,7 @@ const Footer = () => {
     { baseImage: playnowImg, baseCurImage: baseCurImg, path: "PlayNow" },
     { baseImage: marketImg, baseCurImage: baseCurImg, path: "Market" },
     { baseImage: mynftImg, baseCurImage: baseCurImg, path: "MyNFT" },
-    { baseImage: introduceImg, baseCurImage: baseCurImg, path: "Introduce" },
+    { baseImage: introduceImg, baseCurImage: baseCurImg, path: "Introduction" },
   ];
 
   navBar.forEach;

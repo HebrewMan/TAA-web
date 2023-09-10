@@ -5,6 +5,7 @@ import Web3Provider from "@/components/WalletConnect";
 import UseWeb3Provider from "./providers";
 import "./App.css";
 import { videoStart } from "./utils";
+let once = false;
 function App() {
   const location = useLocation();
   const isHomeOrTasks =
@@ -12,6 +13,8 @@ function App() {
 
   if (!localStorage.taaVideo || localStorage.taaVideo == 1) {
     document.addEventListener("click", () => {
+      if (once) return;
+      once = true;
       localStorage.taaVideo = 1;
       videoStart();
     });

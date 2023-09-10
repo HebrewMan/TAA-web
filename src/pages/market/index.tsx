@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./index.scss";
 import DropDown from "@/components/Dropdown";
-import { Image, Toast } from "react-vant";
+import { Cell, Image, List, Toast } from "react-vant";
 import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
@@ -235,15 +235,6 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
         <div className="current-price px-18px py-10px">
           <div className="text-16px color-#402209">Current price</div>
           <div className="wrap-sign flex important-justify-center">
-            {/* <div className="relative">
-              <Image
-                className="important-absolute left--20px top--7px"
-                width="48"
-                height="45"
-                src={taaImg}
-              />
-              <div className="sign-box">{detailData.taa}</div>
-            </div> */}
             <div className="relative">
               <Image
                 className="important-absolute left--20px top--7px"
@@ -351,6 +342,58 @@ const AdoptDetail = (props: any) => {
 };
 
 let marketTimer: any = null;
+const marketsOption1 = [
+  { text: "Common", value: 1 },
+  { text: "Rare", value: 2 },
+  { text: "Super", value: 3 },
+];
+
+const marketsOption2 = [
+  {
+    text: (
+      <div className="flex items-center">
+        <span className="ml-4px">All</span>
+      </div>
+    ),
+    value: "all",
+  },
+  {
+    text: (
+      <div className="flex items-center">
+        <img className="w-20px h-20px" src={staminaSvg} />
+        <span className="ml-4px">Health</span>
+      </div>
+    ),
+    value: "health",
+  },
+  {
+    text: (
+      <div className="flex items-center">
+        <img className="w-20px h-20px" src={charismaSvg} />
+        <span className="ml-4px">Happiness</span>
+      </div>
+    ),
+    value: "happiness",
+  },
+  {
+    text: (
+      <div className="flex items-center">
+        <img className="w-20px h-20px" src={cleanSvg} />
+        <span className="ml-4px">Stamina</span>
+      </div>
+    ),
+    value: "stamina",
+  },
+  {
+    text: (
+      <div className="flex items-center">
+        <img className="w-20px h-20px" src={iqSvg} />
+        <span className="ml-4px">Comfort</span>
+      </div>
+    ),
+    value: "comfort",
+  },
+];
 const NFTMarket = (props: {
   openHandle: any;
   setDetailData: (arg0: Record<string, string | number>) => void;
@@ -358,27 +401,75 @@ const NFTMarket = (props: {
   const [marketData, setmarketData] = useState<
     Array<Record<string, string | number>>
   >([]);
-
+  const [count, setCount] = useState(1);
+  const [finished, setFinished] = useState<boolean>(false);
+  const [optionValue1, setOptionValue1] = useState(1);
+  const [optionValue2, setOptionValue2] = useState("all");
   const marketsOption1 = [
-    { text: "Kitten", value: 0 },
-    { text: "Props", value: 1 },
+    { text: "Common", value: 1 },
+    { text: "Rare", value: 2 },
   ];
 
-  const marketsOption2 = [
-    { text: "Common", value: 0 },
-    { text: "Rare", value: 1 },
-  ];
+  const fetHandle = (refresh = false) => {
+    getMarketsCats({
+      page: 1,
+      rate: optionValue1,
+      use: optionValue2,
+    }).then((res: any) => {
+      if (marketData.length == 0 || refresh) {
+        setmarketData(res);
+        return;
+      }
+      let newObj: any = {};
+      res.forEach((item: any) => {
+        newObj[item.token_id] = item;
+      });
 
+      for (let i = 0; i < marketData.length; i++) {
+        if (!newObj[marketData[i].token_id]) {
+          setmarketData([...marketData, newObj[marketData[i].token_id]]);
+        }
+      }
+    });
+  };
   const getInitData = () => {
     clearTimeout(marketTimer);
-    getMarketsCats().then((res: any) => {
-      setmarketData(res);
-    });
-
     marketTimer = setTimeout(() => {
+      fetHandle();
       getInitData();
     }, 5000);
   };
+
+  const onLoad = async () => {
+    setCount((v) => v + 1);
+    let result: any = await getMarketsCats({
+      page: count,
+      rate: optionValue1,
+      use: optionValue2,
+    });
+    if (result.length == 0) {
+      setFinished(true);
+    } else {
+      if (marketData.length == 0) {
+        setmarketData(result);
+        return;
+      }
+      let newObj: any = {};
+      result.forEach((item: any) => {
+        newObj[item.token_id] = item;
+      });
+      for (let i = 0; i < marketData.length; i++) {
+        if (!newObj[marketData[i].token_id]) {
+          setmarketData([...marketData, newObj[marketData[i].token_id]]);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    setmarketData([]);
+    fetHandle(true);
+  }, [optionValue1, optionValue2]);
 
   useEffect(() => {
     getInitData();
@@ -400,38 +491,34 @@ const NFTMarket = (props: {
     props.setDetailData(data);
   };
 
-  const [optionValue1, setOptionValue1] = useState(0);
-  const [optionValue2, setOptionValue2] = useState(0);
   return (
     <>
       <div className="metu">
         <div className="lang-btn">
           <div className="lang-shadow">
             <DropDown
+              defaultValue={optionValue1}
               option={marketsOption1}
               setOption={setOptionValue1}
-            ></DropDown>
-          </div>
-        </div>
-
-        <div className="lang-btn">
-          <div className="lang-shadow">
-            <DropDown
-              option={marketsOption2}
-              setOption={setOptionValue2}
             ></DropDown>
           </div>
         </div>
       </div>
 
       <div className="items">
-        <div className="flex justify-between flex-wrap line-height-none">
+        <List
+          finished={finished}
+          errorText="Request failed, click to reload"
+          onLoad={onLoad}
+          loadingText="Loading..."
+          className="flex justify-between flex-wrap line-height-none w-full"
+        >
           {marketData.map((item) => (
             <div key={item.order_id} onClick={() => openHandle(item)}>
               <MarketItem item={item}></MarketItem>
             </div>
           ))}
-        </div>
+        </List>
       </div>
     </>
   );
@@ -445,21 +532,72 @@ const NFTAdopt = (props: {
   const [marketData, setmarketData] = useState<
     Array<Record<string, string | number>>
   >([]);
+  const [count, setCount] = useState(1);
+  const [finished, setFinished] = useState<boolean>(false);
+  const [optionValue1, setOptionValue1] = useState(1);
+  const [optionValue2, setOptionValue2] = useState("all");
 
-  const marketsOption1 = [
-    { text: "Props", value: 0 },
-    { text: "Kitten", value: 1 },
-  ];
+  const fetHandle = (refresh = false) => {
+    getMarketsProp({
+      page: 1,
+      rate: optionValue1,
+      use: optionValue2,
+    }).then((res: any) => {
+      if (marketData.length == 0 || refresh) {
+        setmarketData(res);
+        return;
+      }
+      let newObj: any = {};
+      res.forEach((item: any) => {
+        newObj[item.token_id] = item;
+      });
+
+      for (let i = 0; i < marketData.length; i++) {
+        if (!newObj[marketData[i].token_id]) {
+          setmarketData([...marketData, newObj[marketData[i].token_id]]);
+        }
+      }
+    });
+  };
 
   const getInitData = () => {
-    clearInterval(adoptTimer);
-    getMarketsProp().then((res: any) => {
-      setmarketData(res);
-    });
-    adoptTimer = setTimeout(() => {
+    clearTimeout(marketTimer);
+    marketTimer = setTimeout(() => {
+      fetHandle();
       getInitData();
     }, 5000);
   };
+
+  const onLoad = async () => {
+    setCount((v) => v + 1);
+    let result: any = await getMarketsProp({
+      page: count,
+      rate: optionValue1,
+      use: optionValue2,
+    });
+    if (result.length == 0) {
+      setFinished(true);
+    } else {
+      if (marketData.length == 0) {
+        setmarketData(result);
+        return;
+      }
+      let newObj: any = {};
+      result.forEach((item: any) => {
+        newObj[item.token_id] = item;
+      });
+      for (let i = 0; i < marketData.length; i++) {
+        if (!newObj[marketData[i].token_id]) {
+          setmarketData([...marketData, newObj[marketData[i].token_id]]);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    setmarketData([]);
+    fetHandle(true);
+  }, [optionValue1, optionValue2]);
 
   useEffect(() => {
     getInitData();
@@ -481,53 +619,13 @@ const NFTAdopt = (props: {
     props.setDetailData(data);
   };
 
-  const marketsOption2 = [
-    {
-      text: (
-        <div className="flex items-center">
-          <img className="w-20px h-20px" src={staminaSvg} />
-          <span className="ml-4px">Charm</span>
-        </div>
-      ),
-      value: 0,
-    },
-    {
-      text: (
-        <div className="flex items-center">
-          <img className="w-20px h-20px" src={charismaSvg} />
-          <span className="ml-4px">stamina</span>
-        </div>
-      ),
-      value: 1,
-    },
-    {
-      text: (
-        <div className="flex items-center">
-          <img className="w-20px h-20px" src={cleanSvg} />
-          <span className="ml-4px">intelligence</span>
-        </div>
-      ),
-      value: 2,
-    },
-    {
-      text: (
-        <div className="flex items-center">
-          <img className="w-20px h-20px" src={iqSvg} />
-          <span className="ml-4px">cleanness</span>
-        </div>
-      ),
-      value: 3,
-    },
-  ];
-
-  const [optionValue1, setOptionValue1] = useState(0);
-  const [optionValue2, setOptionValue2] = useState(0);
   return (
     <>
       <div className="metu">
         <div className="lang-btn">
           <div className="lang-shadow">
             <DropDown
+              defaultValue={optionValue1}
               option={marketsOption1}
               setOption={setOptionValue1}
             ></DropDown>
@@ -537,6 +635,7 @@ const NFTAdopt = (props: {
         <div className="important-w-140px lang-btn">
           <div className="lang-shadow">
             <DropDown
+              defaultValue={optionValue2}
               option={marketsOption2}
               setOption={setOptionValue2}
             ></DropDown>
@@ -545,13 +644,19 @@ const NFTAdopt = (props: {
       </div>
 
       <div className="items">
-        <div className="flex justify-between flex-wrap">
+        <List
+          finished={finished}
+          errorText="Request failed, click to reload"
+          onLoad={onLoad}
+          loadingText="Loading..."
+          className="flex justify-between flex-wrap line-height-none w-full"
+        >
           {marketData.map((item) => (
             <div key={item.order_id} onClick={() => openHandle(item)}>
               <MarketItem item={item}></MarketItem>
             </div>
           ))}
-        </div>
+        </List>
       </div>
     </>
   );
@@ -595,13 +700,13 @@ const Market = () => {
               className={`${type == "Market" && "outer-ring"} type`}
               onClick={() => setType("Market")}
             >
-              <div className="text ">Market</div>
+              <div className="text">Kitten</div>
             </div>
             <div
               className={`${type == "Adopt" && "outer-ring"} type`}
               onClick={() => setType("Adopt")}
             >
-              <div className="text">Adopt</div>
+              <div className="text">Prop</div>
             </div>
           </div>
           <div

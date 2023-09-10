@@ -48,14 +48,14 @@ const PlayNow = () => {
     useRootSelector(selectCatSlice);
   const nav = useNavigate();
   const menu = [
-    { title: "knapsack", img: knapsackImg },
+    { title: "my bag", img: knapsackImg },
     { title: "friends", img: friendsImg },
     { title: "tasks", img: tasksImg },
     { title: "salary", img: mallsImg },
   ];
 
   const [popup, setPopup] = useState("");
-  const [showNotice, setShowNotice] = useState(false);
+  const [showNotice, setShowNotice] = useState(true);
 
   const dispatch = useRootDispatch();
   const onClose = () => {
@@ -73,21 +73,25 @@ const PlayNow = () => {
       typeImg: staminaSvg,
       gradientBk: "linear-gradient(180deg, #FF8D8D 0%, #C93413 117.9%)",
       value: 0,
+      name: "health",
     },
     {
       typeImg: charismaSvg,
       gradientBk: "linear-gradient(180deg, #DB8EFF 0%, #6C1794 118.75%)",
       value: 0,
+      name: "happiness",
     },
     {
       typeImg: cleanSvg,
       gradientBk: "linear-gradient(180deg, #98CEFF 0%, #0A569D 118.75%)",
       value: 0,
+      name: "stamina",
     },
     {
       typeImg: iqSvg,
       gradientBk: "linear-gradient(180deg, #C9F7C2 0%, #3B8734 130%)",
       value: 0,
+      name: "comfort",
     },
   ]);
 
@@ -124,6 +128,9 @@ const PlayNow = () => {
 
   const noticeHandle = () => {
     clearInterval(noticeTimer);
+    setTimeout(() => {
+      setShowNotice(false);
+    }, 10000);
     noticeTimer = setInterval(() => {
       if (!popup) {
         setShowNotice(true);
@@ -169,14 +176,16 @@ const PlayNow = () => {
       setPopup(path);
       return;
     }
+    setShowNotice(false);
     if (window.screen.availWidth <= 1000) {
-      if (path != "tasks" && path != "knapsack") {
+      if (path != "tasks" && path != "my bag") {
         Toast({ message: "Coming Soon" });
         return;
       }
       nav(`/${path}`);
       return;
     }
+
     dispatch(setPopusStatus(path));
   };
 
@@ -260,7 +269,10 @@ const PlayNow = () => {
           position="top"
           onClose={onClose}
         >
-          <AttibuteDetailsPopup onClose={onClose} />
+          <AttibuteDetailsPopup
+            visible={popup == "attibute"}
+            onClose={onClose}
+          />
         </Popup>
 
         <Popup
@@ -276,14 +288,14 @@ const PlayNow = () => {
           style={{ background: "none", height: "77%" }}
           position="top"
         >
-          <UserInfoPopup onClose={onClose} />
+          <UserInfoPopup visible={popup == "cat"} onClose={onClose} />
         </Popup>
 
         <Popup
           visible={
             popup == "Market" ||
             popup == "MyNFT" ||
-            popup == "knapsack" ||
+            popup == "my bag" ||
             popup == "tasks" ||
             (popup == "salary" && !isMobile)
           }
@@ -301,8 +313,6 @@ const PlayNow = () => {
         >
           <SalaryPopup onClose={onClose} />
         </Popup>
-
-        {/* <Popup visible={ popup == 'Introduce'} style={{background:'none', height: '100%'}}  position='top'> */}
         {isIntroduce}
         {isLogin && address && (
           <div className="life-attribute">
@@ -316,6 +326,7 @@ const PlayNow = () => {
                 gradientBk={item.gradientBk}
                 value={item.value}
                 key={item.typeImg}
+                name={item.name}
               />
             ))}
           </div>
@@ -347,12 +358,12 @@ const PlayNow = () => {
             <div
               onClick={() => routerHandle(item.title)}
               className={`menu-item relative ${
-                item.title != "knapsack" && "mt-8px"
+                item.title != "my bag" && "mt-8px"
               }`}
               key={item.title}
             >
               <img src={item.img} width={52} alt="" />
-              <i className="text-after text-12px font-shadow-black top-50px">
+              <i className="text-after text-12px font-shadow-black top-50px whitespace-nowrap">
                 {item.title}
               </i>
             </div>

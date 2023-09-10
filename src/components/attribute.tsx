@@ -1,4 +1,5 @@
 import React from "react";
+import { Toast } from "react-vant";
 import "./style/attribute.scss";
 const Attibute = (props: any) => {
   const width = (props.value / 100) * props.logoWidth * 2;
@@ -10,10 +11,11 @@ const Attibute = (props: any) => {
         style={{ width: "54px" }}
       >
         <img
-          className=" z-200 ml-20px"
+          className="z-200 ml-20px cursor-pointer"
           src={props.typeImg}
           width={props.logoWidth}
           alt=""
+          onClick={() => Toast.info(props.name)}
         />
         <div
           className={`absolute z-100 left-19px ml-19px attibute-status `}

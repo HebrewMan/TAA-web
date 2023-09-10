@@ -3,6 +3,7 @@ import closeImg from "@/assets/icon/close.svg";
 import "./index.scss";
 import { useEffect, useState } from "react";
 import useTypewriter from "react-typewriter-hook";
+import device from "current-device";
 const notices = [
   "Meow there, hooman! Missed me?",
   "Purr... You're back! Ready for some cuddles?",
@@ -18,6 +19,7 @@ const notices = [
 
 export default function notice(props: { visible: any; onClose: any }) {
   const [noticeText, setNoticeText] = useState("");
+  const isMobile = device.mobile();
   const typing = useTypewriter(noticeText);
   let visible = props.visible;
 
@@ -31,7 +33,11 @@ export default function notice(props: { visible: any; onClose: any }) {
   }, [visible]);
   return (
     visible && (
-      <div className="notice absolute">
+      <div
+        className={
+          isMobile ? "notice absolute" : "notice notice-desktop absolute"
+        }
+      >
         <div className="w-full h-full relative flex items-center justify-center">
           <img className="absolute left-0 top-0" src={noticeImg} alt="" />
           <img

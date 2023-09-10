@@ -15,6 +15,8 @@ const SharePopup = (props: any) => {
       shadowColor: "#C6601D",
       height: 52,
       width: 186,
+      url: "",
+      copy: false,
     },
     {
       logo: twitterSvg,
@@ -24,6 +26,8 @@ const SharePopup = (props: any) => {
       shadowColor: "#4594D5",
       height: 52,
       width: 199,
+      url: "https://twitter.com/TheAnimalAge",
+      copy: false,
     },
     {
       logo: facebook,
@@ -33,6 +37,8 @@ const SharePopup = (props: any) => {
       shadowColor: "#435994",
       height: 52,
       width: 199,
+      url: "https://www.facebook.com/groups/Crazymomi/",
+      copy: false,
     },
     {
       logo: link,
@@ -42,8 +48,23 @@ const SharePopup = (props: any) => {
       shadowColor: "#AAC211",
       height: 52,
       width: 199,
+      url: "https://www.theanimalage.com/",
+      copy: true,
     },
   ];
+
+  const shareClick = (item: any) => {
+    console.log(item);
+
+    if (item.url) {
+      if (item.copy) {
+        navigator.clipboard.writeText(item.url);
+        props.onClose();
+      } else {
+        window.open(item.url);
+      }
+    }
+  };
 
   return (
     <React.Fragment>
@@ -59,7 +80,14 @@ const SharePopup = (props: any) => {
 
         <div className="share-btns">
           {btns.map(
-            (item) => item.logo && <BtnWithShadow key={item.text} item={item} />
+            (item) =>
+              item.logo && (
+                <BtnWithShadow
+                  key={item.text}
+                  item={item}
+                  onClick={() => shareClick(item)}
+                />
+              )
           )}
         </div>
       </div>

@@ -83,6 +83,10 @@ const AttibuteDetails = (props: any) => {
     }
   };
 
+  useEffect(() => {
+    setIsSetUsername(false);
+  }, [props.visible]);
+
   return (
     <React.Fragment>
       <div className="attibute-details-popup">

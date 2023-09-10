@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import closeSvg from "@/assets/icon/close.svg";
 import avaterSvg from "@/assets/icon/avater.svg";
 import penSvg from "@/assets/icon/pen.svg";
@@ -50,6 +50,10 @@ const UserInfoPopup = (props: any) => {
       setIsSetUsername(true);
     }
   };
+
+  useEffect(() => {
+    setIsSetUsername(false);
+  }, [props.visible]);
 
   return (
     <React.Fragment>

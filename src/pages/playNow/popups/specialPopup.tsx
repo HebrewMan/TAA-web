@@ -20,7 +20,7 @@ const SpecialPopup = (props: any) => {
     case "tasks":
       content = <Tasks />;
       break;
-    case "knapsack":
+    case "my bag":
       content = <Knapsack />;
       break;
     case "salary":
