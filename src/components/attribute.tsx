@@ -1,21 +1,21 @@
-import React from "react";
-import { Toast } from "react-vant";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import "./style/attribute.scss";
+import { useState } from "react";
 const Attibute = (props: any) => {
   const width = (props.value / 100) * props.logoWidth * 2;
 
   return (
-    <React.Fragment>
+    <>
       <div
         className="attibute text-align-center relative mb-8px"
         style={{ width: "54px" }}
       >
         <img
           className="z-200 ml-20px cursor-pointer"
+          data-tooltip-id={props.name}
           src={props.typeImg}
           width={props.logoWidth}
           alt=""
-          onClick={() => Toast.info(props.name)}
         />
         <div
           className={`absolute z-100 left-19px ml-19px attibute-status `}
@@ -39,7 +39,13 @@ const Attibute = (props: any) => {
           </span>
         </div>
       </div>
-    </React.Fragment>
+      <ReactTooltip
+        id={props.name}
+        place="bottom"
+        openOnClick={true}
+        content={props.name}
+      />
+    </>
   );
 };
 

@@ -195,7 +195,7 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
           <div className="img-wrap w-315px h-265px flex justify-center items-center">
             <Image
               className=""
-              width="220"
+              width="310"
               height="auto"
               src={detailData.image}
             />
@@ -242,7 +242,7 @@ const MarketDetail = (props: { detailData: any; closeHandle: any }) => {
                 height="45"
                 src={ethImg}
               />
-              <div className="sign-box days-one important-w-150px">
+              <div className="sign-box days-one important-w-200px">
                 {detailData.pay_amount}{" "}
               </div>
             </div>
@@ -300,10 +300,10 @@ const AdoptDetail = (props: any) => {
       )}
 
       <div className="use-box-wrap">
-        <div className="wrap-img w-300px h-270px flex justify-center items-center">
-          <Image width="176" height="auto" src={detailData.image} />
+        <div className="wrap-img w-300px h-300px flex justify-center items-center">
+          <Image width="300" height="auto" src={detailData.image} />
         </div>
-        <div className="wrap-sign ">
+        <div className="wrap-sign flex important-justify-center pl-20px">
           <div className="relative">
             <Image
               className="important-absolute left--30px top--10px"
@@ -311,7 +311,9 @@ const AdoptDetail = (props: any) => {
               height="50"
               src={ethImg}
             />
-            <div className="sign-box days-one">{detailData.pay_amount}</div>
+            <div className="sign-box days-one important-w-200px text-center">
+              {detailData.pay_amount}
+            </div>
           </div>
         </div>
       </div>
@@ -326,7 +328,7 @@ const AdoptDetail = (props: any) => {
           src={salarybtnImg}
         />
         <i className="absolute z-2 top-28px  text-after text-20px font-shadow-black">
-          Adopt
+          BUY
         </i>
       </div>
 
@@ -403,9 +405,10 @@ const NFTMarket = (props: {
   >([]);
   const [count, setCount] = useState(1);
   const [finished, setFinished] = useState<boolean>(false);
-  const [optionValue1, setOptionValue1] = useState(1);
+  const [optionValue1, setOptionValue1] = useState(0);
   const [optionValue2, setOptionValue2] = useState("all");
   const marketsOption1 = [
+    { text: "All", value: 0 },
     { text: "Common", value: 1 },
     { text: "Rare", value: 2 },
   ];

@@ -28,6 +28,7 @@
       grid-template-rows: repeat(auto-fill, 150px);
       justify-content: space-between;
       padding-right: 10px;
+      overflow-y: auto;
       .item {
         width: 110px;
         height: 110px;
@@ -100,7 +101,7 @@
 
 .use-modal {
   width: 327px;
-  height: 403px;
+  height: 460px;
   border-radius: 20px;
   border: 4px solid var(--unnamed, #402209);
   background: linear-gradient(0deg, #ffd28e 0%, #ffd28e 100%), #e2aa73;
@@ -122,7 +123,7 @@
 
   .use-modal-main {
     width: 299px;
-    height: 371px;
+    height: 420px;
     border-radius: 14px;
     border: 3px solid #402209;
     background: #ffefd7;
@@ -133,7 +134,7 @@
     overflow: hidden;
 
     .modal-content {
-      height: 240px;
+      height: 300px;
       position: relative;
       .knapsack-img {
         background-image: url("@/assets/bakeground/knapsack-bg.png");
@@ -265,7 +266,7 @@
       height: 95%;
       box-sizing: border-box;
       .items {
-        height: 92%;
+        height: 97%;
       }
     }
   }
@@ -278,6 +279,6 @@
     }
   }
   .pages {
-    margin-top: 30px !important;
+    // margin-top: 30px !important;
   }
 }

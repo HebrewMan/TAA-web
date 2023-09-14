@@ -298,8 +298,8 @@ const UseModal = (props: any) => {
       />
       <div className="use-modal-main">
         <div className="modal-content">
-          <div className="knapsack-img h-240px flex justify-center items-center">
-            <Image width="176" height="auto" src={actionKnapsack.image} />
+          <div className="knapsack-img h-300px flex justify-center items-center">
+            <Image width="300" height="auto" src={actionKnapsack.image} />
           </div>
           <div className="knapsack-option">
             <Image
@@ -312,20 +312,28 @@ const UseModal = (props: any) => {
         </div>
         <div className="modal-text">Cat climbing frame</div>
         <div className="flex justify-center items-center h-70px">
+          {actionKnapsack.is_owners ? (
+            <div
+              className="w-130px h-50px relative cursor-pointer flex mr-10px"
+              onClick={burnHandle}
+            >
+              <Button
+                bgColor1="#AAC211"
+                bgColor2="#bad60f"
+                text="Use"
+                size="26px"
+                status={burnIsLoading ? 0 : 1}
+              ></Button>
+            </div>
+          ) : (
+            ""
+          )}
           <div
-            className="w-130px h-50px relative cursor-pointer flex mr-10px"
-            onClick={burnHandle}
-          >
-            <Button
-              bgColor1="#AAC211"
-              bgColor2="#bad60f"
-              text="Use"
-              size="26px"
-              status={burnIsLoading ? 0 : 1}
-            ></Button>
-          </div>
-          <div
-            className="w-130px h-50px relative cursor-pointer flex"
+            className={
+              actionKnapsack.is_owners
+                ? "w-130px h-50px relative cursor-pointer flex"
+                : "w-260px h-50px relative cursor-pointer flex"
+            }
             onClick={sellHandle}
           >
             <Button

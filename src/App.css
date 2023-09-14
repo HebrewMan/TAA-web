@@ -52,3 +52,10 @@
   color: #333;
   padding: 4px;
 }
+
+.react-tooltip {
+  background: #ffe0b1 !important;
+  color: #333 !important;
+  border: 2px solid #402209;
+  z-index: 999999999;
+}

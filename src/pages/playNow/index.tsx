@@ -55,7 +55,7 @@ const PlayNow = () => {
   ];
 
   const [popup, setPopup] = useState("");
-  const [showNotice, setShowNotice] = useState(true);
+  const [showNotice, setShowNotice] = useState(false);
 
   const dispatch = useRootDispatch();
   const onClose = () => {
@@ -127,12 +127,15 @@ const PlayNow = () => {
   };
 
   const noticeHandle = () => {
+    if (catList.length > 0) {
+      setShowNotice(true);
+    }
     clearInterval(noticeTimer);
     setTimeout(() => {
       setShowNotice(false);
     }, 10000);
     noticeTimer = setInterval(() => {
-      if (!popup) {
+      if (!popup && catList.length > 0) {
         setShowNotice(true);
       }
       setTimeout(() => {
@@ -176,6 +179,7 @@ const PlayNow = () => {
       setPopup(path);
       return;
     }
+
     setShowNotice(false);
     if (window.screen.availWidth <= 1000) {
       if (path != "tasks" && path != "my bag") {
@@ -212,7 +216,7 @@ const PlayNow = () => {
   };
 
   let isIntroduce;
-  if (status === "Introduce") isIntroduce = <Introduce />;
+  if (status === "Introduction") isIntroduce = <Introduce />;
 
   return (
     <>
@@ -349,10 +353,9 @@ const PlayNow = () => {
                 onClick={selectCathandle}
               />
             )}
+            <Notice visible={showNotice} onClose={setShowNotice}></Notice>
           </div>
         )}
-
-        <Notice visible={showNotice} onClose={setShowNotice}></Notice>
         <div className="menu">
           {menu.map((item) => (
             <div

@@ -15,7 +15,7 @@ import Button from "@/components/Button/index";
 const Tasks = () => {
   const isMobile = device.mobile();
   const [taskList, setTaskList] = useState<any>([]);
-  const [currentIndex, setCurrentIndex] = useState<null | number>(null);
+  const [currentIndex, setCurrentIndex] = useState<null | number>(0);
   const [showReward, setShowReward] = useState(false);
   const [actionItem, setActionItem] = useState<any>({});
   const { address } = useAccount();
