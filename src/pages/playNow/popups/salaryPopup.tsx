@@ -28,15 +28,31 @@ export default function Salary(props: any) {
       props.onClose();
     });
   };
+
+  const closeHandle = () => {
+    props.onClose();
+  };
+
+  const clickHandle = (e: any) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center h-full butter-sans-text line-height-none">
+    <div
+      className="flex flex-col justify-center items-center h-full butter-sans-text line-height-none"
+      onClick={closeHandle}
+    >
       <Image
         className="mb--25px relative z-2"
         width="287"
         height="auto"
         src={salaryImg}
+        onClick={clickHandle}
       />
-      <div className="w-255px h-292px box-border rounded-20px bg-#FFD28E px-12px pt-12px pb-14px">
+      <div
+        className="w-255px h-292px box-border rounded-20px bg-#FFD28E px-12px pt-12px pb-14px"
+        onClick={clickHandle}
+      >
         <div className="bg-#FFEFD7 rounded-20px w-full h-full ">
           <div className="min-w-186px flex flex-col justify-center items-center pt-25px">
             <div className="w-168px">
@@ -69,7 +85,10 @@ export default function Salary(props: any) {
           </div>
         </div>
       </div>
-      <div className="mt-24px w-278px h-50px relative cursor-pointer">
+      <div
+        className="mt-24px w-278px h-50px relative cursor-pointer"
+        onClick={clickHandle}
+      >
         <Button
           bgColor1="#AAC211"
           bgColor2="#bad60f"

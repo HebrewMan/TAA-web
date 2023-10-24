@@ -15,6 +15,7 @@ import {
   rainbowWallet,
   trustWallet,
   walletConnectWallet,
+  okxWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum, goerli } from "wagmi/chains";
@@ -44,6 +45,7 @@ const connectors = connectorsForWallets([
     groupName: "Suggested",
     wallets: [
       injectedWallet({ chains }),
+      okxWallet({ chains }),
       coinbaseWallet({ chains, appName: "Coinbase" }),
       metaMaskWallet({ chains, projectId: "" }),
     ],

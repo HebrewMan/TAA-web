@@ -4,8 +4,14 @@ import "./index.scss";
 import backLogo from "@/assets/icon/back.svg";
 import claimedLogo from "@/assets/icon/claimed.svg";
 import salaryImg from "@/assets/bakeground/succed-title.png";
+import dailyRewardImg from "@/assets/bakeground/dailyReward.png";
 import { Image, Swiper, Toast } from "react-vant";
-import { doSign, getTaskDetail, getTasks } from "@/api/feature/app";
+import {
+  doSign,
+  doSignClaim,
+  getTaskDetail,
+  getTasks,
+} from "@/api/feature/app";
 import { useAccount, useContractWrite } from "wagmi";
 import device from "current-device";
 import { ArrowLeft, Arrow } from "@react-vant/icons";
@@ -37,10 +43,28 @@ const Tasks = () => {
 
   const claimHandle = (index: number) => (event: any) => {
     event.stopPropagation();
-    getTaskDetail({ address }, taskList[index].task_id).then((res) => {
-      setActionItem(res);
-      setShowReward(true);
-    });
+    if (taskList[index].is_check_in && taskList[index].is_claim == 0) {
+      getTaskDetail({ address }, taskList[index].task_id).then((res) => {
+        setActionItem(res);
+        setShowReward(true);
+      });
+    } else {
+      doSign({
+        address,
+      }).then((res: any) => {
+        getTasks({
+          address,
+        }).then((res: any) => {
+          setTaskList(res);
+          if (res[index].is_claim == 0) {
+            getTaskDetail({ address }, taskList[index].task_id).then((res) => {
+              setActionItem(res);
+              setShowReward(true);
+            });
+          }
+        });
+      });
+    }
   };
 
   useEffect(() => {
@@ -70,7 +94,7 @@ const Tasks = () => {
     if (isLoading) {
       return;
     }
-    doSign({
+    doSignClaim({
       address,
       token_id: actionItem.task_award[initialSwipe].tokenid,
     }).then((res: any) => {
@@ -81,7 +105,9 @@ const Tasks = () => {
   };
 
   const getInitData = () => {
-    getTasks().then((res: any) => {
+    getTasks({
+      address,
+    }).then((res: any) => {
       setTaskList(res);
     });
   };
@@ -118,7 +144,7 @@ const Tasks = () => {
           )}
           <div className="main-wrap pt-90px">
             <div className="main ">
-              {taskList.map((item: any, index) => (
+              {taskList.map((item: any, index: any) => (
                 <div
                   className="item mt-12px cursor-pointer"
                   key={item.task_id}
@@ -157,7 +183,7 @@ const Tasks = () => {
                         className="text font-shadow-block"
                         onClick={claimHandle(index)}
                       >
-                        Claim
+                        Check-in
                       </div>
                     </div>
                   )}
@@ -202,7 +228,7 @@ const Tasks = () => {
                     className="mb--25px relative z-2"
                     width="285"
                     height="75"
-                    src={salaryImg}
+                    src={dailyRewardImg}
                   />
                   <div className="w-255px h-292px rounded-20px bg-#FFD28E px-12px pt-35px pb-14px flex flex-col items-center">
                     <Image

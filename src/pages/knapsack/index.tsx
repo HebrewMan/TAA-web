@@ -252,7 +252,7 @@ const UseModal = (props: any) => {
     if (marketIsLoading) {
       Toast.loading({
         message: "Loading",
-        duration: 60000,
+        duration: 600000,
         overlay: true,
         overlayStyle: {
           backgroundColor: "rgba(0, 0, 0, 0.4)",
@@ -310,7 +310,7 @@ const UseModal = (props: any) => {
             <span>+{actionKnapsack.use_val}</span>
           </div>
         </div>
-        <div className="modal-text">Cat climbing frame</div>
+        <div className="modal-text">{actionKnapsack.name}</div>
         <div className="flex justify-center items-center h-70px">
           {actionKnapsack.is_owners ? (
             <div

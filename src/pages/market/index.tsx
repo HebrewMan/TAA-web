@@ -6,18 +6,13 @@ import staminaSvg from "@/assets/icon/staminaLogo.svg";
 import charismaSvg from "@/assets/icon/charismaLogo.svg";
 import cleanSvg from "@/assets/icon/cleanLogo.svg";
 import iqSvg from "@/assets/icon/iqLogo.svg";
-import {
-  getMarketsCats,
-  getMarketsProp,
-  getOrderInfo,
-} from "@/api/feature/market";
+import { getMarketsCats, getMarketsProp } from "@/api/feature/market";
 import device from "current-device";
-import { getCatInfo, propDetail } from "@/api/feature/cat";
+import { getCatInfo } from "@/api/feature/cat";
 import backLogo from "@/assets/icon/back.svg";
 import AttibuteSmall from "@/components/attributeSmall";
 import salarybtnImg from "@/assets/bakeground/salary_btn.svg";
 import MarketItem from "@/components/MarketItem";
-import taaImg from "@/assets/bakeground/taa.png";
 import ethImg from "@/assets/bakeground/eth.png";
 import buyTitleImg from "@/assets/bakeground/buy-title.png";
 import tradeBtnImg from "@/assets/bakeground/trade-btn.svg";
@@ -26,19 +21,15 @@ import { Loading, Popup } from "react-vant";
 import closeSvg from "@/assets/icon/close.svg";
 import { useRootSelector } from "@/store/hooks";
 import { selectAppSlice } from "@/store/slices/appSlice";
-import { erc20ABI, useAccount, useContractRead, useContractWrite } from "wagmi";
-import { market, taak, ercEth } from "@/config/constantAddress";
+import { useContractWrite } from "wagmi";
+import { market } from "@/config/constantAddress";
 import marketABI from "@/abi/MarketPlaceTAA.json";
 import failImg from "@/assets/icon/fail.svg";
 import successImg from "@/assets/icon/success.svg";
-import taakABI from "@/abi/taak.json";
 import { useActivate, useUnactivate } from "react-activation";
 import { ethers } from "ethers";
 const BuyModal = (props: any) => {
-  const { address } = useAccount();
-
   const {
-    data: marketData,
     isLoading: marketIsLoading,
     isSuccess: marketIsSuccess,
     writeAsync: marketWriteAsync,
@@ -52,7 +43,7 @@ const BuyModal = (props: any) => {
     if (marketIsLoading) {
       Toast.loading({
         message: "Loading",
-        duration: 60000,
+        duration: 600000,
         overlay: true,
         overlayStyle: {
           backgroundColor: "rgba(0, 0, 0, 0.4)",
@@ -345,6 +336,7 @@ const AdoptDetail = (props: any) => {
 
 let marketTimer: any = null;
 const marketsOption1 = [
+  { text: "All", value: 0 },
   { text: "Common", value: 1 },
   { text: "Rare", value: 2 },
   { text: "Super", value: 3 },
@@ -537,7 +529,7 @@ const NFTAdopt = (props: {
   >([]);
   const [count, setCount] = useState(1);
   const [finished, setFinished] = useState<boolean>(false);
-  const [optionValue1, setOptionValue1] = useState(1);
+  const [optionValue1, setOptionValue1] = useState(0);
   const [optionValue2, setOptionValue2] = useState("all");
 
   const fetHandle = (refresh = false) => {
@@ -564,8 +556,8 @@ const NFTAdopt = (props: {
   };
 
   const getInitData = () => {
-    clearTimeout(marketTimer);
-    marketTimer = setTimeout(() => {
+    clearTimeout(adoptTimer);
+    adoptTimer = setTimeout(() => {
       fetHandle();
       getInitData();
     }, 5000);

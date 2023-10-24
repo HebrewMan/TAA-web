@@ -306,6 +306,7 @@ const PlayNow = () => {
           style={{ background: "none", height: "100%" }}
           position="top"
           destroyOnClose={true}
+          closeOnClickOverlay={true}
         >
           <SpecialPopup popupStatus={status} onClose={onClose} />
         </Popup>

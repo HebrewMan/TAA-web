@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
 import "./index.scss";
-import { Switch, Image, Popup, Toast } from "react-vant";
+import { Image, Popup, Toast } from "react-vant";
 import DropDown from "@/components/Dropdown";
-import {
-  getCatInfo,
-  getCatStatus,
-  getMyCats,
-  startWork,
-  stopWork,
-} from "@/api/feature/cat";
+import { getCatInfo, getCatStatus, getMyCats } from "@/api/feature/cat";
 import { useAccount, useContractRead, useContractWrite } from "wagmi";
 import device from "current-device";
 import backLogo from "@/assets/icon/back.svg";
@@ -20,27 +14,24 @@ import AttibuteSmall from "@/components/attributeSmall";
 import TopLineImg from "@/assets/bakeground/top-line.svg";
 import { Loading } from "react-vant";
 import { useActivate, useUnactivate } from "react-activation";
-import { useRootDispatch } from "@/store/hooks";
 import Button from "@/components/Button/index";
 import marketABI from "@/abi/MarketPlaceTAA.json";
 import taakABI from "@/abi/taak.json";
 import closeSvg from "@/assets/icon/close.svg";
 import { payCoins } from "@/api/feature/app";
-import { market, taak } from "@/config/constantAddress";
+import { market } from "@/config/constantAddress";
 import { ethers } from "ethers";
-import { parseEther, parseGwei } from "viem";
 let marketsList: any = [];
 const SellModal = (props: any) => {
   const { address } = useAccount();
+  const [taak, setTaak] = useState(import.meta.env.VITE_TAAK);
   const [marketsOption, setMarketsOption] = useState([]);
   const [optionValue, setOptionValue] = useState(0);
   const [price, setPrice] = useState("");
   const [isSell, setIsSell] = useState(false);
   const {
-    data: marketData,
     isLoading: marketIsLoading,
     isSuccess: marketIsSuccess,
-    isError: marketIsError,
     writeAsync,
   } = useContractWrite({
     address: market,
@@ -48,26 +39,21 @@ const SellModal = (props: any) => {
     functionName: "createOrder",
   });
 
-  const { data: isApprovedData, isLoading: isApprovedLoading } =
-    useContractRead({
-      address: taak,
-      abi: taakABI,
-      functionName: "isApprovedForAll",
-      args: [address, market],
-      watch: true,
-      enabled: !!address,
-    });
-
-  const {
-    data: approveData,
-    isLoading: approveLoading,
-    isSuccess: approveSuccess,
-    writeAsync: approveWriteAsync,
-  } = useContractWrite({
+  const { data: isApprovedData } = useContractRead({
     address: taak,
     abi: taakABI,
-    functionName: "setApprovalForAll",
+    functionName: "isApprovedForAll",
+    args: [address, market],
+    watch: true,
+    enabled: !!address,
   });
+
+  const { isLoading: approveLoading, writeAsync: approveWriteAsync } =
+    useContractWrite({
+      address: taak,
+      abi: taakABI,
+      functionName: "setApprovalForAll",
+    });
 
   const getInitData = () => {
     payCoins().then((res: any) => {
@@ -103,7 +89,7 @@ const SellModal = (props: any) => {
     if (approveLoading || marketIsLoading) {
       Toast.loading({
         message: "Loading",
-        duration: 60000,
+        duration: 600000,
         overlay: true,
         overlayStyle: {
           backgroundColor: "rgba(0, 0, 0, 0.4)",
@@ -115,6 +101,12 @@ const SellModal = (props: any) => {
   }, [approveLoading, marketIsLoading]);
 
   useEffect(() => {
+    setTaak(props.catInfo.nft_address);
+  }, [props.catInfo.nft_address]);
+
+  useEffect(() => {
+    console.log(isApprovedData);
+
     if (isApprovedData && isSell) {
       writeAsync({
         args: [
@@ -129,18 +121,19 @@ const SellModal = (props: any) => {
 
   const sellHandle = () => {
     if (!price || parseFloat(price) <= 0) {
-      Toast.info("请输入价格");
+      Toast.info("Please enter the price");
       return;
     }
-    setIsSell(true);
-
-    if (approveLoading || marketIsLoading) return;
 
     if (!isApprovedData) {
       approveWriteAsync({
         args: [market, true],
       });
+    } else {
+      setIsSell(true);
     }
+
+    if (approveLoading || marketIsLoading) return;
   };
 
   return (
@@ -177,6 +170,7 @@ const SellModal = (props: any) => {
             <DropDown
               option={marketsOption}
               setOption={setOptionValue}
+              defaultValue={marketsOption[0] && marketsOption[0].value}
             ></DropDown>
           </div>
         </div>
@@ -334,9 +328,9 @@ const CatDetail = (props: any) => {
             </div>
             <div className="flex items-end line-height-none pt-20px pl-14px">
               <div className=" color-#402209 text-28px">{detailData.name}</div>
-              <div className=" text-18px opacity-60 color-#2D1600 ml-8px">
+              {/* <div className=" text-18px opacity-60 color-#2D1600 ml-8px">
                 #001
-              </div>
+              </div> */}
             </div>
             <div className="flex justify-between items-center px-14px">
               <div className=" color-#402209 text-14px text-left  pt-10px">
@@ -385,7 +379,6 @@ const MyNFT = () => {
   const [myNFTs, setMyNFTS] = useState([]);
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState({});
-  const dispatch = useRootDispatch();
 
   const getMyNfts = () => {
     clearTimeout(getMybagTimer);
@@ -433,7 +426,7 @@ const MyNFT = () => {
                   className="top relative"
                   onClick={() => catDetailHandle(item)}
                 >
-                  <span className="absolute z-2 left-0px top-0">
+                  <span className="absolute z-2 left-0px top-0 whitespace-nowrap">
                     {item.selected == 1
                       ? "ACTIVE"
                       : item.is_owners == 1

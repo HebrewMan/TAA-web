@@ -114,7 +114,7 @@ const AttibuteDetails = (props: any) => {
             {isSetUsername ? (
               <Success
                 color="#402209"
-                fontSize="20px"
+                fontSize="26px"
                 onClick={setUserNameHandle}
               />
             ) : (

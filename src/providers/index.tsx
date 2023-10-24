@@ -1,10 +1,9 @@
-import { getUserInfo } from "@/api/feature/app";
+import { getUserInfo, login } from "@/api/feature/app";
 import { useCallback, useEffect } from "react";
 import {
   useAccount,
-  useContractWrite,
   useNetwork,
-  usePrepareContractWrite,
+  useSignMessage,
   useSwitchNetwork,
 } from "wagmi";
 import { setInfoData, setIsLogin } from "@/store/slices/appSlice";
@@ -17,21 +16,49 @@ import {
   setDefaultCat,
 } from "@/store/slices/catSlice";
 import { getMyCats, getCatInfo, getCatStatus } from "@/api/feature/cat";
-import { taaTestChain } from "@/config/constants";
+import { getLocal, setLocal } from "@/utils";
 let flag = false;
 let getCatStatusTimer: any = null;
+let time = (new Date().getTime() / 1000).toFixed(0);
 export default function UseWeb3Provider({ children }: any) {
-  const { address, isConnecting, isDisconnected } = useAccount();
+  const { address } = useAccount();
   const { defaultCat } = useRootSelector(selectCatSlice);
   const { chain } = useNetwork();
   const dispatch = useRootDispatch();
   const { switchNetwork } = useSwitchNetwork({
-    chainId: taaTestChain.id,
+    chainId: import.meta.env.VITE_CHAINID,
   });
+  const { data: signData, signMessage } = useSignMessage({
+    message: `${address}${time}`,
+  });
+  const token = getLocal("token");
+
+  useEffect(() => {
+    if (!signData) {
+      return;
+    }
+
+    login({
+      address,
+      signature: signData,
+      timestamp: time,
+    }).then((res: any) => {
+      if (res.token) {
+        dispatch(setIsLogin(true));
+        setLocal("token", res.token);
+      }
+    });
+  }, [signData]);
+
+  useEffect(() => {
+    if (!token) {
+      signMessage();
+    }
+  }, [token, signMessage]);
 
   // 切换网络
   useEffect(() => {
-    if (chain?.id != taaTestChain.id && switchNetwork) {
+    if (chain?.id != import.meta.env.VITE_CHAINID && switchNetwork) {
       switchNetwork();
     }
   }, [chain, switchNetwork]);

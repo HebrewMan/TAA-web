@@ -27,7 +27,7 @@ const Attibute = (props: any) => {
             className={`absolute h-24px`}
           ></div>
           <span
-            className="font-shadow-black text-10px"
+            className="font-shadow-black text-10px relative"
             style={{ lineHeight: `${props.height}px` }}
           >
             {props.value}

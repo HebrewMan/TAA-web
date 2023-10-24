@@ -1,16 +1,24 @@
 import Axios, { AxiosRequestConfig } from "axios";
 import { resData } from "./interface";
 import { Toast } from "react-vant";
+import { getLocal } from "@/utils";
 
 // 统一配置
-const baseURL = "https://api.finbit.capital/api";
+const baseURL = import.meta.env.VITE_BASEURL;
 export const service = Axios.create({
   baseURL,
   responseType: "json",
   timeout: 600000,
 });
 
-service.interceptors.request.use((config) => {
+service.interceptors.request.use((config: any) => {
+  const token = getLocal("token");
+  if (token) {
+    if (!config.headers) {
+      config.headers = {};
+    }
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
   return config;
 });
 

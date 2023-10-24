@@ -1,5 +1,11 @@
 import request from "../request";
 
+export const login = (params: object) =>
+  request({
+    url: `/login`,
+    method: "get",
+    params: params,
+  });
 /* 用户信息 */
 export const getUserInfo = (userAddress: string) =>
   request({
@@ -16,10 +22,11 @@ export const setUserName = (params: object) =>
   });
 
 // 任务列表/
-export const getTasks = () =>
+export const getTasks = (params?: object) =>
   request({
     url: `/tasks`,
     method: "get",
+    params: params,
   });
 
 // 任务详情/
@@ -57,6 +64,13 @@ export const useProp = (params: object) =>
 export const doSign = (params: object) =>
   request({
     url: `/do_sign`,
+    method: "post",
+    data: params,
+  });
+
+export const doSignClaim = (params: object) =>
+  request({
+    url: `/claim_sign_award`,
     method: "post",
     data: params,
   });

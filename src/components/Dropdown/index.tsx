@@ -15,6 +15,12 @@ export default function dropDown(props: {
   useEffect(() => {
     setOption(value.value);
   }, [value]);
+
+  useEffect(() => {
+    setValue({
+      value: props.defaultValue,
+    });
+  }, [props.defaultValue]);
   const rightDom = () => {
     return <img className="mt-6px" src={rightIcon} alt="" />;
   };
@@ -23,9 +29,14 @@ export default function dropDown(props: {
       overlay={false}
       activeIcon={rightDom()}
       value={value}
+      defaultValue={value}
       onChange={(v) => setValue(v)}
     >
-      <DropdownMenu.Item name="value" options={option} />
+      <DropdownMenu.Item
+        name="value"
+        placeholder={"Place Select"}
+        options={option}
+      />
     </DropdownMenu>
   );
 }
